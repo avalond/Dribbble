@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Dribbble</string>
+
+    <string name="btn_login">登&#160;&#160;录</string>
 </resources>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_login"
+    tools:context="com.hunter.dribbble.ui.activity.LoginActivity">
+
+    <ImageButton
+        android:id="@+id/ibtn_login_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="12dp"
+        android:src="@drawable/ic_vector_close"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.hunter.dribbble.widget.BaseTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Hello Dribbble！"
+            android:textColor="@color/text_normal"
+            android:textSize="15sp"/>
+
+        <com.hunter.dribbble.widget.BaseTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:text="登录 Dribbble 立即体验所有功能"
+            android:textColor="@color/text_normal"
+            android:textSize="15sp"/>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/shape_corner"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingBottom="14dp"
+            android:paddingLeft="80dp"
+            android:paddingRight="80dp"
+            android:paddingTop="14dp"
+            android:text="@string/btn_login"
+            android:textColor="@color/text_normal"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</RelativeLayout>

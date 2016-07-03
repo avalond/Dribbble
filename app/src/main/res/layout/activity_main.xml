@@ -1,17 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
+    android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.activity.MainActivity">
+    android:orientation="vertical"
+    tools:context="ui.activity.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"/>
-</RelativeLayout>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/DarkPopupTheme"
+            app:titleTextAppearance="@style/ToolbarTitleText"
+            app:titleTextColor="@color/text_white"/>
+
+        <LinearLayout
+            android:id="@+id/ll_tab_selector"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                android:id="@+id/spinner_selector_type"
+                style="@style/TabSelectorText"
+                android:text="全部"
+                app:icon_padding="6dp"/>
+
+            <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                android:id="@+id/spinner_selector_sort"
+                style="@style/TabSelectorText"
+                android:text="最热"
+                app:icon_padding="6dp"/>
+
+            <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                android:id="@+id/spinner_selector_time"
+                style="@style/TabSelectorText"
+                android:text="当前"
+                app:icon_padding="6dp"/>
+
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <FrameLayout
+            android:id="@+id/container_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <!--<ProgressBar-->
+            <!--android:visibility="gone"-->
+            <!--android:indeterminate="true"-->
+            <!--android:id="@+id/progress_main"-->
+            <!--style="@style/Widget.AppCompat.ProgressBar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"/>-->
+    <!--</RelativeLayout>-->
+</LinearLayout>

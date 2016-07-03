@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
+
+import com.hunter.dribbble.utils.SnackbarUtils;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -42,11 +43,7 @@ public abstract class BaseFragment extends Fragment {
         mSubscription.add(subscription);
     }
 
-    public void toast(int resId) {
-        Toast.makeText(mActivity, resId, Toast.LENGTH_SHORT).show();
-    }
-
-    public void toast(String resId) {
-        Toast.makeText(mActivity, resId, Toast.LENGTH_SHORT).show();
+    public void toast(String text) {
+        SnackbarUtils.show(getView(), text, mActivity);
     }
 }

@@ -5,8 +5,4 @@
     <color name="white">#FFF</color>
     <color name="black">#000</color>
 
-    <color name="text_normal">#F1F1F1</color>
-    <color name="text_dialog">#DF2053</color>
-    <color name="text_grey">#8C8C8C</color>
-
 </resources>

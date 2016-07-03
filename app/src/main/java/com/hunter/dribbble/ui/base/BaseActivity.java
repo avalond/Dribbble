@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.hunter.dribbble.R;
-import com.hunter.library.util.SnackbarUtils;
+import com.hunter.dribbble.utils.SnackbarUtils;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -58,7 +56,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void toast(String text) {
-        SnackbarUtils.show(getWindow().getDecorView(), text, ContextCompat.getColor(this, R.color.colorPrimary));
+        SnackbarUtils.show(getWindow().getDecorView(), text, this);
     }
 
 }

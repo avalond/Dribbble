@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_vector_search"
+        android:title=""
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_view_mode"
+        android:icon="@mipmap/ic_action_small_info"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menu_small_info"
+                android:icon="@mipmap/ic_action_small_info"
+                android:orderInCategory="0"
+                android:title="@string/menu_view_mode_small_info"/>
+            <item
+                android:id="@+id/menu_small"
+                android:icon="@mipmap/ic_action_small"
+                android:orderInCategory="1"
+                android:title="@string/menu_view_mode_small"/>
+            <item
+                android:id="@+id/menu_large_info"
+                android:icon="@mipmap/ic_action_large_info"
+                android:orderInCategory="2"
+                android:title="@string/menu_view_mode_large_info"/>
+            <item
+                android:id="@+id/menu_large"
+                android:icon="@mipmap/ic_action_large"
+                android:orderInCategory="3"
+                android:title="@string/menu_view_mode_large"/>
+        </menu>
+    </item>
+
+</menu>

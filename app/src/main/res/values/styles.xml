@@ -4,6 +4,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorControlNormal">@color/white</item>
+
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
         <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
     </style>
@@ -29,4 +32,47 @@
         <item name="fontPath">fonts/SourceCodePro-Regular.ttf</item>
     </style>
 
+    <!-- 黑底白字 Menu 溢出菜单 -->
+    <style name="DarkPopupTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="android:textColor">@color/text_white</item>
+    </style>
+
+    <style name="HDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1sp</item>
+        <item name="android:background">@color/divider</item>
+    </style>
+
+    <!-- MaterialDrawer Theme-->
+    <style name="CustomTheme" parent="AppTheme">
+        <item name="material_drawer_background">@color/colorPrimary</item>
+        <item name="material_drawer_primary_text">@color/text_white</item>
+        <item name="material_drawer_primary_icon">@color/colorPrimary</item>
+        <item name="material_drawer_secondary_text">@color/text_white</item>
+        <item name="material_drawer_selected">@color/colorPrimaryDark</item>
+        <item name="material_drawer_selected_text">@color/colorAccent</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+    </style>
+
+    <style name="MarginVDivider">
+        <item name="android:layout_width">1sp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:background">@color/divider</item>
+    </style>
+
+    <style name="TabSelectorText">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:drawableRight">@mipmap/ic_tab_selector_arrow</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
 </resources>

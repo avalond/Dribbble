@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Hello Dribbble！"
-            android:textColor="@color/text_normal"
+            android:textColor="@color/text_white"
             android:textSize="15sp"/>
 
         <com.hunter.dribbble.widget.BaseTextView
@@ -37,24 +37,38 @@
             android:layout_marginTop="2dp"
             android:gravity="center"
             android:text="登录 Dribbble 立即体验所有功能"
-            android:textColor="@color/text_normal"
+            android:textColor="@color/text_white"
             android:textSize="15sp"/>
 
-        <Button
-            android:id="@+id/btn_login"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/shape_corner"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
-            android:paddingBottom="14dp"
-            android:paddingLeft="80dp"
-            android:paddingRight="80dp"
-            android:paddingTop="14dp"
-            android:text="@string/btn_login"
-            android:textColor="@color/text_normal"
-            android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:layout_marginTop="32dp">
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_corner"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingBottom="14dp"
+                android:paddingLeft="80dp"
+                android:paddingRight="80dp"
+                android:paddingTop="14dp"
+                android:text="@string/btn_login"
+                android:textColor="@color/text_white"
+                android:textSize="17sp"
+                android:textStyle="bold"/>
+
+            <ProgressBar
+                android:id="@+id/progress_login"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
     </LinearLayout>
 </RelativeLayout>

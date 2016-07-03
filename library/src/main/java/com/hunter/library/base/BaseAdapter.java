@@ -16,7 +16,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     protected List<T> mData;
     protected Context mContext;
-    protected int     mLayoutId;
+
+    protected int mLayoutId;
 
     protected OnItemClickListener mListener;
 
@@ -113,30 +114,42 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         return mData.get(position);
     }
 
+    public List<T> getData() {
+        return mData;
+    }
+
     public void add(T data, int position) {
         mData.add(data);
         notifyItemInserted(position);
     }
 
     public void reloadData(List<T> data) {
-        mData.clear();
-        mData.addAll(data);
-        notifyDataSetChanged();
+        clean();
+        addAll(data);
     }
 
     public void addAll(List<T> list) {
         mData.addAll(list);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(0, mData.size());
     }
 
-    public void remove(T data, int position) {
+    public void remove(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
     }
 
     public void clean() {
+        int size = mData.size();
         mData.clear();
-        notifyDataSetChanged();
+        notifyItemRangeRemoved(0, size);
+    }
+
+    public int getLayoutId() {
+        return mLayoutId;
+    }
+
+    public void setLayoutId(int layoutId) {
+        mLayoutId = layoutId;
     }
 
 }

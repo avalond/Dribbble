@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="MaterialSpinner">
+        <attr name="icon_padding" format="dimension"/>
+    </declare-styleable>
+
 </resources>

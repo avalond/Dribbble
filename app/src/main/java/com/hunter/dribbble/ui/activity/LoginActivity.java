@@ -2,6 +2,9 @@ package com.hunter.dribbble.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.hunter.dribbble.App;
 import com.hunter.dribbble.AppConstants;
@@ -19,16 +22,23 @@ import com.hunter.library.util.UrlUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseMvpActivity<TokenPresenter> implements TokenView {
+
+    @BindView(R.id.btn_login)
+    Button      mBtnLogin;
+    @BindView(R.id.progress_login)
+    ProgressBar mProgressLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
     }
 
     @Override
@@ -71,5 +81,24 @@ public class LoginActivity extends BaseMvpActivity<TokenPresenter> implements To
 
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void onStarted() {
+        mProgressLogin.setVisibility(View.VISIBLE);
+        mProgressLogin.setIndeterminate(true);
+        mBtnLogin.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onFinished() {
+        mProgressLogin.setVisibility(View.GONE);
+        mProgressLogin.setIndeterminate(false);
+    }
+
+    @Override
+    public void onFailed(String msg) {
+        super.onFailed(msg);
+        mBtnLogin.setVisibility(View.VISIBLE);
     }
 }

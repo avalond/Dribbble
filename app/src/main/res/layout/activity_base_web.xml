@@ -16,7 +16,7 @@
             android:layout_height="?actionBarSize"
             android:background="?colorPrimary"
             app:titleTextAppearance="@style/ToolbarTitleText"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/text_white"/>
     </android.support.design.widget.AppBarLayout>
 
     <ProgressBar

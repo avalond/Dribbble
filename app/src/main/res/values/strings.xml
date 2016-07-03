@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Dribbble</string>
 
-    <string name="btn_login">登&#160;&#160;录</string>
+    <string name="btn_login">登录</string>
+
+    <string name="drawer_layout_close">关闭</string>
+    <string name="drawer_layout_open">打开</string>
+
+    <string name="menu_view_mode_small_info">小图与简略信息</string>
+    <string name="menu_view_mode_small">仅小图</string>
+    <string name="menu_view_mode_large_info">大图与详细信息</string>
+    <string name="menu_view_mode_large">仅大图</string>
 </resources>

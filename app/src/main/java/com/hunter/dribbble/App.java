@@ -33,16 +33,16 @@ public class App extends Application {
     }
 
     private void initDate() {
-        mLayoutType = (int) SPUtils.get(this, AppConstants.SP_LAYOUT_TYPE, AppConstants.SELECTOR_VIEW_MODE_NORMAL);
+        mLayoutType = (int) SPUtils.get(this, AppConstants.SP_VIEW_MODE, AppConstants.VIEW_MODE_SMALL_WITH_INFO);
     }
 
-    public int getLayoutType() {
+    public int getViewMode() {
         return mLayoutType;
     }
 
-    public void setLayoutType(int layoutType) {
+    public void setViewMode(int layoutType) {
         mLayoutType = layoutType;
-        SPUtils.put(this, AppConstants.SP_LAYOUT_TYPE, layoutType);
+        SPUtils.put(this, AppConstants.SP_VIEW_MODE, layoutType);
     }
 
     public String getToken() {

@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final boolean IS_DEBUG = false;
+    private static final boolean IS_DEBUG = true;
 
     private static final int TIME_OUT_SECONDS = 15;
 

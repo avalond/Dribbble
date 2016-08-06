@@ -10,22 +10,12 @@ import java.util.List;
 
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
 
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_FOOTER = 1;
-    private static final int TYPE_NORMAL = 2;
-
     protected List<T> mData;
     protected Context mContext;
 
     protected int mLayoutId;
 
     protected OnItemClickListener mListener;
-
-    protected boolean mIsContainHeader;
-    protected boolean mIsContainFooter;
-
-    protected View mHeaderView;
-    protected View mFooterView;
 
     public interface OnItemClickListener<T> {
 
@@ -42,68 +32,28 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_HEADER) {
-            return new BaseViewHolder(mHeaderView);
-        } else if (viewType == TYPE_FOOTER) {
-            return new BaseViewHolder(mFooterView);
-        } else {
-            View view = LayoutInflater.from(mContext).inflate(mLayoutId, parent, false);
-            return new BaseViewHolder(view);
-        }
+        View view = LayoutInflater.from(mContext).inflate(mLayoutId, parent, false);
+        return new BaseViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final BaseViewHolder holder, int position) {
-        if (TYPE_NORMAL == getItemViewType(position)) {
-            final int realPos = mIsContainHeader ? position - 1 : position;
-            onBindItemData(holder, realPos);
+        onBindItemData(holder, position);
 
-            if (mListener != null) {
-                holder.mConvertView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mListener.onItemClick(realPos, mData.get(realPos));
-                    }
-                });
-            }
+        if (mListener != null) {
+            holder.mConvertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getAdapterPosition();
+                    mListener.onItemClick(pos, mData.get(pos));
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
-        return mData.size() + (mIsContainHeader ? 1 : 0) + (mIsContainFooter ? 1 : 0);
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        /**
-         * 头布局
-         */
-        if (mIsContainHeader && position == 0) {
-            return TYPE_HEADER;
-        }
-        /**
-         * 底布局
-         */
-        if (mIsContainFooter && position == getItemCount() - 1) {
-            return TYPE_FOOTER;
-        }
-        /**
-         * 普通布局
-         */
-        return TYPE_NORMAL;
-    }
-
-    public void setHeaderView(View headerView) {
-        mIsContainHeader = true;
-        mHeaderView = headerView;
-        notifyItemInserted(0);
-    }
-
-    public void setFooterView(View footerView) {
-        mIsContainFooter = true;
-        mFooterView = footerView;
-        notifyItemInserted(mData.size());
+        return mData.size();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -119,7 +69,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     public void add(T data, int position) {
-        mData.add(data);
+        mData.add(position, data);
         notifyItemInserted(position);
     }
 
@@ -142,10 +92,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         int size = mData.size();
         mData.clear();
         notifyItemRangeRemoved(0, size);
-    }
-
-    public int getLayoutId() {
-        return mLayoutId;
     }
 
     public void setLayoutId(int layoutId) {

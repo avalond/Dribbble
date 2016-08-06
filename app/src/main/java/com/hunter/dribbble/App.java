@@ -2,10 +2,9 @@ package com.hunter.dribbble;
 
 import android.app.Application;
 
+import com.hunter.dribbble.widget.loading.LoadPagerManager;
 import com.hunter.library.util.FrescoUtils;
 import com.hunter.library.util.SPUtils;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class App extends Application {
 
@@ -24,8 +23,9 @@ public class App extends Application {
 
         FrescoUtils.getInstance().init(this);
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().setDefaultFontPath(
-                "fonts/SourceCodePro-Regular.ttf").setFontAttrId(R.attr.fontPath).build());
+        LoadPagerManager.RETRY_LAYOUT_ID = R.layout.load_pager_retry;
+        LoadPagerManager.LOADING_LAYOUT_ID = R.layout.load_pager_loading;
+        LoadPagerManager.EMPTY_LAYOUT_ID = R.layout.load_pager_empty;
     }
 
     public static App getInstance() {

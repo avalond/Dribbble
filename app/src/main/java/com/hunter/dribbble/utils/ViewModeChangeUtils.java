@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.entity.ShotsEntity;
-import com.hunter.dribbble.ui.adapter.ShotsHomeAdapter;
+import com.hunter.dribbble.ui.adapter.ShotsAdapter;
 import com.hunter.library.util.SPUtils;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ViewModeChangeUtils {
 
-    public static void changeViewMode(RecyclerView rv, Context context, ShotsHomeAdapter adapter, int viewMode) {
+    public static void changeViewMode(RecyclerView rv, Context context, ShotsAdapter adapter, int viewMode) {
         rv.getRecycledViewPool().clear();
         setLayoutManager(rv, context, adapter, viewMode);
         List<ShotsEntity> data = new ArrayList<>(adapter.getData());
@@ -23,7 +23,7 @@ public class ViewModeChangeUtils {
         SPUtils.put(context, AppConstants.SP_VIEW_MODE, viewMode);
     }
 
-    public static void setLayoutManager(RecyclerView rv, Context context, ShotsHomeAdapter adapter, int viewMode) {
+    public static void setLayoutManager(RecyclerView rv, Context context, ShotsAdapter adapter, int viewMode) {
         switch (viewMode) {
             case AppConstants.VIEW_MODE_SMALL_WITH_INFO:
             case AppConstants.VIEW_MODE_SMALL:

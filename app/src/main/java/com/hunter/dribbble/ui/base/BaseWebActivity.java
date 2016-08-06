@@ -37,7 +37,7 @@ public class BaseWebActivity extends BaseActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_web);
         setSupportActionBar(mToolbar);
         if (!TextUtils.isEmpty(mWebTitle)) mToolbar.setTitle(mWebTitle);
-        mToolbar.setNavigationIcon(R.drawable.ic_vector_close);
+        mToolbar.setNavigationIcon(R.drawable.iv_close_white_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

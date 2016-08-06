@@ -1,68 +1,67 @@
-<LinearLayout
+<RelativeLayout
     android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="ui.activity.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_main"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/DarkPopupTheme"
-            app:titleTextAppearance="@style/ToolbarTitleText"
-            app:titleTextColor="@color/text_white"/>
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/ll_tab_selector"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_main"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:popupTheme="@style/DarkPopupTheme"
+                app:titleTextAppearance="@style/ToolbarTitleText"
+                app:titleTextColor="@color/text_white"/>
 
-            <com.hunter.dribbble.widget.spinner.MaterialSpinner
-                android:id="@+id/spinner_selector_type"
-                style="@style/TabSelectorText"
-                android:text="全部"
-                app:icon_padding="6dp"/>
+            <LinearLayout
+                android:id="@+id/ll_tab_selector"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
 
-            <com.hunter.dribbble.widget.spinner.MaterialSpinner
-                android:id="@+id/spinner_selector_sort"
-                style="@style/TabSelectorText"
-                android:text="最热"
-                app:icon_padding="6dp"/>
+                <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                    android:id="@+id/spinner_selector_type"
+                    style="@style/TabSelectorText"
+                    android:text="全部"
+                    app:icon_padding="6dp"/>
 
-            <com.hunter.dribbble.widget.spinner.MaterialSpinner
-                android:id="@+id/spinner_selector_time"
-                style="@style/TabSelectorText"
-                android:text="当前"
-                app:icon_padding="6dp"/>
+                <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                    android:id="@+id/spinner_selector_sort"
+                    style="@style/TabSelectorText"
+                    android:text="最热"
+                    app:icon_padding="6dp"/>
 
-        </LinearLayout>
-    </android.support.design.widget.AppBarLayout>
+                <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                    android:id="@+id/spinner_selector_time"
+                    style="@style/TabSelectorText"
+                    android:text="当前"
+                    app:icon_padding="6dp"/>
 
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+            </LinearLayout>
+        </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
             android:id="@+id/container_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <!--<ProgressBar-->
-            <!--android:visibility="gone"-->
-            <!--android:indeterminate="true"-->
-            <!--android:id="@+id/progress_main"-->
-            <!--style="@style/Widget.AppCompat.ProgressBar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"/>-->
-    <!--</RelativeLayout>-->
-</LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_margin="2dp"
+        android:id="@+id/container_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

@@ -5,9 +5,12 @@ public interface AppConstants {
     String SP_KEE_ACCESS_TOKEN = "access_token";
     String SP_VIEW_MODE        = "view_mode";
     String SP_IS_FIRST         = "is_first";
+    String SP_SEARCH_HISTORY   = "search_history";
 
     String EXTRA_SHOTS_ENTITY   = "extra_shots_entity";
+    String EXTRA_USER_ENTITY    = "extra_user_entity";
     String EXTRA_AUTHORIZE_CODE = "extra_authorize_code";
+    String EXTRA_USER_ID        = "extra_user_id";
 
     int REQUEST_CODE_AUTHORIZE = 1;
     int REQUEST_CODE_LOGIN     = 2;

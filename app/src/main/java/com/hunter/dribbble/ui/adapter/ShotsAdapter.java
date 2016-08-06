@@ -2,22 +2,32 @@ package com.hunter.dribbble.ui.adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.utils.CheckImageUrlUtils;
+import com.hunter.dribbble.utils.TimeUtils;
 import com.hunter.library.base.BaseAdapter;
 import com.hunter.library.base.BaseViewHolder;
 
 import java.util.List;
 
-public class ShotsHomeAdapter extends BaseAdapter<ShotsEntity> {
+public class ShotsAdapter extends BaseAdapter<ShotsEntity> {
 
     private int mViewMode;
 
-    public ShotsHomeAdapter(Context context, List<ShotsEntity> data, int viewMode) {
+    private OnItemClickUserInfoListener mUserInfoListener;
+
+    public interface OnItemClickUserInfoListener {
+
+        void onItemClickUserInfo(UserEntity entity);
+
+    }
+
+    public ShotsAdapter(Context context, List<ShotsEntity> data, int viewMode) {
         super(context, data, 0);
         setLayoutId(viewMode);
     }
@@ -38,10 +48,14 @@ public class ShotsHomeAdapter extends BaseAdapter<ShotsEntity> {
         }
     }
 
+    public void setUserInfoListener(OnItemClickUserInfoListener userInfoListener) {
+        mUserInfoListener = userInfoListener;
+    }
+
     @Override
     protected void onBindItemData(BaseViewHolder holder, int position) {
         ShotsEntity entity = mData.get(position);
-        UserEntity userEntity = entity.getUser();
+        final UserEntity userEntity = entity.getUser();
 
         switch (mViewMode) {
             /**
@@ -62,11 +76,20 @@ public class ShotsHomeAdapter extends BaseAdapter<ShotsEntity> {
              * 大图与详细信息，填充操作栏与描述信息数据
              */
             case AppConstants.VIEW_MODE_LARGE_WITH_INFO:
-                holder.setVisibility(R.id.item_shots_header_large, View.VISIBLE);
+                LinearLayout linearLayout = holder.getView(R.id.item_shots_header_large);
+                linearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mUserInfoListener != null) {
+                            mUserInfoListener.onItemClickUserInfo(userEntity);
+                        }
+                    }
+                });
+                linearLayout.setVisibility(View.VISIBLE);
                 holder.setTvText(R.id.tv_item_shots_title, entity.getTitle());
                 holder.setDraweeImg(R.id.drawee_item_shots_avatar, userEntity.getAvatarUrl());
                 holder.setTvText(R.id.tv_item_shots_user_name, userEntity.getUsername());
-                holder.setTvText(R.id.tv_item_shots_time, entity.getUpdatedAt());
+                holder.setTvText(R.id.tv_item_shots_time, TimeUtils.getTimeFromISO8601(entity.getUpdatedAt()));
 
                 holder.setVisibility(R.id.item_shots_options_large, View.VISIBLE);
                 holder.setTvText(R.id.tv_item_shots_comment, entity.getCommentsCount() + "");

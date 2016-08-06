@@ -3,11 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_search"
-        android:icon="@drawable/ic_vector_search"
-        android:title=""
-        app:showAsAction="ifRoom"/>
-    <item
         android:id="@+id/menu_view_mode"
         android:icon="@mipmap/ic_action_small_info"
         android:title=""
@@ -35,5 +30,11 @@
                 android:title="@string/menu_view_mode_large"/>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/iv_search_white_24dp"
+        android:title=""
+        app:showAsAction="ifRoom"/>
 
 </menu>

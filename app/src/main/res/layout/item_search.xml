@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:paddingRight="14dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:id="@+id/tv_item_search_history"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/iv_history_grey_16dp"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/text_black"
+        android:textSize="14sp"
+        tools:text="Hello Dribbble"/>
+
+    <ImageButton
+        android:foreground="?android:attr/selectableItemBackground"
+        android:id="@+id/ibtn_item_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="12dp"
+        android:layout_marginRight="4dp"
+        android:paddingLeft="12dp"
+        android:src="@drawable/iv_close_grey_16dp"/>
+</LinearLayout>

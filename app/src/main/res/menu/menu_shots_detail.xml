@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_share"
+        android:icon="@drawable/iv_browser_white_24dp"
+        android:title="分享"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_open_on_browser"
+        android:icon="@drawable/iv_browser_white_24dp"
+        android:title="从浏览器打开"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_download"
+        android:icon="@drawable/iv_download_white_24dp"
+        android:title="下载"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_set_wallpaper"
+        android:icon="@drawable/iv_image_white_24dp"
+        android:title="设为壁纸"
+        app:showAsAction="never"/>
+
+</menu>

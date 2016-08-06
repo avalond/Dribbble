@@ -1,6 +1,5 @@
 package com.hunter.dribbble.ui.base;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -10,7 +9,6 @@ import com.hunter.dribbble.utils.SnackbarUtils;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -35,10 +33,6 @@ public class BaseActivity extends AppCompatActivity {
         onUnSubscribe();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
     public void onUnSubscribe() {
         if (mSubscription != null) {

@@ -1,0 +1,79 @@
+<LinearLayout
+    android:id="@+id/search_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.hunter.dribbble.ui.fragment.SearchFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_corner_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <ImageButton
+                android:id="@+id/ibtn_search_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:padding="6dp"
+                android:src="@drawable/iv_back_grey_24dp"/>
+
+            <EditText
+                android:id="@+id/et_search_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="搜索关键字"
+                android:imeOptions="actionSearch"
+                android:padding="6dp"
+                android:singleLine="true"
+                android:textColorHint="@color/text_grey"
+                android:textCursorDrawable="@color/text_grey"
+                android:textSize="14sp"/>
+
+            <ImageButton
+                android:id="@+id/ibtn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:padding="6dp"
+                android:src="@drawable/iv_search_grey_24dp"/>
+        </LinearLayout>
+
+        <View
+            style="@style/HDivider"
+            android:layout_marginTop="-1dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_search_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_search_clean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_corner_white"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="清除搜索记录"
+            android:textColor="@color/text_grey"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_search_outside"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

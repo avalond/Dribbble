@@ -2,7 +2,7 @@ package com.hunter.dribbble.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,6 +17,7 @@ import com.hunter.dribbble.R;
 import com.hunter.dribbble.event.EventViewMode;
 import com.hunter.dribbble.ui.base.BaseActivity;
 import com.hunter.dribbble.ui.fragment.HomeFragment;
+import com.hunter.dribbble.ui.fragment.SearchFragment;
 import com.hunter.dribbble.widget.spinner.MaterialSpinner;
 import com.hunter.library.util.SPUtils;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -36,6 +37,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements AccountHeader.OnAccountHeaderListener,
                                                           Toolbar.OnMenuItemClickListener {
+
+    private static final String TAG_SEARCH = "tag_search";
 
     private static final int VIEW_MODE_ICON_RES[] = {
             R.mipmap.ic_action_small_info,
@@ -67,7 +70,10 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
     private Drawer            mDrawer;
     private ProfileDrawerItem mNavHeader;
 
-    private HomeFragment mHomeFragment;
+    private HomeFragment   mHomeFragment;
+    private SearchFragment mSearchFragment;
+
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,21 +104,21 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
                .withActionBarDrawerToggleAnimated(true)
                .withAccountHeader(accountHeader)
                .addDrawerItems(new PrimaryDrawerItem().withName("Home")
-                                                      .withIcon(R.drawable.ic_vector_nav_home)
-                                                      .withSelectedIcon(R.drawable.ic_vector_nav_home_selected),
+                                                      .withIcon(R.drawable.iv_home_grey_24dp)
+                                                      .withSelectedIcon(R.drawable.iv_home_pink_24dp),
                                new PrimaryDrawerItem().withName("Follower")
-                                                      .withIcon(R.drawable.ic_vector_nav_follow)
-                                                      .withSelectedIcon(R.drawable.ic_vector_nav_follow_selected),
+                                                      .withIcon(R.drawable.iv_follower_grey_24dp)
+                                                      .withSelectedIcon(R.drawable.iv_follower_pink_24dp),
                                new PrimaryDrawerItem().withName("My Buckets")
-                                                      .withIcon(R.drawable.ic_vector_bucket)
-                                                      .withSelectedIcon(R.drawable.ic_vector_bucket_selected),
+                                                      .withIcon(R.drawable.iv_bucket_grey_24dp)
+                                                      .withSelectedIcon(R.drawable.iv_bucket_pink_24dp),
                                new PrimaryDrawerItem().withName("My Likes")
-                                                      .withIcon(R.drawable.ic_vector_nav_like)
-                                                      .withSelectedIcon(R.drawable.ic_vector_nav_like_selected),
+                                                      .withIcon(R.drawable.iv_like_grey_24dp)
+                                                      .withSelectedIcon(R.drawable.iv_like_pink_24dp),
                                new DividerDrawerItem(),
                                new SecondaryDrawerItem().withName("Settings")
-                                                        .withIcon(R.drawable.ic_vector_settings)
-                                                        .withSelectedIcon(R.drawable.ic_vector_settings_selected));
+                                                        .withIcon(R.drawable.iv_settings_grey_24dp)
+                                                        .withSelectedIcon(R.drawable.iv_settings_pink_24dp));
 
         mDrawer = builder.build();
     }
@@ -136,10 +142,11 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
     }
 
     private void initFragment() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mHomeFragment = HomeFragment.newInstance();
-        transaction.add(R.id.container_main, mHomeFragment);
-        transaction.commit();
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentManager.beginTransaction().add(R.id.container_main, mHomeFragment).commit();
+
+        mSearchFragment = SearchFragment.newInstance();
     }
 
     @Override
@@ -180,9 +187,9 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
                 break;
 
             case R.id.menu_search:
+                mSearchFragment.show(getSupportFragmentManager(), TAG_SEARCH);
                 break;
         }
-
         return false;
     }
 

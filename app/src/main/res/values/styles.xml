@@ -6,30 +6,10 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="colorControlNormal">@color/white</item>
-
-        <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
-        <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
     </style>
 
     <style name="ToolbarTitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">15sp</item>
-    </style>
-
-    <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-        <item name="fontPath">fonts/SourceCodePro-Regular.ttf</item>
-    </style>
-
-    <style name="AppTheme.ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TextAppearance</item>
-        <item name="android:subtitleTextStyle">@style/AppTheme.ActionBar.TextAppearance.SubTitle</item>
-    </style>
-
-    <style name="AppTheme.ActionBar.TextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
-        <item name="fontPath">fonts/SourceCodePro-Regular.ttf</item>
-    </style>
-
-    <style name="AppTheme.ActionBar.TextAppearance.SubTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse">
-        <item name="fontPath">fonts/SourceCodePro-Regular.ttf</item>
     </style>
 
     <!-- 黑底白字 Menu 溢出菜单 -->
@@ -41,7 +21,7 @@
 
     <style name="HDivider">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1sp</item>
+        <item name="android:layout_height">0.5sp</item>
         <item name="android:background">@color/divider</item>
     </style>
 
@@ -56,14 +36,6 @@
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
     </style>
 
-    <style name="MarginVDivider">
-        <item name="android:layout_width">1sp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:background">@color/divider</item>
-    </style>
-
     <style name="TabSelectorText">
         <item name="android:textColor">@color/text_white</item>
         <item name="android:layout_width">0dp</item>
@@ -74,5 +46,27 @@
         <item name="android:clickable">true</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="TextDrawable">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
+
+    <style name="DialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+    <style name="DialogEmptyAnimation" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@null</item>
+        <item name="@android:windowExitAnimation">@null</item>
     </style>
 </resources>

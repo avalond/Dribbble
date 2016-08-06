@@ -18,6 +18,10 @@ public interface ApiConstants {
         String TOKEN = "token";
 
         String SHOTS = "shots";
+
+        String COMMENTS = "shots/{id}/comments";
+
+        String FOLLOWERS = "users/{id}/followers";
     }
 
     interface ParamKey {

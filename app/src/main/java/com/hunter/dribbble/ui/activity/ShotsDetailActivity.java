@@ -1,5 +1,6 @@
 package com.hunter.dribbble.ui.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
@@ -20,6 +23,7 @@ import com.hunter.dribbble.ui.fragment.ShotsCommentsFragment;
 import com.hunter.dribbble.ui.fragment.ShotsDesFragment;
 import com.hunter.dribbble.utils.CheckImageUrlUtils;
 import com.hunter.dribbble.utils.StatusBarCompat;
+import com.hunter.dribbble.widget.FrescoImageProgressBar;
 import com.hunter.library.base.BasePagerAdapter;
 
 import java.util.ArrayList;
@@ -71,7 +75,20 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
             }
         });
 
-        mDraweeShotsImage.setImageURI(CheckImageUrlUtils.checkImageUrl(mShotsEntity.getImages()));
+        /**
+         * 加载图片
+         */
+        String uri = CheckImageUrlUtils.checkImageUrl(mShotsEntity.getImages());
+        mDraweeShotsImage.getHierarchy().setProgressBarImage(new FrescoImageProgressBar(this));
+        if (mShotsEntity.isAnimated()) {
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                                .setUri(Uri.parse(uri))
+                                                .setAutoPlayAnimations(true)
+                                                .build();
+            mDraweeShotsImage.setController(controller);
+        } else {
+            mDraweeShotsImage.setImageURI(uri);
+        }
         initPager();
     }
 

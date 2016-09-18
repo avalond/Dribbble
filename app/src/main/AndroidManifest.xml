@@ -20,13 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.activity.LoginActivity"/>
-
         <activity android:name=".ui.activity.AuthorizeActivity"/>
-
         <activity android:name=".ui.activity.ShotsDetailActivity"/>
-
         <activity android:name=".ui.activity.ProfileActivity"/>
     </application>
 

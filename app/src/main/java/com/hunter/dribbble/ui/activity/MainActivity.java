@@ -22,7 +22,6 @@ import com.hunter.dribbble.widget.spinner.MaterialSpinner;
 import com.hunter.library.util.SPUtils;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -67,13 +66,8 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
     @BindView(R.id.spinner_selector_time)
     MaterialSpinner mSpinnerSelectorTime;
 
-    private Drawer            mDrawer;
-    private ProfileDrawerItem mNavHeader;
-
     private HomeFragment   mHomeFragment;
     private SearchFragment mSearchFragment;
-
-    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +85,11 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
         setSupportActionBar(mToolbar);
         mToolbar.setOnMenuItemClickListener(this);
 
-        mNavHeader = new ProfileDrawerItem().withName("点击头像登录")
-                                            .withIcon(ContextCompat.getDrawable(this, R.mipmap.ic_launcher));
+        ProfileDrawerItem navHeader = new ProfileDrawerItem().withName("点击头像登录")
+                                                             .withIcon(ContextCompat.getDrawable(this,
+                                                                                                 R.mipmap.ic_launcher));
         AccountHeader accountHeader = new AccountHeaderBuilder().withActivity(this)
-                                                                .addProfiles(mNavHeader)
+                                                                .addProfiles(navHeader)
                                                                 .withSelectionListEnabled(false)
                                                                 .withOnAccountHeaderListener(this)
                                                                 .build();
@@ -120,7 +115,7 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
                                                         .withIcon(R.drawable.iv_settings_grey_24dp)
                                                         .withSelectedIcon(R.drawable.iv_settings_pink_24dp));
 
-        mDrawer = builder.build();
+        builder.build();
     }
 
     private void initSpinner() {
@@ -143,8 +138,8 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
 
     private void initFragment() {
         mHomeFragment = HomeFragment.newInstance();
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentManager.beginTransaction().add(R.id.container_main, mHomeFragment).commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.container_main, mHomeFragment).commit();
 
         mSearchFragment = SearchFragment.newInstance();
     }

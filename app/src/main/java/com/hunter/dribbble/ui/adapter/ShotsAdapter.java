@@ -8,7 +8,7 @@ import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.entity.UserEntity;
-import com.hunter.dribbble.utils.CheckImageUrlUtils;
+import com.hunter.dribbble.utils.ImageUrlUtils;
 import com.hunter.dribbble.utils.TimeUtils;
 import com.hunter.library.base.BaseAdapter;
 import com.hunter.library.base.BaseViewHolder;
@@ -109,7 +109,7 @@ public class ShotsAdapter extends BaseAdapter<ShotsEntity> {
          */
         if (entity.isAnimated()) {
             holder.setVisibility(R.id.iv_item_shots_gif, View.VISIBLE);
-            holder.setDraweeGif(R.id.drawee_item_shots_preview, CheckImageUrlUtils.checkImageUrl(entity.getImages()));
+            holder.setDraweeGif(R.id.drawee_item_shots_preview, ImageUrlUtils.getImageUrl(entity.getImages()));
         } else {
             holder.setVisibility(R.id.iv_item_shots_gif, View.GONE);
             holder.setDraweeImg(R.id.drawee_item_shots_preview, entity.getImages().getNormal());

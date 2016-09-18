@@ -11,10 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -24,7 +23,7 @@ import com.hunter.library.base.BaseAdapter;
 import java.util.Arrays;
 import java.util.TimerTask;
 
-public class MaterialSpinner extends TextView {
+public class MaterialSpinner extends TextView implements View.OnClickListener {
 
     private Context mContext;
 
@@ -39,6 +38,8 @@ public class MaterialSpinner extends TextView {
     private int  mIconPadding;
     private Rect mRect;
     private int  mDrawableWidth;
+
+    private ObjectAnimator mRotateAnim;
 
     public interface OnItemSelectedListener<T> {
 
@@ -65,11 +66,24 @@ public class MaterialSpinner extends TextView {
         mPopDropDown = new PopupWindow(mContext);
         mPopDropDown.setContentView(mRecyclerView);
         mPopDropDown.setOutsideTouchable(true);
+//        mPopDropDown.setFocusable(true);
+//        mPopDropDown.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//            @Override
+//            public void onDismiss() {
+//                animateArrow(false);
+//            }
+//        });
+
+        mRotateAnim = ObjectAnimator.ofInt(mArrowDrawable, "level", 0, 0);
+        mRotateAnim.setDuration(200);
+        mRotateAnim.setInterpolator(new DecelerateInterpolator());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPopDropDown.setElevation(10);
         }
         mPopDropDown.setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.bg_spinner));
+
+        setOnClickListener(this);
     }
 
     public void setIconPadding(int padding) {
@@ -112,31 +126,18 @@ public class MaterialSpinner extends TextView {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (isEnabled() && isClickable()) {
-                if (!mPopDropDown.isShowing()) expand();
-                else collapse();
-            }
+    public void onClick(View v) {
+        if (!mPopDropDown.isShowing()) {
+//            animateArrow(true);
+            mPopDropDown.showAsDropDown(this);
         }
-        return super.onTouchEvent(event);
-    }
-
-    public void expand() {
-        animateArrow(true);
-        mPopDropDown.showAsDropDown(this);
-    }
-
-    public void collapse() {
-        animateArrow(false);
-        mPopDropDown.dismiss();
     }
 
     private void animateArrow(boolean isDrop) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(mArrowDrawable, "rotation", isDrop ? 180 : 0, isDrop ? 0 : 180);
-        animator.setDuration(200);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.start();
+        int levelStart = isDrop ? 0 : 10000;
+        int levelEnd = isDrop ? 10000 : 0;
+        mRotateAnim.setIntValues(levelStart, levelEnd);
+        mRotateAnim.start();
     }
 
     public void setItems(String... items) {
@@ -148,14 +149,14 @@ public class MaterialSpinner extends TextView {
                 if (mListener != null) {
                     mListener.onItemSelected(MaterialSpinner.this, position, mAdapter.getItemData(position));
                 }
-                postDelayed(new TimerTask() {
+                post(new TimerTask() {
                     @Override
                     public void run() {
-                        collapse();
+                        mPopDropDown.dismiss();
                         setText(data);
                         requestLayout();
                     }
-                }, 250);
+                });
             }
         });
     }

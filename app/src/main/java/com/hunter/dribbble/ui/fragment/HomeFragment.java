@@ -3,6 +3,10 @@ package com.hunter.dribbble.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -87,9 +91,8 @@ public class HomeFragment extends BaseMvpFragment<ShotsPresenter> implements Mat
         mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<ShotsEntity>() {
             @Override
             public void onItemClick(int position, ShotsEntity data) {
-                Intent intent = new Intent(mActivity, ShotsDetailActivity.class);
-                intent.putExtra(AppConstants.EXTRA_SHOTS_ENTITY, data);
-                startActivity(intent);
+                startActivityWithOptions(mRvShotsHome.getChildAt(position).findViewById(R.id.drawee_item_shots_preview),
+                                         data);
             }
         });
         mAdapter.setUserInfoListener(new ShotsAdapter.OnItemClickUserInfoListener() {
@@ -144,5 +147,13 @@ public class HomeFragment extends BaseMvpFragment<ShotsPresenter> implements Mat
     @Override
     public void onRetryClick(View retryView) {
         loadData();
+    }
+
+    private void startActivityWithOptions(View view, ShotsEntity data) {
+        Pair pair = new Pair<>(view, ViewCompat.getTransitionName(view));
+        ActivityOptionsCompat aoc = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pair);
+        Intent intent = new Intent(mActivity, ShotsDetailActivity.class);
+        intent.putExtra(AppConstants.EXTRA_SHOTS_ENTITY, data);
+        ActivityCompat.startActivity(getActivity(), intent, aoc.toBundle());
     }
 }

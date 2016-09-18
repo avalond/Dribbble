@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,7 @@ public class ShotsDesFragment extends BaseFragment {
         String des = mShotsEntity.getDescription();
         if (!TextUtils.isEmpty(des)) {
             mTvShotsDes.setText(Html.fromHtml(des));
+            mTvShotsDes.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             mTvShotsDes.setVisibility(View.GONE);
         }

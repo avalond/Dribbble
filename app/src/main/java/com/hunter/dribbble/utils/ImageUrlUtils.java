@@ -4,9 +4,9 @@ import android.text.TextUtils;
 
 import com.hunter.dribbble.entity.ImagesEntity;
 
-public class CheckImageUrlUtils {
+public class ImageUrlUtils {
 
-    public static String checkImageUrl(ImagesEntity entity) {
+    public static String getImageUrl(ImagesEntity entity) {
         if (!TextUtils.isEmpty(entity.getHidpi())) {
             return entity.getHidpi();
         }

@@ -2,6 +2,7 @@ package com.hunter.dribbble.ui.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class ProfileDetailFragment extends BaseFragment {
         String twitter = userEntity.getLinks().getTwitter();
         if (!TextUtils.isEmpty(twitter)) {
             mTvTwitter.setText(twitter);
+            mTvTwitter.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             mTvTwitter.setVisibility(View.GONE);
         }
@@ -80,6 +82,7 @@ public class ProfileDetailFragment extends BaseFragment {
         String web = userEntity.getLinks().getWeb();
         if (!TextUtils.isEmpty(web)) {
             mTvWeb.setText(web);
+            mTvTwitter.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             mTvWeb.setVisibility(View.GONE);
         }

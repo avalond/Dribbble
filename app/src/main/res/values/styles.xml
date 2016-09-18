@@ -4,7 +4,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="colorControlNormal">@color/white</item>
     </style>
 
@@ -42,7 +41,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="android:drawableRight">@mipmap/ic_tab_selector_arrow</item>
+        <item name="android:drawableRight">@drawable/anim_rotate_arrow</item>
         <item name="android:clickable">true</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>

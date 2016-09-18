@@ -1,12 +1,18 @@
 package com.hunter.dribbble.ui.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -21,7 +27,7 @@ import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.ui.base.BaseActivity;
 import com.hunter.dribbble.ui.fragment.ShotsCommentsFragment;
 import com.hunter.dribbble.ui.fragment.ShotsDesFragment;
-import com.hunter.dribbble.utils.CheckImageUrlUtils;
+import com.hunter.dribbble.utils.ImageUrlUtils;
 import com.hunter.dribbble.utils.StatusBarCompat;
 import com.hunter.dribbble.widget.FrescoImageProgressBar;
 import com.hunter.library.base.BasePagerAdapter;
@@ -32,21 +38,24 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
     private static final String[] TAB_TITLES = {"简介", "评论"};
 
     @BindView(R.id.drawee_shots_detail_image)
-    SimpleDraweeView mDraweeShotsImage;
+    SimpleDraweeView     mDraweeShotsImage;
     @BindView(R.id.tab_shots_detail)
-    TabLayout        mTabShots;
+    TabLayout            mTabShots;
     @BindView(R.id.pager_shots_detail)
-    ViewPager        mPagerShots;
+    ViewPager            mPagerShots;
     @BindView(R.id.toolbar_shots_detail)
-    Toolbar          mToolbarShots;
+    Toolbar              mToolbarShots;
     @BindView(R.id.app_bar_shots)
-    AppBarLayout     mAppBarShots;
+    AppBarLayout         mAppBarShots;
+    @BindView(R.id.fab_shots_detail_play)
+    FloatingActionButton mFabShotsDetailPlay;
 
     private ShotsEntity mShotsEntity;
 
@@ -61,7 +70,18 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         ButterKnife.bind(this);
         StatusBarCompat.translucentStatusBar(this);
         mShotsEntity = (ShotsEntity) getIntent().getSerializableExtra(AppConstants.EXTRA_SHOTS_ENTITY);
+        initEnterAnim();
         init();
+    }
+
+    private void initEnterAnim() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Slide slide = new Slide(Gravity.BOTTOM);
+            slide.addTarget(R.id.pager_shots_detail);
+            slide.addTarget(R.id.tab_shots_detail);
+            slide.addTarget(R.id.fab_shots_detail_play);
+            getWindow().setEnterTransition(slide);
+        }
     }
 
     private void init() {
@@ -75,20 +95,14 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
             }
         });
 
-        /**
-         * 加载图片
-         */
-        String uri = CheckImageUrlUtils.checkImageUrl(mShotsEntity.getImages());
-        mDraweeShotsImage.getHierarchy().setProgressBarImage(new FrescoImageProgressBar(this));
         if (mShotsEntity.isAnimated()) {
-            DraweeController controller = Fresco.newDraweeControllerBuilder()
-                                                .setUri(Uri.parse(uri))
-                                                .setAutoPlayAnimations(true)
-                                                .build();
-            mDraweeShotsImage.setController(controller);
+            mDraweeShotsImage.setImageURI(mShotsEntity.getImages().getNormal());
+            mFabShotsDetailPlay.setVisibility(View.VISIBLE);
         } else {
-            mDraweeShotsImage.setImageURI(uri);
+            mDraweeShotsImage.setImageURI(ImageUrlUtils.getImageUrl(mShotsEntity.getImages()));
+            mFabShotsDetailPlay.setVisibility(View.GONE);
         }
+
         initPager();
     }
 
@@ -106,6 +120,29 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         mTabShots.setupWithViewPager(mPagerShots);
     }
 
+    @OnClick(R.id.fab_shots_detail_play)
+    void playGif(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("正在使用数据流量访问图片，是否继续？")
+               .setNegativeButton("取消", null)
+               .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       mDraweeShotsImage.getHierarchy()
+                                        .setProgressBarImage(new FrescoImageProgressBar(ShotsDetailActivity.this));
+                       Uri uri = Uri.parse(ImageUrlUtils.getImageUrl(mShotsEntity.getImages()));
+                       DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                                           .setUri(uri)
+                                                           .setAutoPlayAnimations(true)
+                                                           .build();
+                       mDraweeShotsImage.setController(controller);
+                       mFabShotsDetailPlay.hide();
+                   }
+               })
+               .setTitle("提示")
+               .show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_shots_detail, menu);
@@ -115,6 +152,14 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_share:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setType("text/*");
+                intent.putExtra(Intent.EXTRA_TEXT, mShotsEntity.getHtmlUrl());
+                startActivity(Intent.createChooser(intent, "分享到"));
+                break;
+
             case R.id.menu_open_on_browser:
 
                 break;

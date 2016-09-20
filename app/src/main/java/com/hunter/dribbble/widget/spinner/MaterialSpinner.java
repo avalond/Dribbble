@@ -18,7 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.hunter.dribbble.R;
-import com.hunter.library.base.BaseAdapter;
+import com.hunter.lib.base.BaseAdapter;
 
 import java.util.Arrays;
 import java.util.TimerTask;

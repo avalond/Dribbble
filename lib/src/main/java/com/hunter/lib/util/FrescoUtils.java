@@ -1,4 +1,4 @@
-package com.hunter.library.util;
+package com.hunter.lib.util;
 
 import android.content.Context;
 

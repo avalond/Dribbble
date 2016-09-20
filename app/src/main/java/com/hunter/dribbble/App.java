@@ -3,8 +3,8 @@ package com.hunter.dribbble;
 import android.app.Application;
 
 import com.hunter.dribbble.widget.loading.LoadPagerManager;
-import com.hunter.library.util.FrescoUtils;
-import com.hunter.library.util.SPUtils;
+import com.hunter.lib.util.FrescoUtils;
+import com.hunter.lib.util.SPUtils;
 
 public class App extends Application {
 

@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.hunter.dribbble.R;
-import com.hunter.library.LibConstants;
+import com.hunter.lib.LibConstants;
 
 public class BaseWebActivity extends BaseActivity {
 

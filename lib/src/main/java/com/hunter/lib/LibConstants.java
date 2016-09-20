@@ -1,4 +1,4 @@
-package com.hunter.library;
+package com.hunter.lib;
 
 public interface LibConstants {
 

@@ -21,7 +21,7 @@ import com.hunter.dribbble.ui.fragment.ProfileDetailFragment;
 import com.hunter.dribbble.ui.fragment.ProfileFollowersFragment;
 import com.hunter.dribbble.ui.fragment.ProfileShotsFragment;
 import com.hunter.dribbble.utils.StatusBarCompat;
-import com.hunter.library.base.BasePagerAdapter;
+import com.hunter.lib.base.BasePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

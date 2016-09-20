@@ -4,7 +4,7 @@ public interface ApiConstants {
 
     interface Url {
 
-        String SERVER_URL = "https://api.dribbble.com/v1/";
+        String BASE_URL = "https://api.dribbble.com/v1/";
 
         String OAUTH_URL = "https://dribbble.com/oauth/";
 

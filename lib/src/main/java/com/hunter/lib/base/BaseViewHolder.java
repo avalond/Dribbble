@@ -1,4 +1,4 @@
-package com.hunter.library.base;
+package com.hunter.lib.base;
 
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;

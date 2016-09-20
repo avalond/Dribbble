@@ -14,7 +14,7 @@ import com.hunter.dribbble.mvp.followers.FollowersPresenter;
 import com.hunter.dribbble.mvp.followers.FollowersView;
 import com.hunter.dribbble.ui.adapter.FollowersAdapter;
 import com.hunter.dribbble.ui.base.BaseMvpFragment;
-import com.hunter.library.widget.DividerItemDecoration;
+import com.hunter.lib.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

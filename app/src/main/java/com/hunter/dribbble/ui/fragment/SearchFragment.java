@@ -23,9 +23,9 @@ import android.widget.TextView;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.ui.adapter.SearchHistoryAdapter;
-import com.hunter.library.util.CircularRevealAnim;
-import com.hunter.library.util.KeyBoardUtils;
-import com.hunter.library.util.SPUtils;
+import com.hunter.lib.util.CircularRevealAnim;
+import com.hunter.lib.util.KeyBoardUtils;
+import com.hunter.lib.util.SPUtils;
 
 import java.util.List;
 

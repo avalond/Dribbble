@@ -9,7 +9,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
-import com.hunter.library.util.DensityUtils;
+import com.hunter.lib.util.DensityUtils;
 
 public class FrescoImageProgressBar extends Drawable {
 

@@ -30,7 +30,7 @@ import com.hunter.dribbble.ui.fragment.ShotsDesFragment;
 import com.hunter.dribbble.utils.ImageUrlUtils;
 import com.hunter.dribbble.utils.StatusBarCompat;
 import com.hunter.dribbble.widget.FrescoImageProgressBar;
-import com.hunter.library.base.BasePagerAdapter;
+import com.hunter.lib.base.BasePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

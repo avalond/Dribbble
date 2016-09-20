@@ -2,8 +2,8 @@ package com.hunter.dribbble.mvp.followers;
 
 import com.hunter.dribbble.entity.FollowerEntity;
 import com.hunter.dribbble.mvp.BasePresenter;
-import com.hunter.library.rxjava.ApiCallback;
-import com.hunter.library.rxjava.SubscriberCallBack;
+import com.hunter.lib.rxjava.ApiCallback;
+import com.hunter.lib.rxjava.SubscriberCallBack;
 
 import java.util.List;
 

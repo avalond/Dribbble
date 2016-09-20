@@ -48,7 +48,7 @@ public class ApiClient {
 
             builder.retryOnConnectionFailure(true).connectTimeout(TIME_OUT_SECONDS, TimeUnit.SECONDS);
 
-            sRestRetrofit = new Retrofit.Builder().baseUrl(ApiConstants.Url.SERVER_URL)
+            sRestRetrofit = new Retrofit.Builder().baseUrl(ApiConstants.Url.BASE_URL)
                                                   .client(builder.build())
                                                   .addConverterFactory(GsonConverterFactory.create())
                                                   .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -59,9 +59,7 @@ public class ApiClient {
     }
 
     public synchronized static void cleanApiClient() {
-        if (sRestRetrofit != null) {
-            sRestRetrofit = null;
-        }
+        if (sRestRetrofit != null) sRestRetrofit = null;
     }
 
     public synchronized static ApiStores createForOAtuh() {

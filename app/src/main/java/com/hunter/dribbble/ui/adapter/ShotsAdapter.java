@@ -10,8 +10,8 @@ import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.utils.ImageUrlUtils;
 import com.hunter.dribbble.utils.TimeUtils;
-import com.hunter.library.base.BaseAdapter;
-import com.hunter.library.base.BaseViewHolder;
+import com.hunter.lib.base.BaseAdapter;
+import com.hunter.lib.base.BaseViewHolder;
 
 import java.util.List;
 

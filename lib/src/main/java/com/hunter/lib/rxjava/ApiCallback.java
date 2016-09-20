@@ -1,4 +1,4 @@
-package com.hunter.library.rxjava;
+package com.hunter.lib.rxjava;
 
 public interface ApiCallback<T> {
 

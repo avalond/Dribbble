@@ -1,4 +1,4 @@
-package com.hunter.dribbble.ui.activity;
+package com.hunter.dribbble.ui.login;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,7 +9,7 @@ import android.webkit.WebViewClient;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.api.ApiConstants;
 import com.hunter.dribbble.ui.base.BaseWebActivity;
-import com.hunter.library.util.LogUtils;
+import com.hunter.lib.util.LogUtils;
 
 public class AuthorizeActivity extends BaseWebActivity {
 

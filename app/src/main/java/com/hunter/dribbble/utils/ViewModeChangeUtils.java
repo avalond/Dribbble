@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.ui.adapter.ShotsAdapter;
-import com.hunter.library.util.SPUtils;
+import com.hunter.lib.util.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;

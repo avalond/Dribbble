@@ -4,7 +4,7 @@ public interface BaseView {
 
     void showDialog(String msg);
 
-    void dismissDialog();
+    void onCompleted();
 
     void showToast(String msg);
 }

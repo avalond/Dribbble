@@ -3,8 +3,8 @@ package com.hunter.dribbble.mvp.shots;
 import com.hunter.dribbble.api.ApiConstants;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.mvp.BasePresenter;
-import com.hunter.library.rxjava.ApiCallback;
-import com.hunter.library.rxjava.SubscriberCallBack;
+import com.hunter.lib.rxjava.ApiCallback;
+import com.hunter.lib.rxjava.SubscriberCallBack;
 
 import java.util.HashMap;
 import java.util.List;

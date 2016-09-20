@@ -15,7 +15,7 @@ import com.hunter.dribbble.mvp.comments.CommentsPresenter;
 import com.hunter.dribbble.mvp.comments.CommentsView;
 import com.hunter.dribbble.ui.adapter.CommentsAdapter;
 import com.hunter.dribbble.ui.base.BaseMvpFragment;
-import com.hunter.library.widget.DividerItemDecoration;
+import com.hunter.lib.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Collections;

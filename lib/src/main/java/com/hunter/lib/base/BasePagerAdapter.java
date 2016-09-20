@@ -1,4 +1,4 @@
-package com.hunter.library.base;
+package com.hunter.lib.base;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

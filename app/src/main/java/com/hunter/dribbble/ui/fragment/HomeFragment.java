@@ -28,7 +28,7 @@ import com.hunter.dribbble.ui.adapter.ShotsAdapter;
 import com.hunter.dribbble.ui.base.BaseMvpFragment;
 import com.hunter.dribbble.utils.ViewModeChangeUtils;
 import com.hunter.dribbble.widget.spinner.MaterialSpinner;
-import com.hunter.library.base.BaseAdapter;
+import com.hunter.lib.base.BaseAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

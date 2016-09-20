@@ -1,6 +1,6 @@
-package com.hunter.library.rxjava;
+package com.hunter.lib.rxjava;
 
-import com.hunter.library.util.LogUtils;
+import com.hunter.lib.util.LogUtils;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;

@@ -5,6 +5,11 @@ import android.content.Context;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public abstract class BasePresenter<M, V> {
 
     public  Context      context;
@@ -28,5 +33,9 @@ public abstract class BasePresenter<M, V> {
             mViewRef.clear();
             mViewRef = null;
         }
+    }
+
+    protected static <T> void subscribeOn(Observable<T> observable, Subscriber<T> subscriber) {
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 }

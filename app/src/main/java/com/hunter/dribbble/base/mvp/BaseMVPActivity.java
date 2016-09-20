@@ -5,17 +5,17 @@ import android.os.Bundle;
 import com.hunter.dribbble.base.BaseActivity;
 import com.hunter.dribbble.utils.SnackbarUtils;
 
-public abstract class BaseMVPActivity<T extends BasePresenter, E extends BaseModel> extends BaseActivity {
+public abstract class BaseMVPActivity<P extends BasePresenter, M extends BaseModel> extends BaseActivity {
 
-    public T mPresenter;
-    public E mModel;
+    public P mPresenter;
+    public M mModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mPresenter = TUtils.getT(this, 0);
         mModel = TUtils.getT(this, 1);
         if (this instanceof BaseView) mPresenter.setVM(this, mModel);
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -25,12 +25,15 @@ public abstract class BaseMVPActivity<T extends BasePresenter, E extends BaseMod
     }
 
     public void showDialog(String msg) {
+
     }
 
-    public void dismissDialog() {
+    public void onCompleted() {
+
     }
 
-    public void toast(String msg) {
+    public void showToast(String msg) {
         SnackbarUtils.show(getWindow().getDecorView(), msg, this);
     }
+
 }

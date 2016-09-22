@@ -3,7 +3,6 @@ package com.hunter.dribbble.base.mvp;
 import android.os.Bundle;
 
 import com.hunter.dribbble.base.BaseFragment;
-import com.hunter.dribbble.utils.SnackbarUtils;
 
 public abstract class BaseMVPFragment<P extends BasePresenter, M extends BaseModel> extends BaseFragment {
 
@@ -24,14 +23,12 @@ public abstract class BaseMVPFragment<P extends BasePresenter, M extends BaseMod
         if (mPresenter != null) mPresenter.onDestroy();
     }
 
-    public void showDialog(String msg) {
+    public void showDialog(CharSequence msg) {
     }
 
     public void onCompleted() {
 
     }
 
-    public void showToast(String msg) {
-        SnackbarUtils.show(mActivity.getWindow().getDecorView(), msg, mContext);
-    }
+
 }

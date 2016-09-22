@@ -1,10 +1,12 @@
 package com.hunter.dribbble.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +35,8 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hunter.dribbble.utils.ViewModelUtils.VIEW_MODE_TITLE_RES;
+
 public class MainActivity extends BaseActivity implements AccountHeader.OnAccountHeaderListener,
         Toolbar.OnMenuItemClickListener {
 
@@ -43,13 +47,6 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
             R.mipmap.ic_action_small,
             R.mipmap.ic_action_large_info,
             R.mipmap.ic_action_large
-    };
-
-    private static final int VIEW_MODE_TITLE_RES[] = {
-            R.string.menu_view_mode_small_info,
-            R.string.menu_view_mode_small,
-            R.string.menu_view_mode_large_info,
-            R.string.menu_view_mode_large
     };
 
     @BindView(R.id.toolbar_main)
@@ -169,11 +166,12 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
             case R.id.menu_large_info:
             case R.id.menu_large:
                 int viewModeIndex = item.getOrder();
-                App.getInstance().setViewMode(viewModeIndex);
                 invalidateOptionsMenu();
-                showToast("浏览模式切换为：" + getString(VIEW_MODE_TITLE_RES[viewModeIndex]));
-
                 EventBus.getDefault().post(new EventViewMode(viewModeIndex));
+
+                String text = "浏览模式切换为 <strong>「" + getString(VIEW_MODE_TITLE_RES[viewModeIndex]) + "」</strong>";
+                if (Build.VERSION.SDK_INT >= 24) showToast(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
+                else showToast(Html.fromHtml(text));
                 break;
 
             case R.id.menu_search:

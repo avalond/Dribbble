@@ -12,16 +12,12 @@
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/drawee_item_shots_preview"
+        <com.hunter.dribbble.widget.ProportionImageView
+            android:id="@+id/iv_item_shots_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:transitionName="@string/transition"
-            app:actualImageScaleType="centerCrop"
-            app:placeholderImage="@drawable/shape_grey"
-            app:placeholderImageScaleType="centerCrop"
-            app:viewAspectRatio="1.33"
-            tools:targetApi="lollipop"/>
+            app:proportion_height="3"
+            app:proportion_width="4"/>
 
         <ImageView
             android:id="@+id/iv_item_shots_gif"

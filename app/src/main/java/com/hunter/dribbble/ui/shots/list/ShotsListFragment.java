@@ -2,17 +2,13 @@ package com.hunter.dribbble.ui.shots.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.hunter.dribbble.App;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPFragment;
@@ -21,7 +17,7 @@ import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.event.EventViewMode;
 import com.hunter.dribbble.ui.profile.ProfileActivity;
 import com.hunter.dribbble.ui.shots.detail.ShotsDetailActivity;
-import com.hunter.dribbble.utils.LayoutManagerUtils;
+import com.hunter.dribbble.utils.ViewModelUtils;
 import com.hunter.dribbble.widget.spinner.MaterialSpinner;
 
 import org.greenrobot.eventbus.EventBus;
@@ -73,21 +69,23 @@ public class ShotsListFragment extends BaseMVPFragment<ShotsListPresenter, Shots
 
     private void initList() {
         mAdapter = new ShotsListAdapter(new ArrayList<ShotsEntity>());
-        mRvShotsList.setAdapter(mAdapter);
-        mRvShotsList.setLayoutManager(new GridLayoutManager(mContext, 2));
-        mRvShotsList.setItemAnimator(new DefaultItemAnimator());
-        mRvShotsList.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                startActivityWithOptions(mRvShotsList.getChildAt(i).findViewById(R.id.drawee_item_shots_preview),
-                                         mAdapter.getItem(i));
-            }
-        });
         mAdapter.setUserInfoListener(new ShotsListAdapter.OnItemClickUserInfoListener() {
             @Override
             public void onItemClickUserInfo(UserEntity entity) {
                 Intent intent = new Intent(mActivity, ProfileActivity.class);
                 intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, entity);
+                startActivity(intent);
+            }
+        });
+        mRvShotsList.setAdapter(mAdapter);
+
+        ViewModelUtils.changeLayoutManager(mRvShotsList, App.getInstance().getViewMode());
+        mRvShotsList.setItemAnimator(new DefaultItemAnimator());
+        mRvShotsList.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                Intent intent = new Intent(mActivity, ShotsDetailActivity.class);
+                intent.putExtra(AppConstants.EXTRA_SHOTS_ENTITY, mAdapter.getItem(i));
                 startActivity(intent);
             }
         });
@@ -99,7 +97,7 @@ public class ShotsListFragment extends BaseMVPFragment<ShotsListPresenter, Shots
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void changeViewMode(EventViewMode event) {
-        LayoutManagerUtils.changeLayoutManager(mRvShotsList, mContext, event.viewMode);
+        ViewModelUtils.changeLayoutManager(mRvShotsList, event.viewMode);
     }
 
     @Override
@@ -118,14 +116,6 @@ public class ShotsListFragment extends BaseMVPFragment<ShotsListPresenter, Shots
                 break;
         }
         loadData();
-    }
-
-    private void startActivityWithOptions(View view, ShotsEntity data) {
-        Pair pair = new Pair<>(view, ViewCompat.getTransitionName(view));
-        ActivityOptionsCompat aoc = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pair);
-        Intent intent = new Intent(mActivity, ShotsDetailActivity.class);
-        intent.putExtra(AppConstants.EXTRA_SHOTS_ENTITY, data);
-        ActivityCompat.startActivity(getActivity(), intent, aoc.toBundle());
     }
 
     @Override

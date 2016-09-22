@@ -6,7 +6,7 @@ import com.hunter.dribbble.utils.SnackbarUtils;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    public void showToast(String msg) {
+    public void showToast(CharSequence msg) {
         SnackbarUtils.show(getWindow().getDecorView(), msg, this);
     }
 }

@@ -16,20 +16,13 @@
             android:id="@+id/item_shots_header_large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
             android:padding="12dp">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/drawee_item_shots_avatar"
+            <ImageView
+                android:id="@+id/iv_item_shots_avatar"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:placeholderImage="@drawable/shape_corner_grey"
-                app:roundBottomLeft="true"
-                app:roundBottomRight="true"
-                app:roundTopLeft="true"
-                app:roundTopRight="true"
-                app:roundedCornerRadius="8dp"/>
+                android:layout_height="48dp"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -76,16 +69,12 @@
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/drawee_item_shots_preview"
+            <com.hunter.dribbble.widget.ProportionImageView
+                android:id="@+id/iv_item_shots_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:transitionName="@string/transition"
-                app:actualImageScaleType="centerCrop"
-                app:placeholderImage="@drawable/shape_grey"
-                app:placeholderImageScaleType="centerCrop"
-                app:viewAspectRatio="1.33"
-                tools:targetApi="lollipop"/>
+                app:proportion_height="3"
+                app:proportion_width="4"/>
 
             <ImageView
                 android:id="@+id/iv_item_shots_gif"
@@ -101,7 +90,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="8dp">

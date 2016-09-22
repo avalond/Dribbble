@@ -23,7 +23,7 @@ public abstract class BaseMVPActivity<P extends BasePresenter, M extends BaseMod
         if (mPresenter != null) mPresenter.onDestroy();
     }
 
-    public void showDialog(String msg) {
+    public void showDialog(CharSequence msg) {
 
     }
 

@@ -2,9 +2,9 @@ package com.hunter.dribbble.base.mvp;
 
 public interface BaseView {
 
-    void showDialog(String msg);
+    void showDialog(CharSequence msg);
 
     void onCompleted();
 
-    void showToast(String msg);
+    void showToast(CharSequence msg);
 }

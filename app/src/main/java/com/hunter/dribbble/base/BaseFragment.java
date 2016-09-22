@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hunter.dribbble.utils.SnackbarUtils;
+
 import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
@@ -41,6 +43,10 @@ public abstract class BaseFragment extends Fragment {
     protected abstract int getLayoutId();
 
     protected abstract void init(View view, Bundle savedInstanceState);
+
+    public void showToast(CharSequence msg) {
+        SnackbarUtils.show(mActivity.getWindow().getDecorView(), msg, mContext);
+    }
 
 }
 

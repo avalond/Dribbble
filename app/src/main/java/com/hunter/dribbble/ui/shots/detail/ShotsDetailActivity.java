@@ -10,8 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -67,18 +65,7 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         ButterKnife.bind(this);
         StatusBarCompat.translucentStatusBar(this);
         mShotsEntity = (ShotsEntity) getIntent().getSerializableExtra(AppConstants.EXTRA_SHOTS_ENTITY);
-        initEnterAnim();
         init();
-    }
-
-    private void initEnterAnim() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            Slide slide = new Slide(Gravity.BOTTOM);
-            slide.addTarget(R.id.pager_shots_detail);
-            slide.addTarget(R.id.tab_shots_detail);
-            slide.addTarget(R.id.fab_shots_detail_play);
-            getWindow().setEnterTransition(slide);
-        }
     }
 
     private void init() {
@@ -185,16 +172,7 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
 
             case MotionEvent.ACTION_MOVE:
                 if (!mIsVerticalMove) {
-
-                    float differX = Math.abs(x - mPressX);
-                    float differY = Math.abs(y - mPressY);
-                    double differZ = Math.sqrt(differX * differX + differY * differY);
-                    int angle = Math.round((float) (Math.asin(differY / differZ) / Math.PI * 180));
-
-                    mIsVerticalMove = angle > 45;
-                    if (mIsVerticalMove) {
-                        mPagerShots.setEnabled(false);
-                    }
+                    if (Math.abs(x - mPressX) < Math.abs(y - mPressY)) mPagerShots.setEnabled(false);
                 }
                 break;
 

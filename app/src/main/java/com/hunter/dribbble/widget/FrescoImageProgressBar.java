@@ -8,6 +8,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 
 import com.hunter.lib.util.DensityUtils;
 
@@ -60,7 +61,7 @@ public class FrescoImageProgressBar extends Drawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         Rect bound = getBounds();
         int centerX = bound.centerX();
         int centerY = bound.centerY();

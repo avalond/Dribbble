@@ -19,6 +19,6 @@ public class LoginModel implements LoginContract.Model {
         params.put(ApiConstants.ParamKey.REDIRECT_URI, ApiConstants.ParamValue.REDIRECT_URI);
         params.put(ApiConstants.ParamKey.CODE, code);
 
-        return ApiClient.createForOAtuh().getToken(params);
+        return ApiClient.getForOAtuh().getToken(params);
     }
 }

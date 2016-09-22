@@ -17,10 +17,10 @@ import rx.Observable;
 public interface ApiStores {
 
     @POST(ApiConstants.Path.TOKEN)
-    Observable<TokenEntity> getToken(@QueryMap Map<String, String> map);
+    Observable<TokenEntity> getToken(@QueryMap Map<String, String> params);
 
     @GET(ApiConstants.Path.SHOTS)
-    Observable<List<ShotsEntity>> getShotsList(@QueryMap Map<String, String> map);
+    Observable<List<ShotsEntity>> getShots(@QueryMap Map<String, String> params);
 
     @GET(ApiConstants.Path.COMMENTS)
     Observable<List<CommentEntity>> getComments(@Path("id") String id);

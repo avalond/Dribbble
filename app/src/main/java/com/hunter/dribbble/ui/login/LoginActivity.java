@@ -61,7 +61,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
         String token = entity.getAccessToken();
         SPUtils.put(this, AppConstants.SP_KEE_ACCESS_TOKEN, token);
         App.getInstance().setToken(token);
-        ApiClient.cleanApiClient();
+        ApiClient.resetApiClient();
 
         mProgressLogin.setVisibility(View.GONE);
         mProgressLogin.setIndeterminate(false);

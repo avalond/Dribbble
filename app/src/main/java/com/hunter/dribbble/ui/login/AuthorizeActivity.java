@@ -8,7 +8,7 @@ import android.webkit.WebViewClient;
 
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.api.ApiConstants;
-import com.hunter.dribbble.ui.base.BaseWebActivity;
+import com.hunter.dribbble.base.BaseWebActivity;
 import com.hunter.lib.util.LogUtils;
 
 public class AuthorizeActivity extends BaseWebActivity {

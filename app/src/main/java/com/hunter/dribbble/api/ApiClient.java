@@ -25,7 +25,7 @@ public class ApiClient {
     private static Retrofit sOAuthRetrofit;
     private static Retrofit sRestRetrofit;
 
-    public synchronized static ApiStores createForRest() {
+    public synchronized static ApiStores getForRest() {
         if (sRestRetrofit == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
@@ -58,11 +58,11 @@ public class ApiClient {
         return sRestRetrofit.create(ApiStores.class);
     }
 
-    public synchronized static void cleanApiClient() {
+    public synchronized static void resetApiClient() {
         if (sRestRetrofit != null) sRestRetrofit = null;
     }
 
-    public synchronized static ApiStores createForOAtuh() {
+    public synchronized static ApiStores getForOAtuh() {
         if (sOAuthRetrofit == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
 

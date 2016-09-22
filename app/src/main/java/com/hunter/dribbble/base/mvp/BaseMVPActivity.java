@@ -3,7 +3,6 @@ package com.hunter.dribbble.base.mvp;
 import android.os.Bundle;
 
 import com.hunter.dribbble.base.BaseActivity;
-import com.hunter.dribbble.utils.SnackbarUtils;
 
 public abstract class BaseMVPActivity<P extends BasePresenter, M extends BaseModel> extends BaseActivity {
 
@@ -31,9 +30,4 @@ public abstract class BaseMVPActivity<P extends BasePresenter, M extends BaseMod
     public void onCompleted() {
 
     }
-
-    public void showToast(String msg) {
-        SnackbarUtils.show(getWindow().getDecorView(), msg, this);
-    }
-
 }

@@ -1,11 +1,13 @@
 package com.hunter.dribbble.entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.google.gson.annotations.SerializedName;
+import com.hunter.dribbble.App;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class ShotsEntity implements Serializable {
+public class ShotsEntity implements Serializable, MultiItemEntity {
 
     @SerializedName("id")
     private int          mId;
@@ -258,4 +260,8 @@ public class ShotsEntity implements Serializable {
         mTags = tags;
     }
 
+    @Override
+    public int getItemType() {
+        return App.getInstance().getViewMode();
+    }
 }

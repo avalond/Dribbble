@@ -5,10 +5,10 @@ import android.os.Bundle;
 import com.hunter.dribbble.base.BaseFragment;
 import com.hunter.dribbble.utils.SnackbarUtils;
 
-public abstract class BaseMVPFragment<T extends BasePresenter, E extends BaseModel> extends BaseFragment {
+public abstract class BaseMVPFragment<P extends BasePresenter, M extends BaseModel> extends BaseFragment {
 
-    public T mPresenter;
-    public E mModel;
+    public P mPresenter;
+    public M mModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,10 +27,11 @@ public abstract class BaseMVPFragment<T extends BasePresenter, E extends BaseMod
     public void showDialog(String msg) {
     }
 
-    public void dismissDialog() {
+    public void onCompleted() {
+
     }
 
-    public void toast(String msg) {
+    public void showToast(String msg) {
         SnackbarUtils.show(mActivity.getWindow().getDecorView(), msg, mContext);
     }
 }

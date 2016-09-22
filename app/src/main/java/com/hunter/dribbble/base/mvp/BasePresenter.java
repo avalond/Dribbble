@@ -35,7 +35,7 @@ public abstract class BasePresenter<M, V> {
         }
     }
 
-    protected static <T> void subscribeOn(Observable<T> observable, Subscriber<T> subscriber) {
+    protected <T> void subscribeOn(Observable<T> observable, Subscriber<T> subscriber) {
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 }

@@ -9,7 +9,6 @@ import android.webkit.WebViewClient;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.api.ApiConstants;
 import com.hunter.dribbble.base.BaseWebActivity;
-import com.hunter.lib.util.LogUtils;
 
 public class AuthorizeActivity extends BaseWebActivity {
 
@@ -25,14 +24,13 @@ public class AuthorizeActivity extends BaseWebActivity {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                LogUtils.d(url);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("code")) {
                     String code = url.replace(ApiConstants.Url.REDIRECT_URL + "?code=", "")
-                                     .replace("&state=hunter", "");
+                            .replace("&state=hunter", "");
                     Intent intent = new Intent();
                     intent.putExtra(AppConstants.EXTRA_AUTHORIZE_CODE, code);
                     setResult(RESULT_OK, intent);

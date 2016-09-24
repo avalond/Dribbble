@@ -1,7 +1,6 @@
 package com.hunter.lib.base;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
@@ -30,16 +29,6 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public void setTvText(int viewId, String text) {
         TextView textView = getView(viewId);
         textView.setText(text);
-    }
-
-    public void setTvTextByHtml(int viewId, String text) {
-        TextView textView = getView(viewId);
-        textView.setText(Html.fromHtml(text));
-    }
-
-    public void setVisibility(int viewId, int visibility) {
-        View view = getView(viewId);
-        view.setVisibility(visibility);
     }
 
 }

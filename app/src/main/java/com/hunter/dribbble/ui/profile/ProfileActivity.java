@@ -13,13 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.ui.profile.detail.ProfileDetailFragment;
 import com.hunter.dribbble.ui.profile.followers.ProfileFollowersFragment;
 import com.hunter.dribbble.ui.profile.shots.ProfileShotsFragment;
 import com.hunter.dribbble.utils.StatusBarCompat;
+import com.hunter.dribbble.utils.glide.GlideUtils;
+import com.hunter.dribbble.widget.ProportionImageView;
 import com.hunter.lib.base.BasePagerAdapter;
 
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
 
     private static final String[] TAB_TITLES = {"简介", "作品", "粉丝"};
 
-    @BindView(R.id.drawee_profile_avatar)
-    SimpleDraweeView        mDraweeProfileAvatar;
+    @BindView(R.id.iv_profile_avatar)
+    ImageView               mIvProfileAvatar;
     @BindView(R.id.toolbar_profile)
     Toolbar                 mToolbarProfile;
     @BindView(R.id.collapsing_profile)
@@ -48,8 +49,8 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
     AppBarLayout            mAppBarProfile;
     @BindView(R.id.pager_profile)
     ViewPager               mPagerProfile;
-    @BindView(R.id.drawee_profile_avatar_blurry)
-    ImageView               mDraweeAvatarBlurry;
+    @BindView(R.id.piv_profile_avatar_blurry)
+    ProportionImageView     mPivAvatarBlurry;
 
     private UserEntity mUserEntity;
 
@@ -79,14 +80,14 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
     }
 
     private void initUserInfo() {
-        mDraweeProfileAvatar.setImageURI(mUserEntity.getAvatarUrl());
+        GlideUtils.setAvatar(this, mUserEntity.getAvatarUrl(), mIvProfileAvatar);
         Blurry.with(ProfileActivity.this)
-              .radius(25)
-              .sampling(4)
-              .async()
-              .animate()
-              .capture(mDraweeProfileAvatar)
-              .into(mDraweeAvatarBlurry);
+                .radius(25)
+                .sampling(4)
+                .async()
+                .animate()
+                .capture(mIvProfileAvatar)
+                .into(mPivAvatarBlurry);
     }
 
     private void initPager() {

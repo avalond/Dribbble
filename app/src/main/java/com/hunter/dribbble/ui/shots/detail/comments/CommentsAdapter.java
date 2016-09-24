@@ -1,12 +1,14 @@
 package com.hunter.dribbble.ui.shots.detail.comments;
 
 import android.content.Context;
+import android.widget.ImageView;
 
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.entity.CommentEntity;
 import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.utils.HtmlFormatUtils;
 import com.hunter.dribbble.utils.TimeUtils;
+import com.hunter.dribbble.utils.glide.GlideUtils;
 import com.hunter.lib.base.BaseAdapter;
 import com.hunter.lib.base.BaseViewHolder;
 
@@ -23,7 +25,8 @@ public class CommentsAdapter extends BaseAdapter<CommentEntity> {
         CommentEntity entity = mData.get(position);
         UserEntity userEntity = entity.getUser();
 
-        holder.setDraweeImg(R.id.drawee_item_comments_avatar, userEntity.getAvatarUrl());
+        ImageView ivAvatar = holder.getView(R.id.iv_item_comments_avatar);
+        GlideUtils.setAvatar(mContext, userEntity.getAvatarUrl(), ivAvatar);
         holder.setTvText(R.id.tv_item_comments_user_name, userEntity.getUsername());
 
         holder.setTvText(R.id.tv_item_comments_like, entity.getLikesCount() + "");

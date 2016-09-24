@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:foreground="?android:attr/selectableItemBackground"
     android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
     android:padding="12dp">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/drawee_item_comments_avatar"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        app:placeholderImage="@drawable/shape_corner_grey"
-        app:roundBottomLeft="true"
-        app:roundBottomRight="true"
-        app:roundTopLeft="true"
-        app:roundTopRight="true"
-        app:roundedCornerRadius="8dp"/>
+    <ImageView
+        android:id="@+id/iv_item_comments_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        tools:background="@drawable/shape_corner_grey"/>
 
     <LinearLayout
         android:id="@+id/ll_item_comments_user"
@@ -25,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:layout_toRightOf="@id/drawee_item_comments_avatar"
+        android:layout_toRightOf="@id/iv_item_comments_avatar"
         android:orientation="vertical">
 
         <TextView

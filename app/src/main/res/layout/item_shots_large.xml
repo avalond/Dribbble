@@ -2,7 +2,6 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
@@ -13,11 +12,10 @@
         android:foreground="?android:attr/selectableItemBackground">
 
         <com.hunter.dribbble.widget.ProportionImageView
-            android:id="@+id/iv_item_shots_preview"
+            android:id="@+id/piv_item_shots_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:proportion_height="3"
-            app:proportion_width="4"/>
+            app:proportion_w_h="1.33"/>
 
         <ImageView
             android:id="@+id/iv_item_shots_gif"

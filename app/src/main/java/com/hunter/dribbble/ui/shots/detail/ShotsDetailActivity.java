@@ -1,23 +1,17 @@
 package com.hunter.dribbble.ui.shots.detail;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseActivity;
@@ -26,7 +20,8 @@ import com.hunter.dribbble.ui.shots.detail.comments.ShotsCommentsFragment;
 import com.hunter.dribbble.ui.shots.detail.des.ShotsDesFragment;
 import com.hunter.dribbble.utils.ImageUrlUtils;
 import com.hunter.dribbble.utils.StatusBarCompat;
-import com.hunter.dribbble.widget.FrescoImageProgressBar;
+import com.hunter.dribbble.utils.glide.GlideUtils;
+import com.hunter.dribbble.widget.ProportionImageView;
 import com.hunter.lib.base.BasePagerAdapter;
 
 import java.util.ArrayList;
@@ -35,14 +30,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
     private static final String[] TAB_TITLES = {"简介", "评论"};
 
-    @BindView(R.id.drawee_shots_detail_image)
-    SimpleDraweeView     mDraweeShotsImage;
+    @BindView(R.id.piv_shots_detail_image)
+    ProportionImageView  mPivShotsImage;
     @BindView(R.id.tab_shots_detail)
     TabLayout            mTabShots;
     @BindView(R.id.pager_shots_detail)
@@ -63,12 +57,16 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shots_detail);
         ButterKnife.bind(this);
-        StatusBarCompat.translucentStatusBar(this);
+
         mShotsEntity = (ShotsEntity) getIntent().getSerializableExtra(AppConstants.EXTRA_SHOTS_ENTITY);
-        init();
+
+        initToolbar();
+        initPager();
+        showImage();
     }
 
-    private void init() {
+    private void initToolbar() {
+        StatusBarCompat.translucentStatusBar(this);
         setSupportActionBar(mToolbarShots);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbarShots.setOnMenuItemClickListener(this);
@@ -78,16 +76,16 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
                 onBackPressed();
             }
         });
+    }
 
+    private void showImage() {
         if (mShotsEntity.isAnimated()) {
-            mDraweeShotsImage.setImageURI(mShotsEntity.getImages().getNormal());
+            GlideUtils.setGif(this, mShotsEntity.getImages().getHidpi(), mPivShotsImage);
             mFabShotsDetailPlay.setVisibility(View.VISIBLE);
         } else {
-            mDraweeShotsImage.setImageURI(ImageUrlUtils.getImageUrl(mShotsEntity.getImages()));
+            GlideUtils.setImageWithThumb(this, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()), mPivShotsImage);
             mFabShotsDetailPlay.setVisibility(View.GONE);
         }
-
-        initPager();
     }
 
     private void initPager() {
@@ -102,29 +100,6 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
             mTabShots.addTab(mTabShots.newTab().setText(tabTitle));
         }
         mTabShots.setupWithViewPager(mPagerShots);
-    }
-
-    @OnClick(R.id.fab_shots_detail_play)
-    void playGif(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("正在使用数据流量访问图片，是否继续？")
-               .setNegativeButton("取消", null)
-               .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       mDraweeShotsImage.getHierarchy()
-                                        .setProgressBarImage(new FrescoImageProgressBar(ShotsDetailActivity.this));
-                       Uri uri = Uri.parse(ImageUrlUtils.getImageUrl(mShotsEntity.getImages()));
-                       DraweeController controller = Fresco.newDraweeControllerBuilder()
-                                                           .setUri(uri)
-                                                           .setAutoPlayAnimations(true)
-                                                           .build();
-                       mDraweeShotsImage.setController(controller);
-                       mFabShotsDetailPlay.hide();
-                   }
-               })
-               .setTitle("提示")
-               .show();
     }
 
     @Override

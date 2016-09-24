@@ -13,11 +13,10 @@
         android:layout_height="wrap_content">
 
         <com.hunter.dribbble.widget.ProportionImageView
-            android:id="@+id/iv_item_shots_preview"
+            android:id="@+id/piv_item_shots_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:proportion_height="3"
-            app:proportion_width="4"/>
+            app:proportion_w_h="1.33"/>
 
         <ImageView
             android:id="@+id/iv_item_shots_gif"
@@ -31,7 +30,7 @@
             android:id="@+id/tv_item_shots_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_item_shots_preview"
+            android:layout_below="@id/piv_item_shots_preview"
             android:drawableLeft="@drawable/iv_like_grey_16dp"
             android:drawablePadding="2dp"
             android:gravity="center"
@@ -45,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/iv_item_shots_preview"
+            android:layout_below="@id/piv_item_shots_preview"
             android:layout_centerVertical="true"
             android:drawableLeft="@drawable/iv_comment_grey_16dp"
             android:drawablePadding="2dp"

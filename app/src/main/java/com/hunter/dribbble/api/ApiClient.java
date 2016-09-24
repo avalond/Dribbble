@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final boolean IS_DEBUG = true;
+    private static final boolean IS_DEBUG = false;
 
     private static final int TIME_OUT_SECONDS = 15;
 
@@ -49,10 +49,10 @@ public class ApiClient {
             builder.retryOnConnectionFailure(true).connectTimeout(TIME_OUT_SECONDS, TimeUnit.SECONDS);
 
             sRestRetrofit = new Retrofit.Builder().baseUrl(ApiConstants.Url.BASE_URL)
-                                                  .client(builder.build())
-                                                  .addConverterFactory(GsonConverterFactory.create())
-                                                  .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                                                  .build();
+                    .client(builder.build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
         }
 
         return sRestRetrofit.create(ApiStores.class);
@@ -75,10 +75,10 @@ public class ApiClient {
             builder.retryOnConnectionFailure(true).connectTimeout(TIME_OUT_SECONDS, TimeUnit.SECONDS);
 
             sOAuthRetrofit = new Retrofit.Builder().baseUrl(ApiConstants.Url.OAUTH_URL)
-                                                   .client(builder.build())
-                                                   .addConverterFactory(GsonConverterFactory.create())
-                                                   .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                                                   .build();
+                    .client(builder.build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
         }
 
         return sOAuthRetrofit.create(ApiStores.class);

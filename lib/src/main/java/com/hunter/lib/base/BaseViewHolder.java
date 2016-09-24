@@ -1,15 +1,10 @@
 package com.hunter.lib.base;
 
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
-
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class BaseViewHolder extends RecyclerView.ViewHolder {
 
@@ -40,20 +35,6 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public void setTvTextByHtml(int viewId, String text) {
         TextView textView = getView(viewId);
         textView.setText(Html.fromHtml(text));
-    }
-
-    public void setDraweeImg(int viewId, String url) {
-        SimpleDraweeView draweeView = getView(viewId);
-        draweeView.setImageURI(Uri.parse(url));
-    }
-
-    public void setDraweeGif(int viewId, String url) {
-        SimpleDraweeView draweeView = getView(viewId);
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                                            .setUri(url)
-                                            .setAutoPlayAnimations(true)
-                                            .build();
-        draweeView.setController(controller);
     }
 
     public void setVisibility(int viewId, int visibility) {

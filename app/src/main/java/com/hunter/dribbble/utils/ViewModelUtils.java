@@ -1,8 +1,8 @@
 package com.hunter.dribbble.utils;
 
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.hunter.dribbble.App;
 import com.hunter.dribbble.AppConstants;
@@ -22,9 +22,8 @@ public class ViewModelUtils {
         switch (viewMode) {
             case AppConstants.VIEW_MODE_SMALL_WITH_INFO:
             case AppConstants.VIEW_MODE_SMALL:
-                rv.setLayoutManager(new GridLayoutManager(rv.getContext(), 2));
+                rv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                 break;
-
             case AppConstants.VIEW_MODE_LARGE_WITH_INFO:
             case AppConstants.VIEW_MODE_LARGE:
                 rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));

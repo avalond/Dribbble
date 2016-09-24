@@ -2,8 +2,6 @@ package com.hunter.dribbble;
 
 import android.app.Application;
 
-import com.hunter.dribbble.widget.loading.LoadPagerManager;
-import com.hunter.lib.util.FrescoUtils;
 import com.hunter.lib.util.SPUtils;
 
 public class App extends Application {
@@ -19,21 +17,11 @@ public class App extends Application {
         super.onCreate();
         sApp = this;
 
-        initDate();
-
-        FrescoUtils.getInstance().init(this);
-
-        LoadPagerManager.RETRY_LAYOUT_ID = R.layout.load_pager_retry;
-        LoadPagerManager.LOADING_LAYOUT_ID = R.layout.load_pager_loading;
-        LoadPagerManager.EMPTY_LAYOUT_ID = R.layout.load_pager_empty;
+        mLayoutType = (int) SPUtils.get(this, AppConstants.SP_VIEW_MODE, AppConstants.VIEW_MODE_SMALL_WITH_INFO);
     }
 
     public static App getInstance() {
         return sApp;
-    }
-
-    private void initDate() {
-        mLayoutType = (int) SPUtils.get(this, AppConstants.SP_VIEW_MODE, AppConstants.VIEW_MODE_SMALL_WITH_INFO);
     }
 
     public int getViewMode() {

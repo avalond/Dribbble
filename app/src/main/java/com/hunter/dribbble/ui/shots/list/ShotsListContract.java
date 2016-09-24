@@ -13,7 +13,7 @@ public interface ShotsListContract {
 
     interface Model extends BaseModel {
 
-        Observable<List<ShotsEntity>> getShots(int type, int sort, int timeFrame);
+        Observable<List<ShotsEntity>> getShots(int type, int sort, int timeFrame, int page);
     }
 
     interface View extends BaseView {
@@ -23,7 +23,7 @@ public interface ShotsListContract {
 
     abstract class Presenter extends BasePresenter<Model, View> {
 
-        abstract void getShots(int type, int sort, int timeFrame);
+        abstract void getShots(int type, int sort, int timeFrame, int page);
     }
 
 }

@@ -17,8 +17,8 @@ public class SnackbarUtils {
             mSnackbar = Snackbar.make(container, text, Snackbar.LENGTH_LONG);
             View content = mSnackbar.getView();
             content.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
-            ((TextView) content.findViewById(R.id.snackbar_text)).setTextColor(ContextCompat.getColor(context,
-                                                                                                      R.color.text_white));
+            TextView textView = (TextView) content.findViewById(R.id.snackbar_text);
+            textView.setTextColor(ContextCompat.getColor(context, R.color.text_white));
         } else {
             mSnackbar.setText(text);
             mSnackbar.setDuration(Snackbar.LENGTH_SHORT);

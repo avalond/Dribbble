@@ -13,11 +13,10 @@
         android:layout_height="wrap_content">
 
         <com.hunter.dribbble.widget.ProportionImageView
-            android:id="@+id/iv_item_shots_preview"
+            android:id="@+id/piv_item_shots_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:proportion_height="3"
-            app:proportion_width="4"/>
+            app:proportion_w_h="1.33"/>
 
         <ImageView
             android:id="@+id/iv_item_shots_gif"

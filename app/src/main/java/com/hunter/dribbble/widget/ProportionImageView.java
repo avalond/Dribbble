@@ -9,8 +9,7 @@ import com.hunter.dribbble.R;
 
 public class ProportionImageView extends ImageView {
 
-    private int mProportionHeight;
-    private int mProportionWidth;
+    private float mProportionWH;
 
     public ProportionImageView(Context context) {
         super(context);
@@ -23,17 +22,15 @@ public class ProportionImageView extends ImageView {
     public ProportionImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ProportionImageView, defStyle, 0);
-        mProportionHeight = a.getInt(R.styleable.ProportionImageView_proportion_width, 0);
-        mProportionWidth = a.getInt(R.styleable.ProportionImageView_proportion_height, 0);
+        mProportionWH = a.getFloat(R.styleable.ProportionImageView_proportion_w_h, 0);
         a.recycle();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (mProportionHeight != 0 && mProportionWidth != 0) {
+        if (mProportionWH != 0) {
             setMeasuredDimension(getDefaultSize(0, widthMeasureSpec), getDefaultSize(0, heightMeasureSpec));
-            int childWidthSize = getMeasuredWidth();
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(childWidthSize * mProportionWidth / mProportionHeight,
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (getMeasuredWidth() / mProportionWH),
                                                             MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

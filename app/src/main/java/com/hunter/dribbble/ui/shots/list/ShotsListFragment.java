@@ -2,22 +2,23 @@ package com.hunter.dribbble.ui.shots.list;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.hunter.dribbble.App;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
-import com.hunter.dribbble.base.mvp.BaseMVPFragment;
+import com.hunter.dribbble.base.mvp.BaseMVPListFragment;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.event.EventViewMode;
 import com.hunter.dribbble.ui.profile.ProfileActivity;
 import com.hunter.dribbble.ui.shots.detail.ShotsDetailActivity;
 import com.hunter.dribbble.utils.ViewModelUtils;
+import com.hunter.dribbble.utils.listener.SimpleAdapterClickListener;
 import com.hunter.dribbble.widget.spinner.MaterialSpinner;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,11 +30,13 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class ShotsListFragment extends BaseMVPFragment<ShotsListPresenter, ShotsListModel> implements
+public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, ShotsListModel> implements
         MaterialSpinner.OnItemSelectedListener, ShotsListContract.View {
 
     @BindView(R.id.rv_shots_list)
-    RecyclerView mRvShotsList;
+    RecyclerView       mRvShotsList;
+    @BindView(R.id.refresh_shots_list)
+    SwipeRefreshLayout mRefresh;
 
     private ShotsListAdapter mAdapter;
 
@@ -58,7 +61,7 @@ public class ShotsListFragment extends BaseMVPFragment<ShotsListPresenter, Shots
         EventBus.getDefault().register(this);
 
         initList();
-        loadData();
+        refreshAndLoadMore(mRefresh, mRvShotsList, mAdapter);
     }
 
     @Override
@@ -72,27 +75,38 @@ public class ShotsListFragment extends BaseMVPFragment<ShotsListPresenter, Shots
         mAdapter.setUserInfoListener(new ShotsListAdapter.OnItemClickUserInfoListener() {
             @Override
             public void onItemClickUserInfo(UserEntity entity) {
-                Intent intent = new Intent(mActivity, ProfileActivity.class);
-                intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, entity);
-                startActivity(intent);
+
             }
         });
         mRvShotsList.setAdapter(mAdapter);
 
         ViewModelUtils.changeLayoutManager(mRvShotsList, App.getInstance().getViewMode());
         mRvShotsList.setItemAnimator(new DefaultItemAnimator());
-        mRvShotsList.addOnItemTouchListener(new OnItemClickListener() {
+        mRvShotsList.addOnItemTouchListener(new SimpleAdapterClickListener() {
             @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                /* 点击进入 shots 详情 */
                 Intent intent = new Intent(mActivity, ShotsDetailActivity.class);
                 intent.putExtra(AppConstants.EXTRA_SHOTS_ENTITY, mAdapter.getItem(i));
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                /* 点击进入用户详情 */
+                Intent intent = new Intent(mActivity, ProfileActivity.class);
+                intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, mAdapter.getItem(i).getUser());
                 startActivity(intent);
             }
         });
     }
 
-    private void loadData() {
-        mPresenter.getShots(mType, mSort, mTime);
+    @Override
+    protected void requestData(boolean isRefresh) {
+        super.requestData(isRefresh);
+        if (isRefresh) mPage = 1;
+        else mPage++;
+        mPresenter.getShots(mType, mSort, mTime, mPage);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -115,12 +129,13 @@ public class ShotsListFragment extends BaseMVPFragment<ShotsListPresenter, Shots
                 mTime = position;
                 break;
         }
-        loadData();
+
+        requestData(true);
     }
 
     @Override
     public void getShotsOnSuccess(List<ShotsEntity> data) {
-        mAdapter.setNewData(data);
+        setData(data, mAdapter);
     }
 
 }

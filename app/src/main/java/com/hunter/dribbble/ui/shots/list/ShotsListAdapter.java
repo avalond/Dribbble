@@ -1,6 +1,5 @@
 package com.hunter.dribbble.ui.shots.list;
 
-import android.view.View;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -40,14 +39,7 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
 
         switch (holder.getItemViewType()) {
             case AppConstants.VIEW_MODE_LARGE_WITH_INFO:
-                holder.getView(R.id.item_shots_header_large).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mUserInfoListener != null) {
-                            mUserInfoListener.onItemClickUserInfo(userEntity);
-                        }
-                    }
-                });
+                holder.addOnClickListener(R.id.item_shots_header_large);
                 holder.setText(R.id.tv_item_shots_title, shotsEntity.getTitle());
                 ImageView ivAvatar = holder.getView(R.id.iv_item_shots_avatar);
                 GlideUtils.setAvatar(mContext, userEntity.getAvatarUrl(), ivAvatar);
@@ -63,18 +55,22 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
                 break;
         }
 
-        ImageView ivPreview = holder.getView(R.id.iv_item_shots_preview);
+        ImageView ivPreview = holder.getView(R.id.piv_item_shots_preview);
         if (shotsEntity.isAnimated()) {
             holder.setVisible(R.id.iv_item_shots_gif, true);
-            GlideUtils.setPreviewGif(mContext,shotsEntity.getImages().getHidpi(), ivPreview);
+            GlideUtils.setGif(mContext, shotsEntity.getImages().getHidpi(), ivPreview);
         } else {
             holder.setVisible(R.id.iv_item_shots_gif, false);
-            GlideUtils.setPreviewImageWithThumb(mContext, shotsEntity.getImages().getNormal(), ivPreview);
+            GlideUtils.setImageWithThumb(mContext, shotsEntity.getImages().getNormal(), ivPreview);
         }
     }
 
     public void setUserInfoListener(OnItemClickUserInfoListener userInfoListener) {
         mUserInfoListener = userInfoListener;
+    }
+
+    public void setData(List<ShotsEntity> data) {
+        mData = data;
     }
 
 }

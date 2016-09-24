@@ -3,11 +3,13 @@ package com.hunter.dribbble.ui.profile.followers;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.entity.FollowerEntity;
 import com.hunter.dribbble.entity.UserEntity;
+import com.hunter.dribbble.utils.glide.GlideUtils;
 import com.hunter.lib.base.BaseAdapter;
 import com.hunter.lib.base.BaseViewHolder;
 
@@ -23,7 +25,8 @@ public class FollowersAdapter extends BaseAdapter<FollowerEntity> {
     protected void onBindItemData(BaseViewHolder holder, int position) {
         UserEntity entity = mData.get(position).getFollower();
 
-        holder.setDraweeImg(R.id.drawee_item_follower_avatar, entity.getAvatarUrl());
+        ImageView ivAvatar = holder.getView(R.id.iv_item_follower_avatar);
+        GlideUtils.setAvatar(mContext, entity.getAvatarUrl(), ivAvatar);
         holder.setTvText(R.id.tv_item_follower_user_name, entity.getUsername());
         holder.setTvText(R.id.tv_item_follower_shots, entity.getShotsCount() + " 作品");
 

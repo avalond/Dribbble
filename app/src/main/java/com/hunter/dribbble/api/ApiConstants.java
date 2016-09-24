@@ -45,6 +45,10 @@ public interface ApiConstants {
         String DATE = "date";
 
         String SORT = "sort";
+
+        String PAGE = "page";
+
+        String PER_PAGE = "per_page";
     }
 
     interface ParamValue {
@@ -57,9 +61,11 @@ public interface ApiConstants {
 
         String REDIRECT_URI = "http://lhunter.org/";
 
-        String SCOPE = "public write comment upload";
+        String SCOPE = "public write omment upload";
 
         String STATE = "hunter";
+
+        int PAGE_SIZE = 20;
 
         /**
          * 类型，默认返回所有类型

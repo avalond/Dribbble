@@ -1,15 +1,14 @@
 package com.hunter.dribbble.ui.shots.detail.des;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseFragment;
@@ -17,6 +16,7 @@ import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.ui.profile.ProfileActivity;
 import com.hunter.dribbble.utils.HtmlFormatUtils;
 import com.hunter.dribbble.utils.TimeUtils;
+import com.hunter.dribbble.utils.glide.GlideUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -32,11 +32,11 @@ public class ShotsDesFragment extends BaseFragment {
      * 用户相关
      */
     @BindView(R.id.tv_shots_detail_user_name)
-    TextView         mTvShotsUserName;
-    @BindView(R.id.drawee_shots_detail_avatar)
-    SimpleDraweeView mDraweeShotsAvatar;
+    TextView  mTvShotsUserName;
+    @BindView(R.id.iv_shots_detail_avatar)
+    ImageView mIvShotsAvatar;
     @BindView(R.id.tv_shots_detail_post_time)
-    TextView         mTvShotsPostTime;
+    TextView  mTvShotsPostTime;
 
     /**
      * 赞 浏览 收藏 评论
@@ -78,7 +78,7 @@ public class ShotsDesFragment extends BaseFragment {
             mTvShotsDes.setVisibility(View.GONE);
         }
 
-        mDraweeShotsAvatar.setImageURI(Uri.parse(mShotsEntity.getUser().getAvatarUrl()));
+        GlideUtils.setAvatar(mContext, mShotsEntity.getUser().getAvatarUrl(), mIvShotsAvatar);
         mTvShotsUserName.setText(mShotsEntity.getUser().getUsername());
         mTvShotsPostTime.setText(TimeUtils.getTimeFromISO8601(mShotsEntity.getUpdatedAt()) + " 投递");
 
@@ -88,7 +88,7 @@ public class ShotsDesFragment extends BaseFragment {
         mTvShotsBucket.setText(HtmlFormatUtils.setupBold(mShotsEntity.getBucketsCount(), "收藏"));
     }
 
-    @OnClick(R.id.drawee_shots_detail_avatar)
+    @OnClick(R.id.iv_shots_detail_avatar)
     void toProfile() {
         Intent intent = new Intent(mActivity, ProfileActivity.class);
         intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, mShotsEntity.getUser());

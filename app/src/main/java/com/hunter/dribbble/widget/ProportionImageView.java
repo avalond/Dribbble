@@ -30,7 +30,7 @@ public class ProportionImageView extends ImageView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mProportionWH != 0) {
             setMeasuredDimension(getDefaultSize(0, widthMeasureSpec), getDefaultSize(0, heightMeasureSpec));
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (getMeasuredWidth() / mProportionWH),
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (getMeasuredWidth() / mProportionWH) - 2,
                                                             MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

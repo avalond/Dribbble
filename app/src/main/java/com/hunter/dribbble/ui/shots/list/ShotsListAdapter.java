@@ -15,13 +15,6 @@ import java.util.List;
 
 public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
 
-    private OnItemClickUserInfoListener mUserInfoListener;
-
-    public interface OnItemClickUserInfoListener {
-
-        void onItemClickUserInfo(UserEntity entity);
-    }
-
     public ShotsListAdapter(List<ShotsEntity> data) {
         super(data);
 
@@ -63,14 +56,6 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
             holder.setVisible(R.id.iv_item_shots_gif, false);
             GlideUtils.setImageWithThumb(mContext, shotsEntity.getImages().getNormal(), ivPreview);
         }
-    }
-
-    public void setUserInfoListener(OnItemClickUserInfoListener userInfoListener) {
-        mUserInfoListener = userInfoListener;
-    }
-
-    public void setData(List<ShotsEntity> data) {
-        mData = data;
     }
 
 }

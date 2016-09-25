@@ -13,7 +13,7 @@ public interface ShotsCommentsContract {
 
     interface Model extends BaseModel {
 
-        Observable<List<CommentEntity>> getComments(String id);
+        Observable<List<CommentEntity>> getComments(int id, int page);
     }
 
     interface View extends BaseView {
@@ -21,8 +21,8 @@ public interface ShotsCommentsContract {
         void getCommentsOnSuccess(List<CommentEntity> data);
     }
 
-    abstract class Presenter extends BasePresenter<Model,View> {
+    abstract class Presenter extends BasePresenter<Model, View> {
 
-        abstract void getComments(String id);
+        abstract void getComments(int id, int page);
     }
 }

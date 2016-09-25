@@ -47,7 +47,7 @@ public class ProfileFollowersFragment extends BaseMVPFragment<FollowersPresenter
         mAdapter = new FollowersAdapter(mActivity, new ArrayList<FollowerEntity>());
         mRvFollowers.setAdapter(mAdapter);
         mRvFollowers.setLayoutManager(new LinearLayoutManager(mActivity));
-        mRvFollowers.addItemDecoration(new DividerItemDecoration(DividerItemDecoration.LIST_VERTICAL));
+        mRvFollowers.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
     }
 
     @Override

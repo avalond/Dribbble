@@ -17,6 +17,7 @@ import com.hunter.dribbble.ui.profile.ProfileActivity;
 import com.hunter.dribbble.utils.HtmlFormatUtils;
 import com.hunter.dribbble.utils.TimeUtils;
 import com.hunter.dribbble.utils.glide.GlideUtils;
+import com.hunter.dribbble.widget.tagflow.TagFlowLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,6 +50,9 @@ public class ShotsDesFragment extends BaseFragment {
     TextView mTvShotsBucket;
     @BindView(R.id.tv_shots_detail_comment)
     TextView mTvShotsComment;
+
+    @BindView(R.id.tag_shots_detail_des)
+    TagFlowLayout mTagFlowLayout;
 
     private ShotsEntity mShotsEntity;
 
@@ -86,6 +90,14 @@ public class ShotsDesFragment extends BaseFragment {
         mTvShotsView.setText(HtmlFormatUtils.setupBold(mShotsEntity.getViewsCount(), "浏览"));
         mTvShotsComment.setText(HtmlFormatUtils.setupBold(mShotsEntity.getCommentsCount(), "评论"));
         mTvShotsBucket.setText(HtmlFormatUtils.setupBold(mShotsEntity.getBucketsCount(), "收藏"));
+
+        mTagFlowLayout.setTags(mShotsEntity.getTags());
+        mTagFlowLayout.setOnTagItemClickListener(new TagFlowLayout.OnTagItemClickListener() {
+            @Override
+            public void onClick(View v, String content) {
+                showToast(content);
+            }
+        });
     }
 
     @OnClick(R.id.iv_shots_detail_avatar)

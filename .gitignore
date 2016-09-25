@@ -5,3 +5,5 @@
 /.idea/libraries
 /build
 libs/
+src/androidTest/
+src/test/

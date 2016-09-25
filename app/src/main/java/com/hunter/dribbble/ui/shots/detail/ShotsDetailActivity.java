@@ -16,6 +16,7 @@ import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseActivity;
 import com.hunter.dribbble.entity.ShotsEntity;
+import com.hunter.dribbble.ui.shots.WatchImageActivity;
 import com.hunter.dribbble.ui.shots.detail.comments.ShotsCommentsFragment;
 import com.hunter.dribbble.ui.shots.detail.des.ShotsDesFragment;
 import com.hunter.dribbble.utils.ImageUrlUtils;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
@@ -102,6 +104,14 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         mTabShots.setupWithViewPager(mPagerShots);
     }
 
+    @OnClick(R.id.piv_shots_detail_image)
+    void toWatchImage() {
+        Intent intent = new Intent(this, WatchImageActivity.class);
+        intent.putExtra(WatchImageActivity.EXTRA_IMAGE_URL, mShotsEntity.getImages().getHidpi());
+        intent.putExtra(WatchImageActivity.EXTRA_IS_ANIMATED, mShotsEntity.isAnimated());
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_shots_detail, menu);
@@ -134,6 +144,9 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         return true;
     }
 
+    /**
+     * 处理水平方向与垂直方向的滑动冲突
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         float x = event.getX();
@@ -147,7 +160,14 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
 
             case MotionEvent.ACTION_MOVE:
                 if (!mIsVerticalMove) {
-                    if (Math.abs(x - mPressX) < Math.abs(y - mPressY)) mPagerShots.setEnabled(false);
+                    float differX = Math.abs(x - mPressX);
+                    float differY = Math.abs(y - mPressY);
+                    double differ = Math.sqrt(differX * differX + differY * differY);
+                    int angle = Math.round((float) (Math.asin(differY / differ) / Math.PI * 180));
+                    mIsVerticalMove = angle > 45;
+                    if (mIsVerticalMove) {
+                        mPagerShots.setEnabled(false);
+                    }
                 }
                 break;
 

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hunter.dribbble.R;
@@ -25,6 +26,9 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     protected boolean mIsRefresh;
     protected int     mPage;
 
+    private View mEmptyView;
+    private View mNoMoreView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +43,17 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         if (mPresenter != null) mPresenter.onDestroy();
     }
 
-    protected void refreshAndLoadMore(SwipeRefreshLayout refreshLayout,
-                                      RecyclerView recyclerView,
-                                      BaseQuickAdapter adapter) {
-        /**
-         * 刷新事件
-         */
+    protected void setupList(SwipeRefreshLayout refreshLayout, RecyclerView recyclerView, BaseQuickAdapter adapter) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        /* 空页面 */
+        mEmptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
+        TextView tvEmptyViewMsg = (TextView) mEmptyView.findViewById(R.id.tv_empty_view_msg);
+        tvEmptyViewMsg.setText(getEmptyViewMsg());
+
+        /* 没有更多数据 */
+        mNoMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
+
+        /* 刷新 */
         mRefreshLayout = refreshLayout;
         mRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mContext, R.color.accent));
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -54,12 +63,8 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
             }
         });
 
-        /**
-         * 加载更多事件
-         */
-        View loadingView = LayoutInflater
-                .from(mContext)
-                .inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false);
+        /* 加载更多 */
+        View loadingView = inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false);
         adapter.setLoadingView(loadingView);
         adapter.openLoadAnimation();
         adapter.openLoadMore(ApiConstants.ParamValue.PAGE_SIZE);
@@ -70,20 +75,36 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
             }
         });
 
-        /**
-         * 首次进入自动刷新
-         */
+        /* 首次进入自动刷新 */
         mRefreshLayout.setRefreshing(true);
         requestData(true);
     }
 
     protected void requestData(boolean isRefresh) {
         mIsRefresh = isRefresh;
+        if (mIsRefresh) mPage = 1;
+        else mPage++;
+    }
+
+    protected String getEmptyViewMsg() {
+        return "再怎么找也没有啦";
     }
 
     protected <T> void setData(List<T> datas, BaseQuickAdapter adapter) {
-        if (mIsRefresh) adapter.setNewData(datas);
-        else adapter.addData(datas);
+        if (mIsRefresh) {
+            adapter.setNewData(datas);
+            if (datas.size() == 0 && adapter.getEmptyView() == null) {
+                adapter.setEmptyView(mEmptyView);
+            } else if (datas.size() < ApiConstants.ParamValue.PAGE_SIZE) {
+                adapter.loadComplete();
+                adapter.addFooterView(mNoMoreView);
+            }
+        } else {
+            if (datas.size() == 0) {
+                adapter.loadComplete();
+                adapter.addFooterView(mNoMoreView);
+            } else adapter.addData(datas);
+        }
     }
 
     public void showDialog(CharSequence msg) {

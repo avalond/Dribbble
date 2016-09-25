@@ -22,7 +22,12 @@ public class GlideUtils {
     }
 
     public static void setImageWithThumb(Context context, String url, ImageView imageView) {
-        Glide.with(context).load(url).placeholder(R.drawable.shape_grey).thumbnail(0.2f).into(imageView);
+        Glide.with(context)
+                .load(url)
+                .placeholder(R.drawable.shape_grey)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .thumbnail(0.2f)
+                .into(imageView);
     }
 
     public static void setGif(Context context, String url, ImageView imageView) {

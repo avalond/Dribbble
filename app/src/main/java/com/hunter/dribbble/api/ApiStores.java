@@ -23,7 +23,7 @@ public interface ApiStores {
     Observable<List<ShotsEntity>> getShots(@QueryMap Map<String, String> params);
 
     @GET(ApiConstants.Path.COMMENTS)
-    Observable<List<CommentEntity>> getComments(@Path("id") String id);
+    Observable<List<CommentEntity>> getComments(@Path("id") String id, @QueryMap Map<String, String> params);
 
     @GET(ApiConstants.Path.FOLLOWERS)
     Observable<List<FollowerEntity>> getFollowers(@Path("id") String id);

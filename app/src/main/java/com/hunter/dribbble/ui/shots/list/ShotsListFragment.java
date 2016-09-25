@@ -13,7 +13,6 @@ import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPListFragment;
 import com.hunter.dribbble.entity.ShotsEntity;
-import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.event.EventViewMode;
 import com.hunter.dribbble.ui.profile.ProfileActivity;
 import com.hunter.dribbble.ui.shots.detail.ShotsDetailActivity;
@@ -61,7 +60,7 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
         EventBus.getDefault().register(this);
 
         initList();
-        refreshAndLoadMore(mRefresh, mRvShotsList, mAdapter);
+        setupList(mRefresh, mRvShotsList, mAdapter);
     }
 
     @Override
@@ -72,12 +71,6 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
 
     private void initList() {
         mAdapter = new ShotsListAdapter(new ArrayList<ShotsEntity>());
-        mAdapter.setUserInfoListener(new ShotsListAdapter.OnItemClickUserInfoListener() {
-            @Override
-            public void onItemClickUserInfo(UserEntity entity) {
-
-            }
-        });
         mRvShotsList.setAdapter(mAdapter);
 
         ViewModelUtils.changeLayoutManager(mRvShotsList, App.getInstance().getViewMode());
@@ -104,8 +97,6 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
     @Override
     protected void requestData(boolean isRefresh) {
         super.requestData(isRefresh);
-        if (isRefresh) mPage = 1;
-        else mPage++;
         mPresenter.getShots(mType, mSort, mTime, mPage);
     }
 
@@ -130,6 +121,7 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
                 break;
         }
 
+        mRefresh.setRefreshing(true);
         requestData(true);
     }
 

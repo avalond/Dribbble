@@ -16,12 +16,16 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private int   mDividerOrientation;
     private Paint mPaint;
 
-    public DividerItemDecoration(int orientation) {
+    private int mdpOne;
+
+    public DividerItemDecoration(Context context, int orientation) {
         mDividerOrientation = orientation;
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(0xFFECECEC);
         mPaint.setStyle(Paint.Style.FILL);
+
+        mdpOne = dp2px(context, 1);
     }
 
     @Override
@@ -36,9 +40,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (mDividerOrientation == LIST_VERTICAL) {
-            outRect.set(0, 0, 0, 1);
+            outRect.set(0, 0, 0, mdpOne);
         } else {
-            outRect.set(0, 0, 1, 0);
+            outRect.set(0, 0, mdpOne, 0);
         }
     }
 
@@ -51,7 +55,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) child.getLayoutParams();
             int top = child.getBottom() + layoutParams.bottomMargin;
-            int bottom = top + 1;
+            int bottom = top + mdpOne;
             canvas.drawRect(left, top, right, bottom, mPaint);
         }
     }
@@ -65,12 +69,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left = child.getRight() + layoutParams.rightMargin;
-            final int right = left + 1;
+            final int right = left + mdpOne;
             canvas.drawRect(left, top, right, bottom, mPaint);
         }
     }
 
     private int dp2px(Context context, float dpVal) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, context.getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                               dpVal,
+                                               context.getResources().getDisplayMetrics());
     }
 }

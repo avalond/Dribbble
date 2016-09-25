@@ -8,4 +8,5 @@
     <declare-styleable name="ProportionImageView">
         <attr name="proportion_w_h" format="float"/>
     </declare-styleable>
+
 </resources>

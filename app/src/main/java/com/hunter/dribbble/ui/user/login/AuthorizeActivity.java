@@ -1,4 +1,4 @@
-package com.hunter.dribbble.ui.login;
+package com.hunter.dribbble.ui.user.login;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hunter.dribbble.App;
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPListFragment;
 import com.hunter.dribbble.entity.ShotsEntity;
@@ -33,7 +32,7 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
         MaterialSpinner.OnItemSelectedListener, ShotsListContract.View {
 
     @BindView(R.id.rv_shots_list)
-    RecyclerView       mRvShotsList;
+    RecyclerView mRvShotsList;
     @BindView(R.id.refresh_shots_list)
     SwipeRefreshLayout mRefresh;
 
@@ -80,7 +79,7 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 /* 点击进入 shots 详情 */
                 Intent intent = new Intent(mActivity, ShotsDetailActivity.class);
-                intent.putExtra(AppConstants.EXTRA_SHOTS_ENTITY, mAdapter.getItem(i));
+                intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ENTITY, mAdapter.getItem(i));
                 startActivity(intent);
             }
 

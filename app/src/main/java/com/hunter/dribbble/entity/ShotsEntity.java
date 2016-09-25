@@ -60,6 +60,199 @@ public class ShotsEntity implements Serializable, MultiItemEntity {
     @SerializedName("tags")
     private List<String> mTags;
 
+    public static class Builder {
+
+        private int          id;
+        private String       title;
+        private String       description;
+        private int          width;
+        private int          height;
+        private ImagesEntity images;
+        private int          views_count;
+        private int          likes_count;
+        private int          comments_count;
+        private int          attachments_count;
+        private int          rebounds_count;
+        private int          buckets_count;
+        private String       created_at;
+        private String       updated_at;
+        private String       html_url;
+        private String       attachments_url;
+        private String       buckets_url;
+        private String       comments_url;
+        private String       likes_url;
+        private String       projects_url;
+        private String       rebounds_url;
+        private boolean      animated;
+        private List<String> tags;
+        private UserEntity   user;
+        private TeamEntity   team;
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setWidth(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder setHeight(int height) {
+            this.height = height;
+            return this;
+        }
+
+        public Builder setImages(ImagesEntity images) {
+            this.images = images;
+            return this;
+        }
+
+        public Builder setViewsCount(int views_count) {
+            this.views_count = views_count;
+            return this;
+        }
+
+        public Builder setLikesCount(int likes_count) {
+            this.likes_count = likes_count;
+            return this;
+        }
+
+        public Builder setCommentsCount(int comments_count) {
+            this.comments_count = comments_count;
+            return this;
+        }
+
+        public Builder setAttachmentsCount(int attachments_count) {
+            this.attachments_count = attachments_count;
+            return this;
+        }
+
+        public Builder setReboundsCount(int rebounds_count) {
+            this.rebounds_count = rebounds_count;
+            return this;
+        }
+
+        public Builder setBucketsCount(int buckets_count) {
+            this.buckets_count = buckets_count;
+            return this;
+        }
+
+        public Builder setCreatedAt(String created_at) {
+            this.created_at = created_at;
+            return this;
+        }
+
+        public Builder setUpdatedAt(String updated_at) {
+            this.updated_at = updated_at;
+            return this;
+        }
+
+        public Builder setHtmlUrl(String html_url) {
+            this.html_url = html_url;
+            return this;
+        }
+
+        public Builder setAttachmentsUrl(String attachments_url) {
+            this.attachments_url = attachments_url;
+            return this;
+        }
+
+        public Builder setBucketsUrl(String buckets_url) {
+            this.buckets_url = buckets_url;
+            return this;
+        }
+
+        public Builder setCommentsUrl(String comments_url) {
+            this.comments_url = comments_url;
+            return this;
+        }
+
+        public Builder setLikesUrl(String likes_url) {
+            this.likes_url = likes_url;
+            return this;
+        }
+
+        public Builder setProjectsUrl(String projects_url) {
+            this.projects_url = projects_url;
+            return this;
+        }
+
+        public Builder setReboundsUrl(String rebounds_url) {
+            this.rebounds_url = rebounds_url;
+            return this;
+        }
+
+        public Builder setAnimated(boolean animated) {
+            this.animated = animated;
+            return this;
+        }
+
+        public Builder setTags(List<String> tags) {
+            this.tags = tags;
+            return this;
+        }
+
+        public Builder setUser(UserEntity user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder setTeam(TeamEntity team) {
+            this.team = team;
+            return this;
+        }
+
+        public ShotsEntity build() {
+            return new ShotsEntity(id, title, description, width, height, images, views_count, likes_count,
+                                   comments_count, attachments_count, rebounds_count, buckets_count, created_at,
+                                   updated_at, html_url, attachments_url, buckets_url, comments_url, likes_url,
+                                   projects_url, rebounds_url, animated, user, team, tags);
+        }
+    }
+
+    public ShotsEntity(int id, String title, String description, int width, int height, ImagesEntity images,
+                       int viewsCount, int likesCount, int commentsCount, int attachmentsCount, int reboundsCount,
+                       int bucketsCount, String createdAt, String updatedAt, String htmlUrl, String attachmentsUrl,
+                       String bucketsUrl, String commentsUrl, String likesUrl, String projectsUrl, String reboundsUrl,
+                       boolean animated, UserEntity user, TeamEntity team, List<String> tags) {
+        mId = id;
+        mTitle = title;
+        mDescription = description;
+        mWidth = width;
+        mHeight = height;
+        mImages = images;
+        mViewsCount = viewsCount;
+        mLikesCount = likesCount;
+        mCommentsCount = commentsCount;
+        mAttachmentsCount = attachmentsCount;
+        mReboundsCount = reboundsCount;
+        mBucketsCount = bucketsCount;
+        mCreatedAt = createdAt;
+        mUpdatedAt = updatedAt;
+        mHtmlUrl = htmlUrl;
+        mAttachmentsUrl = attachmentsUrl;
+        mBucketsUrl = bucketsUrl;
+        mCommentsUrl = commentsUrl;
+        mLikesUrl = likesUrl;
+        mProjectsUrl = projectsUrl;
+        mReboundsUrl = reboundsUrl;
+        mAnimated = animated;
+        mUser = user;
+        mTeam = team;
+        mTags = tags;
+    }
+
     public int getId() {
         return mId;
     }

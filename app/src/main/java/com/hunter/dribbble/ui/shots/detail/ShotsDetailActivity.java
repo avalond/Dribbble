@@ -12,9 +12,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
-import com.hunter.dribbble.base.BaseActivity;
+import com.hunter.dribbble.base.mvp.BaseMVPActivity;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.ui.shots.WatchImageActivity;
 import com.hunter.dribbble.ui.shots.detail.comments.ShotsCommentsFragment;
@@ -33,25 +32,30 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
+public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, ShotsDetailModel> implements
+        ShotsDetailContract.View, Toolbar.OnMenuItemClickListener {
+
+    public static final String EXTRA_SHOTS_ENTITY = "extra_shots_entity";
+    public static final String EXTRA_IS_FROM_SEARCH = "extra_is_from_search";
+    public static final String EXTRA_SHOTS_ID = "extra_shots_id";
 
     private static final String[] TAB_TITLES = {"简介", "评论"};
 
     @BindView(R.id.piv_shots_detail_image)
-    ProportionImageView  mPivShotsImage;
+    ProportionImageView mPivShotsImage;
     @BindView(R.id.tab_shots_detail)
-    TabLayout            mTabShots;
+    TabLayout mTabShots;
     @BindView(R.id.pager_shots_detail)
-    ViewPager            mPagerShots;
+    ViewPager mPagerShots;
     @BindView(R.id.toolbar_shots_detail)
-    Toolbar              mToolbarShots;
+    Toolbar mToolbarShots;
     @BindView(R.id.fab_shots_detail_play)
     FloatingActionButton mFabShotsDetailPlay;
 
     private ShotsEntity mShotsEntity;
 
-    private float   mPressX;
-    private float   mPressY;
+    private float mPressX;
+    private float mPressY;
     private boolean mIsVerticalMove;
 
     @Override
@@ -60,11 +64,19 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         setContentView(R.layout.activity_shots_detail);
         ButterKnife.bind(this);
 
-        mShotsEntity = (ShotsEntity) getIntent().getSerializableExtra(AppConstants.EXTRA_SHOTS_ENTITY);
-
         initToolbar();
-        initPager();
-        showImage();
+        for (String tabTitle : TAB_TITLES) mTabShots.addTab(mTabShots.newTab().setText(tabTitle));
+
+        Intent intent = getIntent();
+        boolean isFromSearch = intent.getBooleanExtra(EXTRA_IS_FROM_SEARCH, false);
+        if (isFromSearch) {
+            int shotsId = intent.getIntExtra(EXTRA_SHOTS_ID, 0);
+            mPresenter.getShotsDetail(shotsId);
+        } else {
+            mShotsEntity = (ShotsEntity) intent.getSerializableExtra(EXTRA_SHOTS_ENTITY);
+            showImage();
+            initPager();
+        }
     }
 
     private void initToolbar() {
@@ -94,13 +106,9 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ShotsDesFragment.newInstance(mShotsEntity));
         fragments.add(ShotsCommentsFragment.newInstance(mShotsEntity));
-        BasePagerAdapter<Fragment> adapter = new BasePagerAdapter<>(getSupportFragmentManager(),
-                                                                    fragments,
+        BasePagerAdapter<Fragment> adapter = new BasePagerAdapter<>(getSupportFragmentManager(), fragments,
                                                                     Arrays.asList(TAB_TITLES));
         mPagerShots.setAdapter(adapter);
-        for (String tabTitle : TAB_TITLES) {
-            mTabShots.addTab(mTabShots.newTab().setText(tabTitle));
-        }
         mTabShots.setupWithViewPager(mPagerShots);
     }
 
@@ -181,5 +189,12 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         }
 
         return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    public void getShotsDetailOnSuccess(ShotsEntity data) {
+        mShotsEntity = data;
+        showImage();
+        initPager();
     }
 }

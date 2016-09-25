@@ -6,6 +6,8 @@ public interface ApiConstants {
 
         String BASE_URL = "https://api.dribbble.com/v1/";
 
+        String BASE_JSOUP_URL = "https://dribbble.com/";
+
         String OAUTH_URL = "https://dribbble.com/oauth/";
 
         String REDIRECT_URL = "http://lhunter.org/";
@@ -17,11 +19,15 @@ public interface ApiConstants {
 
         String TOKEN = "token";
 
-        String SHOTS = "shots";
+        String SHOTS_LIST = "shots";
+
+        String SHOTS_DETAIL = "shots/{id}";
 
         String COMMENTS = "shots/{id}/comments";
 
         String FOLLOWERS = "users/{id}/followers";
+
+        String SEARCH = "search";
     }
 
     interface ParamKey {
@@ -49,6 +55,8 @@ public interface ApiConstants {
         String PAGE = "page";
 
         String PER_PAGE = "per_page";
+
+        String SEARCH_KEY = "q";
     }
 
     interface ParamValue {
@@ -66,6 +74,8 @@ public interface ApiConstants {
         String STATE = "hunter";
 
         int PAGE_SIZE = 20;
+
+        int SEARCH_PAGE_SIZE = 10;
 
         /**
          * 类型，默认返回所有类型

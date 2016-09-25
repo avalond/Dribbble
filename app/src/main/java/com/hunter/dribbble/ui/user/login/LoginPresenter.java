@@ -1,4 +1,4 @@
-package com.hunter.dribbble.ui.login;
+package com.hunter.dribbble.ui.user.login;
 
 import com.hunter.dribbble.api.BaseSubscriber;
 import com.hunter.dribbble.entity.TokenEntity;

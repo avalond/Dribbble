@@ -1,4 +1,4 @@
-package com.hunter.dribbble.ui.login;
+package com.hunter.dribbble.ui.user.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +28,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
     ProgressBar mProgressLogin;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);

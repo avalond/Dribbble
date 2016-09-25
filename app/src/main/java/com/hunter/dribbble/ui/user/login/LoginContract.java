@@ -1,4 +1,4 @@
-package com.hunter.dribbble.ui.login;
+package com.hunter.dribbble.ui.user.login;
 
 import com.hunter.dribbble.base.mvp.BaseModel;
 import com.hunter.dribbble.base.mvp.BasePresenter;

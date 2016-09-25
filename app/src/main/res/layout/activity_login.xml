@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_dark"
-    tools:context="com.hunter.dribbble.ui.login.LoginActivity">
+    tools:context="com.hunter.dribbble.ui.user.login.LoginActivity">
 
     <ImageButton
         android:id="@+id/ibtn_login_close"

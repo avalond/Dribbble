@@ -1,5 +1,6 @@
 package com.hunter.dribbble.base;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.hunter.dribbble.utils.SnackbarUtils;

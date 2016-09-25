@@ -1,4 +1,4 @@
-package com.hunter.dribbble.ui.shots.search;
+package com.hunter.dribbble.ui.user.search.dialog;
 
 import android.content.Context;
 import android.view.View;

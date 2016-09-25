@@ -10,7 +10,7 @@ public abstract class BaseMVPActivity<P extends BasePresenter, M extends BaseMod
     public M mModel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = TUtils.getT(this, 0);
         mModel = TUtils.getT(this, 1);

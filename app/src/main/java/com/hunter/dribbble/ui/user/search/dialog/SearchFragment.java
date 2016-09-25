@@ -1,6 +1,7 @@
-package com.hunter.dribbble.ui.shots.search;
+package com.hunter.dribbble.ui.user.search.dialog;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
+import com.hunter.dribbble.ui.user.search.SearchActivity;
 import com.hunter.lib.util.CircularRevealAnim;
 import com.hunter.lib.util.KeyBoardUtils;
 import com.hunter.lib.util.SPUtils;
@@ -35,20 +37,20 @@ import butterknife.OnClick;
 public class SearchFragment extends DialogFragment {
 
     @BindView(R.id.ibtn_search)
-    ImageButton  mIbtnSearch;
+    ImageButton mIbtnSearch;
     @BindView(R.id.et_search_input)
-    EditText     mEtSearchInput;
+    EditText mEtSearchInput;
     @BindView(R.id.rv_search_history)
     RecyclerView mRvSearchHistory;
     @BindView(R.id.tv_search_clean)
-    TextView     mTvSearchClean;
+    TextView mTvSearchClean;
 
     private View mRootView;
 
     private CircularRevealAnim mCircularRevealAnim;
 
     private SearchHistoryAdapter mAdapter;
-    private List<String>         mData;
+    private List<String> mData;
 
     public static SearchFragment newInstance() {
         Bundle args = new Bundle();
@@ -197,9 +199,12 @@ public class SearchFragment extends DialogFragment {
         if (TextUtils.isEmpty(searchKey)) return;
 
         hideAnim();
-
         if (mData.contains(searchKey)) mData.remove(searchKey);
         mData.add(0, searchKey);
+
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_KEY, searchKey);
+        startActivity(intent);
     }
 
     @Override

@@ -21,6 +21,6 @@ public class ShotsListModel implements ShotsListContract.Model {
         params.put(ApiConstants.ParamKey.PAGE, page + "");
         params.put(ApiConstants.ParamKey.PER_PAGE, ApiConstants.ParamValue.PAGE_SIZE + "");
 
-        return ApiClient.getForRest().getShots(params);
+        return ApiClient.getForRest().getShotsList(params);
     }
 }

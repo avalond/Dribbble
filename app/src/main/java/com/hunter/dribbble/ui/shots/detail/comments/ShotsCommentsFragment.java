@@ -75,7 +75,7 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
     }
 
     @Override
-    public void onCompleted() {
+    public void onSuccess() {
         mRefresh.setRefreshing(false);
         mRefresh.setEnabled(false);
     }

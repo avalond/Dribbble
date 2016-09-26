@@ -14,10 +14,11 @@ import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseFragment;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.ui.profile.ProfileActivity;
+import com.hunter.dribbble.ui.user.search.SearchActivity;
 import com.hunter.dribbble.utils.HtmlFormatUtils;
 import com.hunter.dribbble.utils.TimeUtils;
 import com.hunter.dribbble.utils.glide.GlideUtils;
-import com.hunter.dribbble.widget.tagflow.TagFlowLayout;
+import com.hunter.dribbble.widget.TagFlowLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -95,7 +96,9 @@ public class ShotsDesFragment extends BaseFragment {
         mTagFlowLayout.setOnTagItemClickListener(new TagFlowLayout.OnTagItemClickListener() {
             @Override
             public void onClick(View v, String content) {
-                showToast(content);
+                Intent intent = new Intent(mContext, SearchActivity.class);
+                intent.putExtra(SearchActivity.EXTRA_SEARCH_KEY, content);
+                startActivity(intent);
             }
         });
     }

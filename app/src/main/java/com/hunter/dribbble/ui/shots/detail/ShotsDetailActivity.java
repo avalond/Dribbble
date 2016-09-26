@@ -37,7 +37,6 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
 
     public static final String EXTRA_SHOTS_ENTITY = "extra_shots_entity";
     public static final String EXTRA_IS_FROM_SEARCH = "extra_is_from_search";
-    public static final String EXTRA_SHOTS_ID = "extra_shots_id";
 
     private static final String[] TAB_TITLES = {"简介", "评论"};
 
@@ -68,12 +67,12 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
         for (String tabTitle : TAB_TITLES) mTabShots.addTab(mTabShots.newTab().setText(tabTitle));
 
         Intent intent = getIntent();
+        mShotsEntity = (ShotsEntity) intent.getSerializableExtra(EXTRA_SHOTS_ENTITY);
         boolean isFromSearch = intent.getBooleanExtra(EXTRA_IS_FROM_SEARCH, false);
         if (isFromSearch) {
-            int shotsId = intent.getIntExtra(EXTRA_SHOTS_ID, 0);
-            mPresenter.getShotsDetail(shotsId);
+            showImage();
+            mPresenter.getShotsDetail(mShotsEntity.getId());
         } else {
-            mShotsEntity = (ShotsEntity) intent.getSerializableExtra(EXTRA_SHOTS_ENTITY);
             showImage();
             initPager();
         }
@@ -115,7 +114,7 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     @OnClick(R.id.piv_shots_detail_image)
     void toWatchImage() {
         Intent intent = new Intent(this, WatchImageActivity.class);
-        intent.putExtra(WatchImageActivity.EXTRA_IMAGE_URL, mShotsEntity.getImages().getHidpi());
+        intent.putExtra(WatchImageActivity.EXTRA_IMAGE_URL, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()));
         intent.putExtra(WatchImageActivity.EXTRA_IS_ANIMATED, mShotsEntity.isAnimated());
         startActivity(intent);
     }
@@ -194,7 +193,6 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     @Override
     public void getShotsDetailOnSuccess(ShotsEntity data) {
         mShotsEntity = data;
-        showImage();
         initPager();
     }
 }

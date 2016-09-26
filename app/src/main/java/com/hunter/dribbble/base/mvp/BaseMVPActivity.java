@@ -27,7 +27,11 @@ public abstract class BaseMVPActivity<P extends BasePresenter, M extends BaseMod
 
     }
 
-    public void onCompleted() {
+    public void onSuccess() {
+
+    }
+
+    public void onError() {
 
     }
 }

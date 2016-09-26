@@ -13,10 +13,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.api.ApiConstants;
 import com.hunter.dribbble.base.BaseFragment;
+import com.hunter.dribbble.widget.LoadFrameLayout;
+import com.hunter.dribbble.widget.ErrorView;
 
 import java.util.List;
 
-public abstract class BaseMVPListFragment<P extends BasePresenter, M extends BaseModel> extends BaseFragment {
+import butterknife.ButterKnife;
+
+public abstract class BaseMVPListFragment<P extends BasePresenter, M extends BaseModel> extends BaseFragment implements
+        View.OnClickListener {
 
     public P mPresenter;
     public M mModel;
@@ -24,10 +29,11 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     private SwipeRefreshLayout mRefreshLayout;
 
     protected boolean mIsRefresh;
-    protected int     mPage;
+    protected int mPage;
 
     private View mEmptyView;
     private View mNoMoreView;
+    private LoadFrameLayout mLoadFrameLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,19 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         mPresenter = TUtils.getT(this, 0);
         mModel = TUtils.getT(this, 1);
         if (this instanceof BaseView) mPresenter.setVM(this, mModel);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mRootView = inflater.inflate(getLayoutId(), container, false);
+        ButterKnife.bind(this, mRootView);
+        ErrorView errorView = new ErrorView(mContext);
+        errorView.setRetryListener(this);
+        mLoadFrameLayout = new LoadFrameLayout(mContext);
+        mLoadFrameLayout.setContentView(mRootView);
+        mLoadFrameLayout.setErrorView(errorView);
+        ButterKnife.bind(this, mLoadFrameLayout);
+        return mLoadFrameLayout;
     }
 
     @Override
@@ -76,8 +95,13 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         });
 
         /* 首次进入自动刷新 */
-        mRefreshLayout.setRefreshing(true);
-        requestData(true);
+        mRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.setRefreshing(true);
+                requestData(true);
+            }
+        }, 200);
     }
 
     protected void requestData(boolean isRefresh) {
@@ -87,7 +111,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     }
 
     protected String getEmptyViewMsg() {
-        return "再怎么找也没有啦";
+        return "没有更多内容";
     }
 
     protected <T> void setData(List<T> datas, BaseQuickAdapter adapter) {
@@ -110,8 +134,21 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     public void showDialog(CharSequence msg) {
     }
 
-    public void onCompleted() {
+    public void onSuccess() {
         mRefreshLayout.setRefreshing(false);
+        mLoadFrameLayout.showContentView();
     }
 
+    public void onError() {
+        mRefreshLayout.setRefreshing(false);
+        mLoadFrameLayout.showErrorView();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (!mRefreshLayout.isRefreshing()) {
+            mRefreshLayout.setRefreshing(true);
+            requestData(true);
+        }
+    }
 }

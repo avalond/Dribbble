@@ -29,7 +29,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
     @Override
     public void onCompleted() {
         if (mView != null) {
-            mView.onCompleted();
+            mView.onSuccess();
             if (!TextUtils.isEmpty(mDialogMsg)) mView.showDialog(mDialogMsg);
         }
         mView = null;
@@ -39,7 +39,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
     public void onError(Throwable e) {
         e.printStackTrace();
         onFail(e.getMessage());
-        onCompleted();
+        if (mView != null) mView.onError();
     }
 
     @Override

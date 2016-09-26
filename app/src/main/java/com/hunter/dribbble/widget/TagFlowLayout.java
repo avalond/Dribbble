@@ -1,4 +1,4 @@
-package com.hunter.dribbble.widget.tagflow;
+package com.hunter.dribbble.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -27,13 +27,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchModel> implements SearchContract.View {
 
     public static final String EXTRA_SEARCH_KEY = "extra_search_key";
 
-    @BindView(R.id.ibtn_search_back)
-    ImageButton mIbtnBack;
     @BindView(R.id.et_search_input)
     EditText mEtInput;
     @BindView(R.id.ibtn_search)
@@ -73,7 +72,7 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 /* 点击进入 shots 详情 */
                 Intent intent = new Intent(SearchActivity.this, ShotsDetailActivity.class);
-                intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ID, mShotsAdapter.getItem(i).getId());
+                intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ENTITY, mShotsAdapter.getItem(i));
                 intent.putExtra(ShotsDetailActivity.EXTRA_IS_FROM_SEARCH, true);
                 startActivity(intent);
             }
@@ -105,8 +104,13 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
     }
 
     @Override
-    public void onCompleted() {
+    public void onSuccess() {
         mRefresh.setRefreshing(false);
         mRefresh.setEnabled(false);
+    }
+
+    @OnClick(R.id.ibtn_search_back)
+    void finishActivity() {
+        finish();
     }
 }

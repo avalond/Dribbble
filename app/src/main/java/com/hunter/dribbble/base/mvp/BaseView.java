@@ -4,7 +4,9 @@ public interface BaseView {
 
     void showDialog(CharSequence msg);
 
-    void onCompleted();
+    void onSuccess();
+
+    void onError();
 
     void showToast(CharSequence msg);
 }

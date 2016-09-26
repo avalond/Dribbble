@@ -37,7 +37,9 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
                 ImageView ivAvatar = holder.getView(R.id.iv_item_shots_avatar);
                 GlideUtils.setAvatar(mContext, userEntity.getAvatarUrl(), ivAvatar);
                 holder.setText(R.id.tv_item_shots_user_name, userEntity.getUsername());
-                holder.setText(R.id.tv_item_shots_time, TimeUtils.getTimeFromISO8601(shotsEntity.getUpdatedAt()));
+                String updateAt = shotsEntity.getCreatedAt();
+                if (!updateAt.isEmpty())
+                    holder.setText(R.id.tv_item_shots_time, TimeUtils.getTimeFromISO8601(shotsEntity.getUpdatedAt()));
                 holder.setText(R.id.tv_item_shots_comment, shotsEntity.getCommentsCount() + "");
                 holder.setText(R.id.tv_item_shots_like, shotsEntity.getLikesCount() + "");
                 holder.setText(R.id.tv_item_shots_view, shotsEntity.getViewsCount() + "");

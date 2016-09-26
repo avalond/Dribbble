@@ -26,9 +26,12 @@ public abstract class BaseMVPFragment<P extends BasePresenter, M extends BaseMod
     public void showDialog(CharSequence msg) {
     }
 
-    public void onCompleted() {
+    public void onSuccess() {
 
     }
 
+    public void onError(){
+
+    }
 
 }

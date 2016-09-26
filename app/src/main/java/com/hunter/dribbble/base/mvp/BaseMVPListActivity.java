@@ -35,6 +35,7 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         mPresenter = TUtils.getT(this, 0);
         mModel = TUtils.getT(this, 1);
         if (this instanceof BaseView) mPresenter.setVM(this, mModel);
+
     }
 
     @Override
@@ -87,7 +88,7 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     }
 
     protected String getEmptyViewMsg() {
-        return "再怎么找也没有啦";
+        return "没有更多内容";
     }
 
     protected int getPageSize() {
@@ -114,7 +115,12 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     public void showDialog(CharSequence msg) {
     }
 
-    public void onCompleted() {
+    public void onSuccess() {
         mRefreshLayout.setRefreshing(false);
     }
+
+    public void onError() {
+        mRefreshLayout.setRefreshing(false);
+    }
+
 }

@@ -139,7 +139,7 @@
             android:textColor="@color/text_grey"
             tools:text="des"/>
 
-        <com.hunter.dribbble.widget.tagflow.TagFlowLayout
+        <com.hunter.dribbble.widget.TagFlowLayout
             android:id="@+id/tag_shots_detail_des"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

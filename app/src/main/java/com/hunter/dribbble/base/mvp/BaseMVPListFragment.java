@@ -48,7 +48,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         mRootView = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, mRootView);
         ErrorView errorView = new ErrorView(mContext);
-        errorView.setRetryListener(this);
+        errorView.setOnClickListener(this);
         mLoadFrameLayout = new LoadFrameLayout(mContext);
         mLoadFrameLayout.setContentView(mRootView);
         mLoadFrameLayout.setErrorView(errorView);
@@ -148,6 +148,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     public void onClick(View v) {
         if (!mRefreshLayout.isRefreshing()) {
             mRefreshLayout.setRefreshing(true);
+            mLoadFrameLayout.showContentView();
             requestData(true);
         }
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
     protected Activity mActivity;
-    protected Context  mContext;
+    protected Context mContext;
 
     protected View mRootView;
 
@@ -48,5 +49,15 @@ public abstract class BaseFragment extends Fragment {
         SnackbarUtils.show(mActivity.getWindow().getDecorView(), msg, mContext);
     }
 
+    public void showToastForStrong(String normal, String strong) {
+        CharSequence msg = Html.fromHtml(normal + "<strong>「" + strong + "」</strong>");
+        SnackbarUtils.show(mActivity.getWindow().getDecorView(), msg, mContext);
+    }
+
+    public void showToastForStrongWithAction(String normal, String strong, String actionText,
+                                             View.OnClickListener listener) {
+        CharSequence msg = Html.fromHtml(normal + "<strong>「" + strong + "」</strong>");
+        SnackbarUtils.showWithAction(mActivity.getWindow().getDecorView(), msg, mContext, actionText, listener);
+    }
 }
 

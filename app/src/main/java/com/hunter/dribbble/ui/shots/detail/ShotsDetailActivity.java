@@ -1,7 +1,13 @@
 package com.hunter.dribbble.ui.shots.detail;
 
+import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,28 +18,46 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPActivity;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.ui.shots.WatchImageActivity;
 import com.hunter.dribbble.ui.shots.detail.comments.ShotsCommentsFragment;
 import com.hunter.dribbble.ui.shots.detail.des.ShotsDesFragment;
+import com.hunter.dribbble.utils.FileUtils;
 import com.hunter.dribbble.utils.ImageUrlUtils;
 import com.hunter.dribbble.utils.StatusBarCompat;
 import com.hunter.dribbble.utils.glide.GlideUtils;
 import com.hunter.dribbble.widget.ProportionImageView;
 import com.hunter.lib.base.BasePagerAdapter;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import static com.hunter.dribbble.utils.FileUtils.getExternalBaseDir;
 
 public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, ShotsDetailModel> implements
         ShotsDetailContract.View, Toolbar.OnMenuItemClickListener {
+
+    public static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 100;
 
     public static final String EXTRA_SHOTS_ENTITY = "extra_shots_entity";
     public static final String EXTRA_IS_FROM_SEARCH = "extra_is_from_search";
@@ -64,7 +88,8 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
         ButterKnife.bind(this);
 
         initToolbar();
-        for (String tabTitle : TAB_TITLES) mTabShots.addTab(mTabShots.newTab().setText(tabTitle));
+        for (String tabTitle : TAB_TITLES)
+            mTabShots.addTab(mTabShots.newTab().setText(tabTitle));
 
         Intent intent = getIntent();
         mShotsEntity = (ShotsEntity) intent.getSerializableExtra(EXTRA_SHOTS_ENTITY);
@@ -141,14 +166,102 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
                 break;
 
             case R.id.menu_download:
-
+                downloadPicture();
                 break;
 
             case R.id.menu_set_wallpaper:
-
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) requestPermission();
+                else setWallpager();
                 break;
         }
         return true;
+    }
+
+    private void downloadPicture() {
+        Observable.create(new Observable.OnSubscribe<File>() {
+            @Override
+            public void call(Subscriber<? super File> subscriber) {
+                try {
+                    subscriber.onNext(Glide.with(ShotsDetailActivity.this)
+                                           .load(mShotsEntity.getImages().getHidpi())
+                                           .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                           .get());
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                    subscriber.onError(e);
+                }
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<File>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                showToast("下载失败，请重试");
+            }
+
+            @Override
+            public void onNext(File file) {
+                String suffix = mShotsEntity.isAnimated() ? ".gif" : ".png";
+                File saveFile = FileUtils.saveToExternalCustomDir(FileUtils.getBytesFromFile(file),
+                                                                  AppConstants.EXTERNAL_FILE_ROOT,
+                                                                  mShotsEntity.getTitle() + suffix);
+                if (saveFile != null)
+                    showToastForStrongWithAction("保存至", saveFile.getPath().replace(getExternalBaseDir(), ""),
+                                                 new View.OnClickListener() {
+                                                     @Override
+                                                     public void onClick(View v) {
+
+                                                     }
+                                                 });
+                else showToast("下载失败，请重试");
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(saveFile)));
+            }
+        });
+    }
+
+    private void requestPermission() {
+        AndPermission.with(this)
+                     .requestCode(REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
+                     .permission(Manifest.permission.SET_WALLPAPER)
+                     .send();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults, mPermissionListener);
+    }
+
+    private PermissionListener mPermissionListener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode) {
+            if (requestCode == REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
+                setWallpager();
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode) {
+            if (requestCode == REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
+            }
+        }
+    };
+
+    private void setWallpager() {
+        final Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        Glide.with(this).load(mShotsEntity.getImages().getHidpi()).asBitmap().into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), resource, null, null));
+                intent.setDataAndType(uri, "image/*");
+                intent.putExtra("mimeType", "image/*");
+                startActivity(Intent.createChooser(intent, "设为壁纸"));
+            }
+        });
+
     }
 
     /**

@@ -2,6 +2,8 @@ package com.hunter.dribbble;
 
 public interface AppConstants {
 
+    String EXTERNAL_FILE_ROOT = "dribbble";
+
     String SP_KEE_ACCESS_TOKEN = "access_token";
     String SP_VIEW_MODE        = "view_mode";
     String SP_IS_FIRST         = "is_first";

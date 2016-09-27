@@ -75,15 +75,8 @@ public class LoadFrameLayout extends FrameLayout {
 
     public void showContentView() {
         if (mShowIndex == SHOW_CONTENT_VIEW) return;
-        int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View child = getChildAt(i);
-            if (child != mContentView) {
-                child.setVisibility(GONE);
-            }
-        }
+        showSingleView(mContentView);
         mShowIndex = SHOW_CONTENT_VIEW;
-        mContentView.bringToFront();
     }
 
     private void showSingleView(View specialView) {
@@ -93,6 +86,8 @@ public class LoadFrameLayout extends FrameLayout {
             View child = getChildAt(i);
             if (child == specialView) {
                 child.setVisibility(VISIBLE);
+            } else {
+                child.setVisibility(GONE);
             }
         }
     }

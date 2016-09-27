@@ -64,6 +64,7 @@
             android:id="@+id/tab_shots_detail"
             android:layout_width="match_parent"
             android:layout_height="36dp"
+            android:background="@color/white"
             app:tabIndicatorColor="@color/colorAccent"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/colorAccent"

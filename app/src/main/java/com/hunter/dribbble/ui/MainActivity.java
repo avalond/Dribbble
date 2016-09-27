@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +15,8 @@ import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseActivity;
 import com.hunter.dribbble.event.EventViewMode;
-import com.hunter.dribbble.ui.user.login.LoginActivity;
 import com.hunter.dribbble.ui.shots.list.ShotsListFragment;
+import com.hunter.dribbble.ui.user.login.LoginActivity;
 import com.hunter.dribbble.ui.user.search.dialog.SearchFragment;
 import com.hunter.dribbble.widget.spinner.MaterialSpinner;
 import com.hunter.lib.util.SPUtils;
@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
     };
 
     @BindView(R.id.toolbar_main)
-    Toolbar         mToolbar;
+    Toolbar mToolbar;
     @BindView(R.id.spinner_selector_type)
     MaterialSpinner mSpinnerSelectorType;
     @BindView(R.id.spinner_selector_sort)
@@ -58,7 +58,9 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
     MaterialSpinner mSpinnerSelectorTime;
 
     private ShotsListFragment mShotsListFragment;
-    private SearchFragment    mSearchFragment;
+    private SearchFragment mSearchFragment;
+
+    private long mExitTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,33 +79,37 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
         mToolbar.setOnMenuItemClickListener(this);
 
         ProfileDrawerItem navHeader = new ProfileDrawerItem().withName("点击头像登录")
-                .withIcon(ContextCompat.getDrawable(this, R.mipmap.ic_launcher));
+                                                             .withIcon(ContextCompat.getDrawable(this,
+                                                                                                 R.mipmap.ic_launcher));
         AccountHeader accountHeader = new AccountHeaderBuilder().withActivity(this)
-                .addProfiles(navHeader)
-                .withSelectionListEnabled(false)
-                .withOnAccountHeaderListener(this)
-                .build();
+                                                                .addProfiles(navHeader)
+                                                                .withSelectionListEnabled(false)
+                                                                .withOnAccountHeaderListener(this)
+                                                                .build();
         DrawerBuilder builder = new DrawerBuilder();
         builder.withActivity(this)
-                .withToolbar(mToolbar)
-                .withActionBarDrawerToggleAnimated(true)
-                .withAccountHeader(accountHeader)
-                .addDrawerItems(new PrimaryDrawerItem().withName("Home")
-                                        .withIcon(R.drawable.iv_home_grey_24dp)
-                                        .withSelectedIcon(R.drawable.iv_home_pink_24dp),
-                                new PrimaryDrawerItem().withName("Follower")
-                                        .withIcon(R.drawable.iv_follower_grey_24dp)
-                                        .withSelectedIcon(R.drawable.iv_follower_pink_24dp),
-                                new PrimaryDrawerItem().withName("My Buckets")
-                                        .withIcon(R.drawable.iv_bucket_grey_24dp)
-                                        .withSelectedIcon(R.drawable.iv_bucket_pink_24dp),
-                                new PrimaryDrawerItem().withName("My Likes")
-                                        .withIcon(R.drawable.iv_like_grey_24dp)
-                                        .withSelectedIcon(R.drawable.iv_like_pink_24dp),
-                                new DividerDrawerItem(),
-                                new SecondaryDrawerItem().withName("Settings")
-                                        .withIcon(R.drawable.iv_settings_grey_24dp)
-                                        .withSelectedIcon(R.drawable.iv_settings_pink_24dp));
+               .withToolbar(mToolbar)
+               .withActionBarDrawerToggleAnimated(true)
+               .withAccountHeader(accountHeader)
+               .addDrawerItems(new PrimaryDrawerItem().withName("Home")
+                                                      .withIcon(R.drawable.iv_home_grey_24dp)
+                                                      .withSelectedIcon(R.drawable.iv_home_pink_24dp),
+                               new PrimaryDrawerItem().withName("Follower")
+                                                      .withIcon(R.drawable.iv_follower_grey_24dp)
+                                                      .withSelectedIcon(R.drawable.iv_follower_pink_24dp),
+                               new PrimaryDrawerItem().withName("My Buckets")
+                                                      .withIcon(R.drawable.iv_bucket_grey_24dp)
+                                                      .withSelectedIcon(R.drawable.iv_bucket_pink_24dp),
+                               new PrimaryDrawerItem().withName("My Likes")
+                                                      .withIcon(R.drawable.iv_like_grey_24dp)
+                                                      .withSelectedIcon(R.drawable.iv_like_pink_24dp),
+                               new DividerDrawerItem(), new SecondaryDrawerItem().withName("Settings")
+                                                                                 .withIcon(
+                                                                                         R.drawable
+                                                                                                 .iv_settings_grey_24dp)
+                                                                                 .withSelectedIcon(
+                                                                                         R.drawable
+                                                                                                 .iv_settings_pink_24dp));
 
         builder.build();
     }
@@ -167,10 +173,8 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
                 invalidateOptionsMenu();
                 EventBus.getDefault().post(new EventViewMode(viewModeIndex));
 
-                String text = "浏览模式切换为 <strong>「" + getString(VIEW_MODE_TITLE_RES[viewModeIndex]) + "」</strong>";
-                showToast(Html.fromHtml(text));
+                showToastForStrong("浏览模式切换为", getString(VIEW_MODE_TITLE_RES[viewModeIndex]));
                 break;
-
             case R.id.menu_search:
                 mSearchFragment.show(getSupportFragmentManager(), TAG_SEARCH);
                 break;
@@ -184,4 +188,17 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
         return true;
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                showToast("再次点击退出应用");
+                mExitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

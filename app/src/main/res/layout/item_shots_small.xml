@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:stateListAnimator="@drawable/sel_lift_on_touch"
+    android:foreground="?android:attr/selectableItemBackground"
+    tools:targetApi="lollipop">
 
     <RelativeLayout
         android:layout_width="wrap_content"

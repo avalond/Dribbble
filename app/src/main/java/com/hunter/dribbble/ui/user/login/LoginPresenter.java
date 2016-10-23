@@ -6,7 +6,7 @@ import com.hunter.dribbble.entity.TokenEntity;
 public class LoginPresenter extends LoginContract.Presenter {
 
     public void getToken(String code) {
-        subscribeOn(mModel.getToken(code), new BaseSubscriber<TokenEntity>(mView) {
+        subscribe(mModel.getToken(code), new BaseSubscriber<TokenEntity>(mView) {
             @Override
             public void onSuccess(TokenEntity tokenEntity) {
                 mView.getTokenOnSuccess(tokenEntity);

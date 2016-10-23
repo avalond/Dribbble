@@ -7,7 +7,7 @@ public class ShotsDetailPresenter extends ShotsDetailContract.Presenter {
 
     @Override
     void getShotsDetail(int id) {
-        subscribeOn(mModel.getShotsDetail(id), new BaseSubscriber<ShotsEntity>(mView) {
+        subscribe(mModel.getShotsDetail(id), new BaseSubscriber<ShotsEntity>(mView) {
             @Override
             protected void onSuccess(ShotsEntity shotsEntity) {
                 mView.getShotsDetailOnSuccess(shotsEntity);

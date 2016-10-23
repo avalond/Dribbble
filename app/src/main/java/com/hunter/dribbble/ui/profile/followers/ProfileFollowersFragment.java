@@ -1,13 +1,14 @@
 package com.hunter.dribbble.ui.profile.followers;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
-import com.hunter.dribbble.base.mvp.BaseMVPFragment;
+import com.hunter.dribbble.base.mvp.BaseMVPListFragment;
 import com.hunter.dribbble.entity.FollowerEntity;
 import com.hunter.lib.widget.DividerItemDecoration;
 
@@ -16,11 +17,13 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class ProfileFollowersFragment extends BaseMVPFragment<FollowersPresenter, FollowersModel> implements
+public class ProfileFollowersFragment extends BaseMVPListFragment<FollowersPresenter, FollowersModel> implements
         FollowersContract.View {
 
-    @BindView(R.id.rv_profile_followers)
+    @BindView(R.id.rv_single_list)
     RecyclerView mRvFollowers;
+    @BindView(R.id.refresh_single_list)
+    SwipeRefreshLayout mRefresh;
 
     private FollowersAdapter mAdapter;
 
@@ -34,17 +37,23 @@ public class ProfileFollowersFragment extends BaseMVPFragment<FollowersPresenter
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_profile_followers;
+        return R.layout.layout_single_list_with_refresh;
     }
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
         initList();
-        mPresenter.getFollowers(getArguments().getString(AppConstants.EXTRA_USER_ID));
+        setupList(mRefresh, mRvFollowers, mAdapter);
+    }
+
+    @Override
+    protected void requestData(boolean isRefresh) {
+        super.requestData(isRefresh);
+        mPresenter.getFollowers(getArguments().getString(AppConstants.EXTRA_USER_ID), mPage);
     }
 
     private void initList() {
-        mAdapter = new FollowersAdapter(mActivity, new ArrayList<FollowerEntity>());
+        mAdapter = new FollowersAdapter(new ArrayList<FollowerEntity>());
         mRvFollowers.setAdapter(mAdapter);
         mRvFollowers.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvFollowers.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
@@ -52,6 +61,7 @@ public class ProfileFollowersFragment extends BaseMVPFragment<FollowersPresenter
 
     @Override
     public void getFollowersOnSuccess(List<FollowerEntity> data) {
-        mAdapter.reloadData(data);
+        setData(data, mAdapter);
     }
+
 }

@@ -34,11 +34,11 @@ public class ShotsDesFragment extends BaseFragment {
      * 用户相关
      */
     @BindView(R.id.tv_shots_detail_user_name)
-    TextView  mTvShotsUserName;
+    TextView mTvShotsUserName;
     @BindView(R.id.iv_shots_detail_avatar)
     ImageView mIvShotsAvatar;
     @BindView(R.id.tv_shots_detail_post_time)
-    TextView  mTvShotsPostTime;
+    TextView mTvShotsPostTime;
 
     /**
      * 赞 浏览 收藏 评论

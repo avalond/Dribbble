@@ -13,7 +13,7 @@ import java.util.List;
 
 public class SearchHistoryAdapter extends BaseAdapter<String> {
 
-    private OnItemHistoryClickListener  mClickListener;
+    private OnItemHistoryClickListener mClickListener;
     private OnItemHistoryDeleteListener mDeleteListener;
 
     private View mViewClean;

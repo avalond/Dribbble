@@ -78,38 +78,46 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
         setSupportActionBar(mToolbar);
         mToolbar.setOnMenuItemClickListener(this);
 
-        ProfileDrawerItem navHeader = new ProfileDrawerItem().withName("点击头像登录")
-                                                             .withIcon(ContextCompat.getDrawable(this,
-                                                                                                 R.mipmap.ic_launcher));
+        ProfileDrawerItem navHeader = new ProfileDrawerItem();
+        navHeader.withName("点击头像登录").withIcon(ContextCompat.getDrawable(this, R.mipmap.ic_launcher));
         AccountHeader accountHeader = new AccountHeaderBuilder().withActivity(this)
                                                                 .addProfiles(navHeader)
                                                                 .withSelectionListEnabled(false)
                                                                 .withOnAccountHeaderListener(this)
                                                                 .build();
+
+        PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem();
+        homeDrawerItem.withName("Home")
+                      .withIcon(R.drawable.iv_home_grey_24dp)
+                      .withSelectedIcon(R.drawable.iv_home_pink_24dp);
+
+        PrimaryDrawerItem followingDrawerItem = new PrimaryDrawerItem();
+        followingDrawerItem.withName("Following")
+                           .withIcon(R.drawable.iv_follower_grey_24dp)
+                           .withSelectedIcon(R.drawable.iv_follower_pink_24dp);
+
+        PrimaryDrawerItem bucketsDrawerItem = new PrimaryDrawerItem();
+        bucketsDrawerItem.withName("Buckets")
+                         .withIcon(R.drawable.iv_bucket_grey_24dp)
+                         .withSelectedIcon(R.drawable.iv_bucket_pink_24dp);
+
+        PrimaryDrawerItem likesDrawerItem = new PrimaryDrawerItem();
+        likesDrawerItem.withName("Likes")
+                       .withIcon(R.drawable.iv_like_grey_24dp)
+                       .withSelectedIcon(R.drawable.iv_like_pink_24dp);
+
+        SecondaryDrawerItem settingsDrawerItem = new SecondaryDrawerItem();
+        settingsDrawerItem.withName("Settings")
+                          .withIcon(R.drawable.iv_settings_grey_24dp)
+                          .withSelectedIcon(R.drawable.iv_settings_pink_24dp);
+
         DrawerBuilder builder = new DrawerBuilder();
         builder.withActivity(this)
                .withToolbar(mToolbar)
                .withActionBarDrawerToggleAnimated(true)
                .withAccountHeader(accountHeader)
-               .addDrawerItems(new PrimaryDrawerItem().withName("Home")
-                                                      .withIcon(R.drawable.iv_home_grey_24dp)
-                                                      .withSelectedIcon(R.drawable.iv_home_pink_24dp),
-                               new PrimaryDrawerItem().withName("Follower")
-                                                      .withIcon(R.drawable.iv_follower_grey_24dp)
-                                                      .withSelectedIcon(R.drawable.iv_follower_pink_24dp),
-                               new PrimaryDrawerItem().withName("My Buckets")
-                                                      .withIcon(R.drawable.iv_bucket_grey_24dp)
-                                                      .withSelectedIcon(R.drawable.iv_bucket_pink_24dp),
-                               new PrimaryDrawerItem().withName("My Likes")
-                                                      .withIcon(R.drawable.iv_like_grey_24dp)
-                                                      .withSelectedIcon(R.drawable.iv_like_pink_24dp),
-                               new DividerDrawerItem(), new SecondaryDrawerItem().withName("Settings")
-                                                                                 .withIcon(
-                                                                                         R.drawable
-                                                                                                 .iv_settings_grey_24dp)
-                                                                                 .withSelectedIcon(
-                                                                                         R.drawable
-                                                                                                 .iv_settings_pink_24dp));
+               .addDrawerItems(homeDrawerItem, followingDrawerItem, bucketsDrawerItem, likesDrawerItem,
+                               new DividerDrawerItem(), settingsDrawerItem);
 
         builder.build();
     }

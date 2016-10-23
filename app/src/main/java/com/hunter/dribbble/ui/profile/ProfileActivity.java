@@ -12,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.ui.profile.detail.ProfileDetailFragment;
@@ -29,7 +31,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import jp.wasabeef.blurry.Blurry;
 
 public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
@@ -38,19 +39,23 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
     private static final String[] TAB_TITLES = {"简介", "作品", "粉丝"};
 
     @BindView(R.id.iv_profile_avatar)
-    ImageView               mIvProfileAvatar;
+    ImageView mIvProfileAvatar;
     @BindView(R.id.toolbar_profile)
-    Toolbar                 mToolbarProfile;
+    Toolbar mToolbarProfile;
     @BindView(R.id.collapsing_profile)
     CollapsingToolbarLayout mCollapsingProfile;
     @BindView(R.id.tab_profile)
-    TabLayout               mTabProfile;
+    TabLayout mTabProfile;
     @BindView(R.id.app_bar_profile)
-    AppBarLayout            mAppBarProfile;
+    AppBarLayout mAppBarProfile;
     @BindView(R.id.pager_profile)
-    ViewPager               mPagerProfile;
-    @BindView(R.id.piv_profile_avatar_blurry)
-    ProportionImageView     mPivAvatarBlurry;
+    ViewPager mPagerProfile;
+    @BindView(R.id.piv_profile_avatar_background)
+    ProportionImageView mAvatarBackground;
+    @BindView(R.id.tv_profile_user_nickname)
+    TextView mTvUserNickname;
+    @BindView(R.id.tv_profile_user_bio)
+    TextView mTvUserBio;
 
     private UserEntity mUserEntity;
 
@@ -81,13 +86,14 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
 
     private void initUserInfo() {
         GlideUtils.setAvatar(this, mUserEntity.getAvatarUrl(), mIvProfileAvatar);
-        Blurry.with(ProfileActivity.this)
-                .radius(25)
-                .sampling(4)
-                .async()
-                .animate()
-                .capture(mIvProfileAvatar)
-                .into(mPivAvatarBlurry);
+        Glide.with(this)
+             .load(mUserEntity.getAvatarUrl())
+             .placeholder(R.drawable.shape_grey)
+             .centerCrop()
+             .into(mAvatarBackground);
+
+        mTvUserNickname.setText(mUserEntity.getName());
+        mTvUserBio.setText(mUserEntity.getBio());
     }
 
     private void initPager() {
@@ -95,8 +101,7 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
         fragments.add(ProfileDetailFragment.newInstance(mUserEntity));
         fragments.add(ProfileShotsFragment.newInstance(mUserEntity.getId() + ""));
         fragments.add(ProfileFollowersFragment.newInstance(mUserEntity.getId() + ""));
-        BasePagerAdapter<Fragment> adapter = new BasePagerAdapter<>(getSupportFragmentManager(),
-                                                                    fragments,
+        BasePagerAdapter<Fragment> adapter = new BasePagerAdapter<>(getSupportFragmentManager(), fragments,
                                                                     Arrays.asList(TAB_TITLES));
         mPagerProfile.setAdapter(adapter);
         for (String tabTitle : TAB_TITLES) {

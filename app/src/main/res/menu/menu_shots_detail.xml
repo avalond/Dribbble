@@ -14,9 +14,6 @@
         android:id="@+id/menu_download"
         android:title="下载"
         app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_set_wallpaper"
-        android:title="设为壁纸"
-        app:showAsAction="never"/>
+
 
 </menu>

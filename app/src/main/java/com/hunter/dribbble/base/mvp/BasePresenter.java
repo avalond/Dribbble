@@ -12,10 +12,10 @@ import rx.schedulers.Schedulers;
 
 public abstract class BasePresenter<M, V> {
 
-    public  Context      context;
+    public Context context;
     private Reference<V> mViewRef;
-    public  M            mModel;
-    public  V            mView;
+    public M mModel;
+    public V mView;
 
     public void setVM(V v, M m) {
         mViewRef = new WeakReference<>(v);
@@ -35,7 +35,7 @@ public abstract class BasePresenter<M, V> {
         }
     }
 
-    protected <T> void subscribeOn(Observable<T> observable, Subscriber<T> subscriber) {
+    protected <T> void subscribe(Observable<T> observable, Subscriber<T> subscriber) {
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 }

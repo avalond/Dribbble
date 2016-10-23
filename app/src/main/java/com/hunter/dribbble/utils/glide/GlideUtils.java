@@ -12,7 +12,7 @@ public class GlideUtils {
     public static void setAvatar(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
-                .transform(new GlideRoundTransform(context))
+                .transform(new GlideCircleTransform(context))
                 .placeholder(R.drawable.shape_corner_grey)
                 .into(imageView);
     }

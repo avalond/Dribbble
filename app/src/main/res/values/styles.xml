@@ -69,4 +69,9 @@
         <item name="@android:windowEnterAnimation">@null</item>
         <item name="@android:windowExitAnimation">@null</item>
     </style>
+
+    <style name="TabLayoutText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

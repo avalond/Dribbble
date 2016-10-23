@@ -1,13 +1,8 @@
 package com.hunter.dribbble.ui.shots.detail;
 
-import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -19,8 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
@@ -35,8 +28,6 @@ import com.hunter.dribbble.utils.StatusBarCompat;
 import com.hunter.dribbble.utils.glide.GlideUtils;
 import com.hunter.dribbble.widget.ProportionImageView;
 import com.hunter.lib.base.BasePagerAdapter;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -169,10 +160,6 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
                 downloadPicture();
                 break;
 
-            case R.id.menu_set_wallpaper:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) requestPermission();
-                else setWallpager();
-                break;
         }
         return true;
     }
@@ -219,49 +206,6 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(saveFile)));
             }
         });
-    }
-
-    private void requestPermission() {
-        AndPermission.with(this)
-                     .requestCode(REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
-                     .permission(Manifest.permission.SET_WALLPAPER)
-                     .send();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults, mPermissionListener);
-    }
-
-    private PermissionListener mPermissionListener = new PermissionListener() {
-        @Override
-        public void onSucceed(int requestCode) {
-            if (requestCode == REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
-                setWallpager();
-            }
-        }
-
-        @Override
-        public void onFailed(int requestCode) {
-            if (requestCode == REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
-            }
-        }
-    };
-
-    private void setWallpager() {
-        final Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        Glide.with(this).load(mShotsEntity.getImages().getHidpi()).asBitmap().into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), resource, null, null));
-                intent.setDataAndType(uri, "image/*");
-                intent.putExtra("mimeType", "image/*");
-                startActivity(Intent.createChooser(intent, "设为壁纸"));
-            }
-        });
-
     }
 
     /**

@@ -13,7 +13,7 @@ public interface FollowersContract {
 
     interface Model extends BaseModel {
 
-        Observable<List<FollowerEntity>> getFollowers(String id);
+        Observable<List<FollowerEntity>> getFollowers(String id, int page);
     }
 
     interface View extends BaseView {
@@ -21,8 +21,8 @@ public interface FollowersContract {
         void getFollowersOnSuccess(List<FollowerEntity> data);
     }
 
-    abstract class Presenter extends BasePresenter<Model,View>{
+    abstract class Presenter extends BasePresenter<Model, View> {
 
-        abstract void getFollowers(String id);
+        abstract void getFollowers(String id, int page);
     }
 }

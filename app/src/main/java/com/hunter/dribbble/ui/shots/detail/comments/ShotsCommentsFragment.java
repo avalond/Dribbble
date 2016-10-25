@@ -21,9 +21,9 @@ import butterknife.BindView;
 public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPresenter, ShotsCommentsModel> implements
         ShotsCommentsContract.View {
 
-    @BindView(R.id.rv_shots_detail_comments)
-    RecyclerView       mRvShotsComments;
-    @BindView(R.id.refresh_shots_detail_comments)
+    @BindView(R.id.rv_single_list)
+    RecyclerView mRvList;
+    @BindView(R.id.refresh_single_list)
     SwipeRefreshLayout mRefresh;
 
     private int mShotsId;
@@ -40,7 +40,7 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_shots_comments;
+        return R.layout.layout_single_list_with_refresh;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
         ShotsEntity shotsEntity = (ShotsEntity) getArguments().getSerializable(AppConstants.EXTRA_SHOTS_ENTITY);
         mShotsId = shotsEntity.getId();
         initList();
-        setupList(mRefresh, mRvShotsComments, mAdapter);
+        setupList(mRefresh, mRvList, mAdapter);
     }
 
     @Override
@@ -64,9 +64,9 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
 
     private void initList() {
         mAdapter = new CommentsAdapter(new ArrayList<CommentEntity>());
-        mRvShotsComments.setAdapter(mAdapter);
-        mRvShotsComments.setLayoutManager(new LinearLayoutManager(mActivity));
-        mRvShotsComments.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
+        mRvList.setAdapter(mAdapter);
+        mRvList.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRvList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
     }
 
     @Override
@@ -79,4 +79,5 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
         mRefresh.setRefreshing(false);
         mRefresh.setEnabled(false);
     }
+
 }

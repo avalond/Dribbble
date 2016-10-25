@@ -10,83 +10,83 @@ import java.util.List;
 public class ShotsEntity implements Serializable, MultiItemEntity {
 
     @SerializedName("id")
-    private int          mId;
+    private int mId;
     @SerializedName("title")
-    private String       mTitle;
+    private String mTitle;
     @SerializedName("description")
-    private String       mDescription;
+    private String mDescription;
     @SerializedName("width")
-    private int          mWidth;
+    private int mWidth;
     @SerializedName("height")
-    private int          mHeight;
+    private int mHeight;
     @SerializedName("images")
     private ImagesEntity mImages;
     @SerializedName("views_count")
-    private int          mViewsCount;
+    private int mViewsCount;
     @SerializedName("likes_count")
-    private int          mLikesCount;
+    private int mLikesCount;
     @SerializedName("comments_count")
-    private int          mCommentsCount;
+    private int mCommentsCount;
     @SerializedName("attachments_count")
-    private int          mAttachmentsCount;
+    private int mAttachmentsCount;
     @SerializedName("rebounds_count")
-    private int          mReboundsCount;
+    private int mReboundsCount;
     @SerializedName("buckets_count")
-    private int          mBucketsCount;
+    private int mBucketsCount;
     @SerializedName("created_at")
-    private String       mCreatedAt;
+    private String mCreatedAt;
     @SerializedName("updated_at")
-    private String       mUpdatedAt;
+    private String mUpdatedAt;
     @SerializedName("html_url")
-    private String       mHtmlUrl;
+    private String mHtmlUrl;
     @SerializedName("attachments_url")
-    private String       mAttachmentsUrl;
+    private String mAttachmentsUrl;
     @SerializedName("buckets_url")
-    private String       mBucketsUrl;
+    private String mBucketsUrl;
     @SerializedName("comments_url")
-    private String       mCommentsUrl;
+    private String mCommentsUrl;
     @SerializedName("likes_url")
-    private String       mLikesUrl;
+    private String mLikesUrl;
     @SerializedName("projects_url")
-    private String       mProjectsUrl;
+    private String mProjectsUrl;
     @SerializedName("rebounds_url")
-    private String       mReboundsUrl;
+    private String mReboundsUrl;
     @SerializedName("animated")
-    private boolean      mAnimated;
+    private boolean mAnimated;
     @SerializedName("user")
-    private UserEntity   mUser;
+    private UserEntity mUser;
     @SerializedName("team")
-    private TeamEntity   mTeam;
+    private TeamEntity mTeam;
     @SerializedName("tags")
     private List<String> mTags;
 
     public static class Builder {
 
-        private int          id;
-        private String       title;
-        private String       description;
-        private int          width;
-        private int          height;
+        private int id;
+        private String title;
+        private String description;
+        private int width;
+        private int height;
         private ImagesEntity images;
-        private int          views_count;
-        private int          likes_count;
-        private int          comments_count;
-        private int          attachments_count;
-        private int          rebounds_count;
-        private int          buckets_count;
-        private String       created_at;
-        private String       updated_at;
-        private String       html_url;
-        private String       attachments_url;
-        private String       buckets_url;
-        private String       comments_url;
-        private String       likes_url;
-        private String       projects_url;
-        private String       rebounds_url;
-        private boolean      animated;
+        private int views_count;
+        private int likes_count;
+        private int comments_count;
+        private int attachments_count;
+        private int rebounds_count;
+        private int buckets_count;
+        private String created_at;
+        private String updated_at;
+        private String html_url;
+        private String attachments_url;
+        private String buckets_url;
+        private String comments_url;
+        private String likes_url;
+        private String projects_url;
+        private String rebounds_url;
+        private boolean animated;
         private List<String> tags;
-        private UserEntity   user;
-        private TeamEntity   team;
+        private UserEntity user;
+        private TeamEntity team;
 
         public Builder setId(int id) {
             this.id = id;
@@ -215,9 +215,9 @@ public class ShotsEntity implements Serializable, MultiItemEntity {
 
         public ShotsEntity build() {
             return new ShotsEntity(id, title, description, width, height, images, views_count, likes_count,
-                                   comments_count, attachments_count, rebounds_count, buckets_count, created_at,
-                                   updated_at, html_url, attachments_url, buckets_url, comments_url, likes_url,
-                                   projects_url, rebounds_url, animated, user, team, tags);
+                    comments_count, attachments_count, rebounds_count, buckets_count, created_at, updated_at, html_url,
+                    attachments_url, buckets_url, comments_url, likes_url, projects_url, rebounds_url, animated, user,
+                    team, tags);
         }
     }
 

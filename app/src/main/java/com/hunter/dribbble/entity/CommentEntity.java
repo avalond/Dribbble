@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName;
 public class CommentEntity {
 
     @SerializedName("id")
-    private int        mId;
+    private int mId;
     @SerializedName("body")
-    private String     mBody;
+    private String mBody;
     @SerializedName("likes_count")
-    private int        mLikesCount;
+    private int mLikesCount;
     @SerializedName("likes_url")
-    private String     mLikesUrl;
+    private String mLikesUrl;
     @SerializedName("created_at")
-    private String     mCreatedAt;
+    private String mCreatedAt;
     @SerializedName("updated_at")
-    private String     mUpdatedAt;
+    private String mUpdatedAt;
     @SerializedName("user")
     private UserEntity mUser;
 

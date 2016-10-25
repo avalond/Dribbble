@@ -28,6 +28,8 @@ public interface ApiConstants {
         String FOLLOWERS = "users/{id}/followers";
 
         String SEARCH = "search";
+
+        String USER = "user";
     }
 
     interface ParamKey {

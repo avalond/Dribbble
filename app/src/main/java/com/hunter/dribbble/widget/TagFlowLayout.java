@@ -18,19 +18,6 @@ public class TagFlowLayout extends ViewGroup {
 
     private List<Integer> mLineMaxHeightList;
 
-    /* 当前ViewGroup的总高度 */
-    private int mTotalHeight  = 0;
-    /* 所有行中的最大宽度 */
-    private int mMaxLineWidth = 0;
-
-    /* 当前行的宽高 */
-    private int mCurrentLineHeight;
-    private int mCurrentLineWidth;
-
-    /* 每个childView所占用的宽高 */
-    private int mChildViewWidthSpace;
-    private int mChildViewHeightSpace;
-
     public TagFlowLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -90,7 +77,7 @@ public class TagFlowLayout extends ViewGroup {
         }
 
         setMeasuredDimension(widthMode == MeasureSpec.EXACTLY ? widthSize : maxLineWidth,
-                             heightMode == MeasureSpec.EXACTLY ? heightSize : totalHeight);
+                heightMode == MeasureSpec.EXACTLY ? heightSize : totalHeight);
     }
 
     @Override

@@ -1,6 +1,7 @@
-package com.hunter.dribbble.ui;
+package com.hunter.dribbble.ui.main;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -13,11 +14,13 @@ import android.view.View;
 import com.hunter.dribbble.App;
 import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
-import com.hunter.dribbble.base.BaseActivity;
+import com.hunter.dribbble.base.mvp.BaseMVPActivity;
+import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.event.EventViewMode;
 import com.hunter.dribbble.ui.shots.list.ShotsListFragment;
 import com.hunter.dribbble.ui.user.login.LoginActivity;
 import com.hunter.dribbble.ui.user.search.dialog.SearchFragment;
+import com.hunter.dribbble.utils.UserInfoUtils;
 import com.hunter.dribbble.widget.spinner.MaterialSpinner;
 import com.hunter.lib.util.SPUtils;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -36,8 +39,8 @@ import butterknife.ButterKnife;
 
 import static com.hunter.dribbble.utils.ViewModelUtils.VIEW_MODE_TITLE_RES;
 
-public class MainActivity extends BaseActivity implements AccountHeader.OnAccountHeaderListener,
-        Toolbar.OnMenuItemClickListener {
+public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoModel> implements UserInfoContract.View,
+        AccountHeader.OnAccountHeaderListener, Toolbar.OnMenuItemClickListener {
 
     private static final String TAG_SEARCH = "tag_search";
 
@@ -62,6 +65,8 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
 
     private long mExitTime;
 
+    private AccountHeader mAccountHeader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +77,7 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
         initNavDrawer();
         initFragment();
         initSpinner();
+        initUserInfo();
     }
 
     private void initNavDrawer() {
@@ -80,11 +86,11 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
 
         ProfileDrawerItem navHeader = new ProfileDrawerItem();
         navHeader.withName("点击头像登录").withIcon(ContextCompat.getDrawable(this, R.mipmap.ic_launcher));
-        AccountHeader accountHeader = new AccountHeaderBuilder().withActivity(this)
-                                                                .addProfiles(navHeader)
-                                                                .withSelectionListEnabled(false)
-                                                                .withOnAccountHeaderListener(this)
-                                                                .build();
+        mAccountHeader = new AccountHeaderBuilder().withActivity(this)
+                                                   .addProfiles(navHeader)
+                                                   .withSelectionListEnabled(false)
+                                                   .withOnAccountHeaderListener(this)
+                                                   .build();
 
         PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem();
         homeDrawerItem.withName("Home")
@@ -115,9 +121,9 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
         builder.withActivity(this)
                .withToolbar(mToolbar)
                .withActionBarDrawerToggleAnimated(true)
-               .withAccountHeader(accountHeader)
+               .withAccountHeader(mAccountHeader)
                .addDrawerItems(homeDrawerItem, followingDrawerItem, bucketsDrawerItem, likesDrawerItem,
-                               new DividerDrawerItem(), settingsDrawerItem);
+                       new DividerDrawerItem(), settingsDrawerItem);
 
         builder.build();
     }
@@ -146,6 +152,10 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
         fragmentManager.beginTransaction().add(R.id.container_main, mShotsListFragment).commit();
 
         mSearchFragment = SearchFragment.newInstance();
+    }
+
+    private void initUserInfo() {
+        if (App.getInstance().isLogin()) mPresenter.getUserInfo();
     }
 
     @Override
@@ -208,5 +218,14 @@ public class MainActivity extends BaseActivity implements AccountHeader.OnAccoun
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void getUserInfoOnSuccess(UserEntity entity) {
+        UserInfoUtils.setUserInfo(this, entity);
+        ProfileDrawerItem navHeader = new ProfileDrawerItem();
+        navHeader.withName(entity.getName()).withIcon(Uri.parse(entity.getAvatarUrl()));
+        navHeader.withIdentifier(1);
+        mAccountHeader.updateProfile(navHeader);
     }
 }

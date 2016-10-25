@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ImagesEntity  implements Serializable {
+public class ImagesEntity implements Serializable {
 
     @SerializedName("hidpi")
     private String mHidpi;

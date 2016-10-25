@@ -7,67 +7,67 @@ import java.io.Serializable;
 public class TeamEntity implements Serializable {
 
     @SerializedName("id")
-    private int         mId;
+    private int mId;
     @SerializedName("name")
-    private String      mName;
+    private String mName;
     @SerializedName("username")
-    private String      mUsername;
+    private String mUsername;
     @SerializedName("html_url")
-    private String      mHtmlUrl;
+    private String mHtmlUrl;
     @SerializedName("avatar_url")
-    private String      mAvatarUrl;
+    private String mAvatarUrl;
     @SerializedName("bio")
-    private String      mBio;
+    private String mBio;
     @SerializedName("location")
-    private String      mLocation;
+    private String mLocation;
     @SerializedName("links")
     private LinksEntity mLinks;
     @SerializedName("buckets_count")
-    private int         mBucketsCount;
+    private int mBucketsCount;
     @SerializedName("comments_received_count")
-    private int         mCommentsReceivedCount;
+    private int mCommentsReceivedCount;
     @SerializedName("followers_count")
-    private int         mFollowersCount;
+    private int mFollowersCount;
     @SerializedName("followings_count")
-    private int         mFollowingsCount;
+    private int mFollowingsCount;
     @SerializedName("likes_count")
-    private int         mLikesCount;
+    private int mLikesCount;
     @SerializedName("likes_received_count")
-    private int         mLikesReceivedCount;
+    private int mLikesReceivedCount;
     @SerializedName("projects_count")
-    private int         mProjectsCount;
+    private int mProjectsCount;
     @SerializedName("rebounds_received_count")
-    private int         mReboundsReceivedCount;
+    private int mReboundsReceivedCount;
     @SerializedName("shots_count")
-    private int         mShotsCount;
+    private int mShotsCount;
     @SerializedName("can_upload_shot")
-    private boolean     mCanUploadShot;
+    private boolean mCanUploadShot;
     @SerializedName("type")
-    private String      mType;
+    private String mType;
     @SerializedName("pro")
-    private boolean     mPro;
+    private boolean mPro;
     @SerializedName("buckets_url")
-    private String      mBucketsUrl;
+    private String mBucketsUrl;
     @SerializedName("followers_url")
-    private String      mFollowersUrl;
+    private String mFollowersUrl;
     @SerializedName("following_url")
-    private String      mFollowingUrl;
+    private String mFollowingUrl;
     @SerializedName("likes_url")
-    private String      mLikesUrl;
+    private String mLikesUrl;
     @SerializedName("projects_url")
-    private String      mProjectsUrl;
+    private String mProjectsUrl;
     @SerializedName("shots_url")
-    private String      mShotsUrl;
+    private String mShotsUrl;
     @SerializedName("created_at")
-    private String      mCreatedAt;
+    private String mCreatedAt;
     @SerializedName("updated_at")
-    private String      mUpdatedAt;
+    private String mUpdatedAt;
     @SerializedName("members_count")
-    private int         mMembersCount;
+    private int mMembersCount;
     @SerializedName("members_url")
-    private String      mMembersUrl;
+    private String mMembersUrl;
     @SerializedName("team_shots_url")
-    private String      mTeamShotsUrl;
+    private String mTeamShotsUrl;
 
     public int getId() {
         return mId;

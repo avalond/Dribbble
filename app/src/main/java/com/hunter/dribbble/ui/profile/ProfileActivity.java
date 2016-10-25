@@ -102,7 +102,7 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
         fragments.add(ProfileShotsFragment.newInstance(mUserEntity.getId() + ""));
         fragments.add(ProfileFollowersFragment.newInstance(mUserEntity.getId() + ""));
         BasePagerAdapter<Fragment> adapter = new BasePagerAdapter<>(getSupportFragmentManager(), fragments,
-                                                                    Arrays.asList(TAB_TITLES));
+                Arrays.asList(TAB_TITLES));
         mPagerProfile.setAdapter(adapter);
         for (String tabTitle : TAB_TITLES) {
             mTabProfile.addTab(mTabProfile.newTab().setText(tabTitle));

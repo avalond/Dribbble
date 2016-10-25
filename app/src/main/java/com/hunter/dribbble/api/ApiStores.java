@@ -4,6 +4,7 @@ import com.hunter.dribbble.entity.CommentEntity;
 import com.hunter.dribbble.entity.FollowerEntity;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.entity.TokenEntity;
+import com.hunter.dribbble.entity.UserEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -33,4 +34,7 @@ public interface ApiStores {
 
     @GET(ApiConstants.Path.SEARCH)
     Observable<List<ShotsEntity>> search(@QueryMap Map<String, String> params);
+
+    @GET(ApiConstants.Path.USER)
+    Observable<UserEntity> getUserInfo();
 }

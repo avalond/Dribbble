@@ -63,17 +63,19 @@ public class SearchConverter implements Converter<ResponseBody, List<ShotsEntity
         imagesEntity.setHidpi(imgUrl);
 
         return new ShotsEntity.Builder().setId(Integer.parseInt(element.id().replace("screenshot-", "")))
-                .setHtmlUrl(HOST + element.select("a.dribbble-link").first().attr("href"))
-                .setTitle(descriptionBlock.select("strong").first().text())
-                .setDescription(description)
-                .setImages(imagesEntity)
-                .setAnimated(element.select("div.gif-indicator").first() != null)
-                .setLikesCount(Integer.parseInt(element.select("li.fav").first().child(0).text().replaceAll(",", "")))
-                .setCommentsCount(
-                        Integer.parseInt(element.select("li.cmnt").first().child(0).text().replaceAll(",", "")))
-                .setViewsCount(Integer.parseInt(element.select("li.views").first().child(0).text().replaceAll(",", "")))
-                .setUser(parsePlayer(element.select("h2").first()))
-                .build();
+                                        .setHtmlUrl(HOST + element.select("a.dribbble-link").first().attr("href"))
+                                        .setTitle(descriptionBlock.select("strong").first().text())
+                                        .setDescription(description)
+                                        .setImages(imagesEntity)
+                                        .setAnimated(element.select("div.gif-indicator").first() != null)
+                                        .setLikesCount(Integer.parseInt(
+                                                element.select("li.fav").first().child(0).text().replaceAll(",", "")))
+                                        .setCommentsCount(Integer.parseInt(
+                                                element.select("li.cmnt").first().child(0).text().replaceAll(",", "")))
+                                        .setViewsCount(Integer.parseInt(
+                                                element.select("li.views").first().child(0).text().replaceAll(",", "")))
+                                        .setUser(parsePlayer(element.select("h2").first()))
+                                        .build();
     }
 
     private static UserEntity parsePlayer(Element element) {
@@ -90,12 +92,12 @@ public class SearchConverter implements Converter<ResponseBody, List<ShotsEntity
         final String slashUsername = userBlock.attr("href");
         final String username = TextUtils.isEmpty(slashUsername) ? null : slashUsername.substring(1);
         return new UserEntity.Builder().setId(id)
-                .setName(userBlock.text())
-                .setUsername(username)
-                .setHtmlUrl(HOST + slashUsername)
-                .setAvatarUrl(avatarUrl)
-                .setPro(element.select("span.badge-pro").size() > 0)
-                .build();
+                                       .setName(userBlock.text())
+                                       .setUsername(username)
+                                       .setHtmlUrl(HOST + slashUsername)
+                                       .setAvatarUrl(avatarUrl)
+                                       .setPro(element.select("span.badge-pro").size() > 0)
+                                       .build();
     }
 
 }

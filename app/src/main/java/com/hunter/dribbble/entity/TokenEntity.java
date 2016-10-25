@@ -11,7 +11,7 @@ public class TokenEntity {
     @SerializedName("scope")
     private String mScope;
     @SerializedName("created_at")
-    private int    mCreatedAt;
+    private int mCreatedAt;
 
     public String getAccessToken() {
         return mAccessToken;

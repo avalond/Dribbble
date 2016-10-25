@@ -30,7 +30,7 @@ public class AuthorizeActivity extends BaseWebActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("code")) {
                     String code = url.replace(ApiConstants.Url.REDIRECT_URL + "?code=", "")
-                            .replace("&state=hunter", "");
+                                     .replace("&state=hunter", "");
                     Intent intent = new Intent();
                     intent.putExtra(AppConstants.EXTRA_AUTHORIZE_CODE, code);
                     setResult(RESULT_OK, intent);

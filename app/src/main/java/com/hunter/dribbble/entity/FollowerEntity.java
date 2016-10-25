@@ -7,7 +7,7 @@ public class FollowerEntity {
     @SerializedName("id")
     private int mId;
     @SerializedName("created_at")
-    private String         mCreatedAt;
+    private String mCreatedAt;
     @SerializedName("follower")
     private UserEntity mFollower;
 
@@ -34,6 +34,5 @@ public class FollowerEntity {
     public void setFollower(UserEntity follower) {
         mFollower = follower;
     }
-
 
 }

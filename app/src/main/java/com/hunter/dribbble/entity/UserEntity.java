@@ -252,10 +252,9 @@ public class UserEntity implements Serializable {
 
         public UserEntity build() {
             return new UserEntity(id, name, username, htmlUrl, avatarUrl, bio, location, links, bucketsCount,
-                                  commentsReceivedCount, followersCount, followingsCount, likesCount,
-                                  likesReceivedCount, projectsCount, reboundsReceivedCount, shotsCount, teamsCount,
-                                  canUploadShot, type, pro, bucketsUrl, followersUrl, followingUrl, likesUrl,
-                                  projectsUrl, shotsUrl, teamsUrl, createdAt, updatedAt);
+                    commentsReceivedCount, followersCount, followingsCount, likesCount, likesReceivedCount,
+                    projectsCount, reboundsReceivedCount, shotsCount, teamsCount, canUploadShot, type, pro, bucketsUrl,
+                    followersUrl, followingUrl, likesUrl, projectsUrl, shotsUrl, teamsUrl, createdAt, updatedAt);
         }
     }
 

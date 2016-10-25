@@ -1,6 +1,7 @@
 package com.hunter.dribbble;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.hunter.lib.util.SPUtils;
 
@@ -8,7 +9,7 @@ public class App extends Application {
 
     private static App sApp;
 
-    private String sToken;
+    private String mToken;
 
     private int mLayoutType;
 
@@ -17,6 +18,7 @@ public class App extends Application {
         super.onCreate();
         sApp = this;
 
+        mToken = (String) SPUtils.get(this, AppConstants.SP_KEE_ACCESS_TOKEN, "");
         mLayoutType = (int) SPUtils.get(this, AppConstants.SP_VIEW_MODE, AppConstants.VIEW_MODE_SMALL_WITH_INFO);
     }
 
@@ -34,10 +36,15 @@ public class App extends Application {
     }
 
     public String getToken() {
-        return sToken;
+        return mToken;
     }
 
     public void setToken(String token) {
-        sToken = token;
+        mToken = token;
     }
+
+    public boolean isLogin() {
+        return TextUtils.isEmpty(mToken);
+    }
+
 }

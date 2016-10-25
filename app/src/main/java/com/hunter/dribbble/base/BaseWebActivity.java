@@ -16,9 +16,9 @@ import com.hunter.lib.LibConstants;
 
 public class BaseWebActivity extends BaseActivity {
 
-    protected Toolbar     mToolbar;
+    protected Toolbar mToolbar;
     protected ProgressBar mProgressWeb;
-    protected WebView     mWebView;
+    protected WebView mWebView;
 
     protected String mWebTitle;
 

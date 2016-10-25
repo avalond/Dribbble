@@ -31,9 +31,9 @@ import butterknife.BindView;
 public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, ShotsListModel> implements
         MaterialSpinner.OnItemSelectedListener, ShotsListContract.View {
 
-    @BindView(R.id.rv_shots_list)
+    @BindView(R.id.rv_single_list)
     RecyclerView mRvShotsList;
-    @BindView(R.id.refresh_shots_list)
+    @BindView(R.id.refresh_single_list)
     SwipeRefreshLayout mRefresh;
 
     private ShotsListAdapter mAdapter;
@@ -51,7 +51,7 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_shots_list;
+        return R.layout.layout_single_list_with_refresh;
     }
 
     @Override
@@ -128,5 +128,4 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
     public void getShotsOnSuccess(List<ShotsEntity> data) {
         setData(data, mAdapter);
     }
-
 }

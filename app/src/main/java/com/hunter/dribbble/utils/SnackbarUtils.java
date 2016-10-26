@@ -40,11 +40,16 @@ public class SnackbarUtils {
             content.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
             TextView textView = (TextView) content.findViewById(R.id.snackbar_text);
             textView.setTextColor(ContextCompat.getColor(context, R.color.text_white));
-            mSnackbarWithAction.setDuration(Snackbar.LENGTH_INDEFINITE);
+            mSnackbarWithAction.setDuration(Snackbar.LENGTH_LONG);
         }
         mSnackbarWithAction.setText(text);
         if (TextUtils.isEmpty(actionText)) actionText = "确定";
         mSnackbarWithAction.setAction(actionText, listener);
         mSnackbarWithAction.show();
+    }
+
+    public static void releaseSnackBar() {
+        if (mSnackbarWithAction != null) mSnackbarWithAction = null;
+        if (mSnackbar != null) mSnackbar = null;
     }
 }

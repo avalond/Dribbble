@@ -71,7 +71,7 @@ public interface ApiConstants {
 
         String REDIRECT_URI = "http://lhunter.org/";
 
-        String SCOPE = "public write omment upload";
+        String SCOPE = "public write comment upload";
 
         String STATE = "hunter";
 

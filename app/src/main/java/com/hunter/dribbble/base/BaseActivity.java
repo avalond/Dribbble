@@ -27,4 +27,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         CharSequence msg = Html.fromHtml(normal + "<strong>「" + strong + "」</strong>");
         SnackbarUtils.showWithAction(getWindow().getDecorView(), msg, this, listener);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SnackbarUtils.releaseSnackBar();
+    }
 }

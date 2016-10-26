@@ -5,10 +5,9 @@
     <color name="colorPrimaryDark">#23242A</color>
     <color name="colorPrimaryLight">#CFD8DC</color>
     <color name="colorAccent">#EA4C89</color>
+    <color name="divider">#ECECEC</color>
 
-    <color name="divider">#e6e6e6</color>
-
-    <color name="windowBackground">#eaeef0</color>
+    <color name="windowBackground">#fbfbfe</color>
 
     <color name="text_white">#F1F1F1</color>
     <color name="text_black">#737373</color>

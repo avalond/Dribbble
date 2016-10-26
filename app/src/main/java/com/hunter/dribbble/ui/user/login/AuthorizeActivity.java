@@ -1,7 +1,6 @@
 package com.hunter.dribbble.ui.user.login;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -21,11 +20,6 @@ public class AuthorizeActivity extends BaseWebActivity {
     protected WebViewClient getWebViewClient() {
 
         return new MyWebViewClient() {
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            }
-
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("code")) {

@@ -8,7 +8,7 @@ public interface AppConstants {
     String SP_VIEW_MODE = "view_mode";
     String SP_IS_FIRST = "is_first";
     String SP_SEARCH_HISTORY = "search_history";
-    String SP_CURRENT_UESR = "current_user";
+    String SP_CURRENT_USER = "current_user";
 
     String EXTRA_SHOTS_ENTITY = "extra_shots_entity";
     String EXTRA_USER_ENTITY = "extra_user_entity";

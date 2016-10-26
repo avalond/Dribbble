@@ -8,4 +8,5 @@
     <string name="menu_view_mode_large_info">大图与详细信息</string>
     <string name="menu_view_mode_large">仅大图</string>
 
+    <string name="share_transition">shareTransition</string>
 </resources>

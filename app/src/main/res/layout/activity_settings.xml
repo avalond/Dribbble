@@ -2,18 +2,35 @@
 <LinearLayout
     android:id="@+id/activity_settings"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.hunter.dribbble.ui.settings.SettingsActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_settings"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@drawable/iv_back_white_24dp"
+            app:title="设置"
+            app:titleTextColor="@color/text_white"/>
+    </android.support.design.widget.AppBarLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:text="网络"
+        android:textColor="@color/text_grey"
         android:textSize="12sp"/>
 
     <LinearLayout
@@ -25,7 +42,6 @@
 
         <android.support.v7.widget.SwitchCompat
             style="@style/SwitchSettings"
-            android:layout_marginTop="6dp"
             android:text="仅Wi-Fi下联网"/>
 
         <android.support.v7.widget.SwitchCompat
@@ -36,4 +52,108 @@
             style="@style/SwitchSettings"
             android:text="使用2G/3G/4G网络浏览动图"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/divider"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:text="浏览和下载"
+        android:textColor="@color/text_grey"
+        android:textSize="12sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/shape_divider_horizontal"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <TextView
+            style="@style/SwitchSettings"
+            android:text="图片浏览设置"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="设置下载目录"
+                android:textColor="@color/text_black"/>
+
+            <TextView
+                android:id="@+id/tv_settings_download_dir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="16dp"
+                android:text="/dribble/image"
+                android:textColor="@color/text_grey"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+
+        <TextView
+            style="@style/SwitchSettings"
+            android:text="缓存设置"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/divider"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:text="关于"
+        android:textColor="@color/text_grey"
+        android:textSize="12sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/shape_divider_horizontal"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <TextView
+            style="@style/SwitchSettings"
+            android:text="关于 Dribbble"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/divider"/>
+
+    <TextView
+        android:id="@+id/tv_settings_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="切换账号"
+        android:textColor="@color/colorAccent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/divider"/>
 </LinearLayout>

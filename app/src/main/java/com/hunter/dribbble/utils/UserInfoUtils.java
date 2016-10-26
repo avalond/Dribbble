@@ -21,22 +21,22 @@ public class UserInfoUtils {
         UserEntity currentUser = sUserEntity.get(KEY_CURRENT_USER);
         if (currentUser != null) return currentUser;
 
-        String userStr = (String) SPUtils.get(context, AppConstants.SP_CURRENT_UESR, "");
+        String userStr = (String) SPUtils.get(context, AppConstants.SP_CURRENT_USER, "");
         if (TextUtils.isEmpty(userStr)) return null;
 
         UserEntity user = new Gson().fromJson(userStr, UserEntity.class);
-        sUserEntity.put(AppConstants.SP_CURRENT_UESR, user);
+        sUserEntity.put(AppConstants.SP_CURRENT_USER, user);
         return user;
     }
 
     public static void clearUserInfo(Context context) {
         sUserEntity.clear();
-        SPUtils.put(context, AppConstants.SP_CURRENT_UESR, "");
+        SPUtils.put(context, AppConstants.SP_CURRENT_USER, "");
     }
 
     public static void setUserInfo(Context context, UserEntity entity) {
         sUserEntity.put(KEY_CURRENT_USER, entity);
-        SPUtils.put(context, AppConstants.SP_CURRENT_UESR, new Gson().toJson(entity));
+        SPUtils.put(context, AppConstants.SP_CURRENT_USER, new Gson().toJson(entity));
     }
 
 }

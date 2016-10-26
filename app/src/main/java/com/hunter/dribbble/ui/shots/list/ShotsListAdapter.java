@@ -1,5 +1,8 @@
 package com.hunter.dribbble.ui.shots.list;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -8,6 +11,9 @@ import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.entity.UserEntity;
+import com.hunter.dribbble.ui.profile.ProfileActivity;
+import com.hunter.dribbble.ui.shots.detail.ShotsDetailActivity;
+import com.hunter.dribbble.utils.IntentUtils;
 import com.hunter.dribbble.utils.TimeUtils;
 import com.hunter.dribbble.utils.glide.GlideUtils;
 
@@ -15,8 +21,11 @@ import java.util.List;
 
 public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
 
-    public ShotsListAdapter(List<ShotsEntity> data) {
+    private Activity mActivity;
+
+    public ShotsListAdapter(Activity activity, List<ShotsEntity> data) {
         super(data);
+        mActivity = activity;
 
         addItemType(AppConstants.VIEW_MODE_LARGE, R.layout.item_shots_large);
         addItemType(AppConstants.VIEW_MODE_LARGE_WITH_INFO, R.layout.item_shots_large_with_info);
@@ -27,15 +36,13 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
     }
 
     @Override
-    protected void convert(BaseViewHolder holder, ShotsEntity shotsEntity) {
+    protected void convert(BaseViewHolder holder, final ShotsEntity shotsEntity) {
         final UserEntity userEntity = shotsEntity.getUser();
 
         switch (holder.getItemViewType()) {
             case AppConstants.VIEW_MODE_LARGE_WITH_INFO:
                 holder.addOnClickListener(R.id.item_shots_header_large);
                 holder.setText(R.id.tv_item_shots_title, shotsEntity.getTitle());
-                ImageView ivAvatar = holder.getView(R.id.iv_item_shots_avatar);
-                GlideUtils.setAvatar(mContext, userEntity.getAvatarUrl(), ivAvatar);
                 holder.setText(R.id.tv_item_shots_user_name, userEntity.getUsername());
                 String updateAt = shotsEntity.getCreatedAt();
                 if (!updateAt.isEmpty())
@@ -43,6 +50,9 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
                 holder.setText(R.id.tv_item_shots_comment, shotsEntity.getCommentsCount() + "");
                 holder.setText(R.id.tv_item_shots_like, shotsEntity.getLikesCount() + "");
                 holder.setText(R.id.tv_item_shots_view, shotsEntity.getViewsCount() + "");
+
+                ImageView ivAvatar = holder.getView(R.id.iv_item_shots_avatar);
+                initAvatar(userEntity, ivAvatar);
                 break;
             case AppConstants.VIEW_MODE_SMALL_WITH_INFO:
                 holder.setText(R.id.tv_item_shots_comment, shotsEntity.getCommentsCount() + "");
@@ -58,6 +68,28 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
             holder.setVisible(R.id.iv_item_shots_gif, false);
             GlideUtils.setImageWithThumb(mContext, shotsEntity.getImages().getNormal(), ivPreview);
         }
+
+        holder.getView(R.id.item_shots).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, ShotsDetailActivity.class);
+                intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ENTITY, shotsEntity);
+                intent.putExtra(ShotsDetailActivity.EXTRA_IS_FROM_SEARCH, true);
+                IntentUtils.startActivityWithShare(mActivity, view, intent);
+            }
+        });
+    }
+
+    private void initAvatar(final UserEntity userEntity, final ImageView ivAvatar) {
+        GlideUtils.setAvatar(mContext, userEntity.getAvatarUrl(), ivAvatar);
+        ivAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ProfileActivity.class);
+                intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, userEntity);
+                IntentUtils.startActivityWithShare(mActivity, v, intent);
+            }
+        });
     }
 
 }

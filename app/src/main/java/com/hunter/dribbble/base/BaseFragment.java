@@ -59,5 +59,11 @@ public abstract class BaseFragment extends Fragment {
         CharSequence msg = Html.fromHtml(normal + "<strong>「" + strong + "」</strong>");
         SnackbarUtils.showWithAction(mActivity.getWindow().getDecorView(), msg, mContext, actionText, listener);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SnackbarUtils.releaseSnackBar();
+    }
 }
 

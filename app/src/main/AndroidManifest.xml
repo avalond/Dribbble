@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
 
     <application
         android:name=".App"
@@ -15,6 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/CustomTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,12 +22,27 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.user.login.LoginActivity"/>
-        <activity android:name=".ui.user.login.AuthorizeActivity"/>
-        <activity android:name=".ui.shots.detail.ShotsDetailActivity"/>
-        <activity android:name=".ui.profile.ProfileActivity"/>
-        <activity android:name=".ui.shots.WatchImageActivity"/>
-        <activity android:name=".ui.user.search.SearchActivity"/>
+        <activity
+            android:name=".ui.user.login.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.user.login.AuthorizeActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.shots.detail.ShotsDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.shots.ImageWatcherActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.user.search.SearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.settings.SettingsActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -1,9 +1,8 @@
 package com.hunter.dribbble.ui.shots.detail;
 
+import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,42 +12,31 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPActivity;
 import com.hunter.dribbble.entity.ShotsEntity;
-import com.hunter.dribbble.ui.shots.WatchImageActivity;
+import com.hunter.dribbble.ui.shots.ImageWatcherActivity;
 import com.hunter.dribbble.ui.shots.detail.comments.ShotsCommentsFragment;
 import com.hunter.dribbble.ui.shots.detail.des.ShotsDesFragment;
-import com.hunter.dribbble.utils.FileUtils;
+import com.hunter.dribbble.utils.ImageDownloadUtils;
 import com.hunter.dribbble.utils.ImageUrlUtils;
 import com.hunter.dribbble.utils.StatusBarCompat;
 import com.hunter.dribbble.utils.glide.GlideUtils;
 import com.hunter.dribbble.widget.ProportionImageView;
 import com.hunter.lib.base.BasePagerAdapter;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
-import static com.hunter.dribbble.utils.FileUtils.getExternalBaseDir;
+import rx.functions.Action1;
 
 public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, ShotsDetailModel> implements
         ShotsDetailContract.View, Toolbar.OnMenuItemClickListener {
-
-    public static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 100;
 
     public static final String EXTRA_SHOTS_ENTITY = "extra_shots_entity";
     public static final String EXTRA_IS_FROM_SEARCH = "extra_is_from_search";
@@ -63,8 +51,6 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     ViewPager mPagerShots;
     @BindView(R.id.toolbar_shots_detail)
     Toolbar mToolbarShots;
-    @BindView(R.id.fab_shots_detail_play)
-    FloatingActionButton mFabShotsDetailPlay;
 
     private ShotsEntity mShotsEntity;
 
@@ -108,13 +94,9 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     }
 
     private void showImage() {
-        if (mShotsEntity.isAnimated()) {
-            GlideUtils.setGif(this, mShotsEntity.getImages().getHidpi(), mPivShotsImage);
-            mFabShotsDetailPlay.setVisibility(View.VISIBLE);
-        } else {
-            GlideUtils.setImageWithThumb(this, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()), mPivShotsImage);
-            mFabShotsDetailPlay.setVisibility(View.GONE);
-        }
+        if (mShotsEntity.isAnimated()) GlideUtils.setGif(this, mShotsEntity.getImages().getHidpi(), mPivShotsImage);
+        else GlideUtils.setImageWithThumb(this, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()), mPivShotsImage);
+
     }
 
     private void initPager() {
@@ -122,16 +104,17 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
         fragments.add(ShotsDesFragment.newInstance(mShotsEntity));
         fragments.add(ShotsCommentsFragment.newInstance(mShotsEntity));
         BasePagerAdapter<Fragment> adapter = new BasePagerAdapter<>(getSupportFragmentManager(), fragments,
-                                                                    Arrays.asList(TAB_TITLES));
+                Arrays.asList(TAB_TITLES));
         mPagerShots.setAdapter(adapter);
         mTabShots.setupWithViewPager(mPagerShots);
     }
 
     @OnClick(R.id.piv_shots_detail_image)
     void toWatchImage() {
-        Intent intent = new Intent(this, WatchImageActivity.class);
-        intent.putExtra(WatchImageActivity.EXTRA_IMAGE_URL, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()));
-        intent.putExtra(WatchImageActivity.EXTRA_IS_ANIMATED, mShotsEntity.isAnimated());
+        Intent intent = new Intent(this, ImageWatcherActivity.class);
+        intent.putExtra(ImageWatcherActivity.EXTRA_IMAGE_URL, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()));
+        intent.putExtra(ImageWatcherActivity.EXTRA_IS_ANIMATED, mShotsEntity.isAnimated());
+        intent.putExtra(ImageWatcherActivity.EXTRA_IMAGE_TITLE, mShotsEntity.getTitle());
         startActivity(intent);
     }
 
@@ -157,55 +140,20 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
                 break;
 
             case R.id.menu_download:
-                downloadPicture();
+                RxPermissions.getInstance(this)
+                             .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                             .subscribe(new Action1<Boolean>() {
+                                 @Override
+                                 public void call(Boolean granted) {
+                                     if (granted)
+                                         ImageDownloadUtils.downloadImage(ShotsDetailActivity.this, mShotsEntity);
+                                     else showToast("获取权限失败，请重试");
+                                 }
+                             });
                 break;
 
         }
         return true;
-    }
-
-    private void downloadPicture() {
-        Observable.create(new Observable.OnSubscribe<File>() {
-            @Override
-            public void call(Subscriber<? super File> subscriber) {
-                try {
-                    subscriber.onNext(Glide.with(ShotsDetailActivity.this)
-                                           .load(mShotsEntity.getImages().getHidpi())
-                                           .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                           .get());
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    subscriber.onError(e);
-                }
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<File>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                showToast("下载失败，请重试");
-            }
-
-            @Override
-            public void onNext(File file) {
-                String suffix = mShotsEntity.isAnimated() ? ".gif" : ".png";
-                File saveFile = FileUtils.saveToExternalCustomDir(FileUtils.getBytesFromFile(file),
-                                                                  AppConstants.EXTERNAL_FILE_ROOT,
-                                                                  mShotsEntity.getTitle() + suffix);
-                if (saveFile != null)
-                    showToastForStrongWithAction("保存至", saveFile.getPath().replace(getExternalBaseDir(), ""),
-                                                 new View.OnClickListener() {
-                                                     @Override
-                                                     public void onClick(View v) {
-
-                                                     }
-                                                 });
-                else showToast("下载失败，请重试");
-                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(saveFile)));
-            }
-        });
     }
 
     /**

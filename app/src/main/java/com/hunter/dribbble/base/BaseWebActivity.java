@@ -54,7 +54,6 @@ public class BaseWebActivity extends BaseActivity {
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         settings.setAllowFileAccess(true);
-        settings.setAppCacheEnabled(true);
 
         mWebView.setWebChromeClient(getWebChromeClient());
         mWebView.setWebViewClient(getWebViewClient());

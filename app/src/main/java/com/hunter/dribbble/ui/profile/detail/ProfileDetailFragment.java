@@ -63,7 +63,7 @@ public class ProfileDetailFragment extends BaseFragment {
         if (!TextUtils.isEmpty(location)) {
             mTvLocation.setText(location);
         } else {
-            mTvFollower.setVisibility(View.GONE);
+            mTvLocation.setVisibility(View.GONE);
         }
 
         String twitter = userEntity.getLinks().getTwitter();

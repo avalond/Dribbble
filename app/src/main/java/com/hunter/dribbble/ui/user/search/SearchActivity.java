@@ -1,26 +1,20 @@
 package com.hunter.dribbble.ui.user.search;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hunter.dribbble.App;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.api.ApiConstants;
 import com.hunter.dribbble.base.mvp.BaseMVPListActivity;
 import com.hunter.dribbble.entity.ShotsEntity;
-import com.hunter.dribbble.ui.profile.ProfileActivity;
-import com.hunter.dribbble.ui.shots.detail.ShotsDetailActivity;
 import com.hunter.dribbble.ui.shots.list.ShotsListAdapter;
 import com.hunter.dribbble.utils.ViewModelUtils;
-import com.hunter.dribbble.utils.listener.SimpleAdapterClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,29 +56,11 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
     }
 
     private void initShotsList() {
-        mShotsAdapter = new ShotsListAdapter(new ArrayList<ShotsEntity>());
+        mShotsAdapter = new ShotsListAdapter(this, new ArrayList<ShotsEntity>());
         mRvResult.setAdapter(mShotsAdapter);
 
         ViewModelUtils.changeLayoutManager(mRvResult, App.getInstance().getViewMode());
         mRvResult.setItemAnimator(new DefaultItemAnimator());
-        mRvResult.addOnItemTouchListener(new SimpleAdapterClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                /* 点击进入 shots 详情 */
-                Intent intent = new Intent(SearchActivity.this, ShotsDetailActivity.class);
-                intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ENTITY, mShotsAdapter.getItem(i));
-                intent.putExtra(ShotsDetailActivity.EXTRA_IS_FROM_SEARCH, true);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                /* 点击进入用户详情 */
-                Intent intent = new Intent(SearchActivity.this, ProfileActivity.class);
-                intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, mShotsAdapter.getItem(i).getUser());
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

@@ -36,7 +36,7 @@ public class ApiClient {
                 builder.addInterceptor(interceptor);
             }
 
-            String token = App.getInstance().getToken();
+            String token = App.getAppConfig().getToken();
             final String access_token = "Bearer " + (TextUtils.isEmpty(token) ? ApiConstants.ParamValue.TOKEN : token);
             Interceptor tokenInterceptor = new Interceptor() {
                 @Override
@@ -59,7 +59,7 @@ public class ApiClient {
         return sRestRetrofit.create(ApiStores.class);
     }
 
-    public synchronized static ApiStores getForOAtuh() {
+    public synchronized static ApiStores getForOAuth() {
         if (sOAuthRetrofit == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
 

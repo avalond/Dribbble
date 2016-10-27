@@ -13,7 +13,7 @@ import com.hunter.dribbble.utils.glide.GlideUtils;
 
 import java.util.List;
 
-public class CommentsAdapter extends BaseQuickAdapter<CommentEntity> {
+public class CommentsAdapter extends BaseQuickAdapter<CommentEntity, BaseViewHolder> {
 
     public CommentsAdapter(List<CommentEntity> data) {
         super(R.layout.item_shots_detail_comment, data);

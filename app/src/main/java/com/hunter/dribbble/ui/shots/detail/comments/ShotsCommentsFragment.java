@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPListFragment;
 import com.hunter.dribbble.entity.CommentEntity;
@@ -21,6 +20,8 @@ import butterknife.BindView;
 public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPresenter, ShotsCommentsModel> implements
         ShotsCommentsContract.View {
 
+    public static final String ARGS_SHOTS_ENTITY = "args_shots_entity";
+
     @BindView(R.id.rv_single_list)
     RecyclerView mRvList;
     @BindView(R.id.refresh_single_list)
@@ -32,7 +33,7 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
 
     public static ShotsCommentsFragment newInstance(ShotsEntity entity) {
         Bundle args = new Bundle();
-        args.putSerializable(AppConstants.EXTRA_SHOTS_ENTITY, entity);
+        args.putSerializable(ARGS_SHOTS_ENTITY, entity);
         ShotsCommentsFragment fragment = new ShotsCommentsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -45,7 +46,7 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
-        ShotsEntity shotsEntity = (ShotsEntity) getArguments().getSerializable(AppConstants.EXTRA_SHOTS_ENTITY);
+        ShotsEntity shotsEntity = (ShotsEntity) getArguments().getSerializable(ARGS_SHOTS_ENTITY);
         mShotsId = shotsEntity.getId();
         initList();
         setupList(mRefresh, mRvList, mAdapter);

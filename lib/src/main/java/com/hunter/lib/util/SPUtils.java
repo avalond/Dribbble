@@ -11,40 +11,35 @@ public class SPUtils {
 
     public static final String FILE_NAME = "share_data";
 
-    public static void put(Context context, String key, Object object) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+    public static void put(Context context, String key, Object value) {
+        put(key, value, context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE));
+    }
+
+    public static void put(String key, Object value, SharedPreferences sp) {
         SharedPreferences.Editor editor = sp.edit();
 
-        if (object instanceof String) {
-            editor.putString(key, (String) object);
-        } else if (object instanceof Integer) {
-            editor.putInt(key, (Integer) object);
-        } else if (object instanceof Boolean) {
-            editor.putBoolean(key, (Boolean) object);
-        } else if (object instanceof Float) {
-            editor.putFloat(key, (Float) object);
-        } else if (object instanceof Long) {
-            editor.putLong(key, (Long) object);
+        if (value instanceof String) {
+            editor.putString(key, (String) value);
+        } else if (value instanceof Integer) {
+            editor.putInt(key, (Integer) value);
+        } else if (value instanceof Boolean) {
+            editor.putBoolean(key, (Boolean) value);
+        } else if (value instanceof Float) {
+            editor.putFloat(key, (Float) value);
+        } else if (value instanceof Long) {
+            editor.putLong(key, (Long) value);
         } else {
-            editor.putString(key, object.toString());
+            editor.putString(key, value.toString());
         }
 
         editor.apply();
     }
 
-    public static void putStrList(Context context, String key, List<String> strList) {
-        if (null == strList) return;
-
-        removeStrList(context, key);
-
-        int size = strList.size();
-        put(context, key + "size", size);
-        for (int i = 0; i < size; i++) put(context, key + i, strList.get(i));
+    public static Object get(Context context, String key, Object defaultValue) {
+        return get(key, defaultValue, context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE));
     }
 
-    public static Object get(Context context, String key, Object defaultValue) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-
+    public static Object get(String key, Object defaultValue, SharedPreferences sp) {
         if (defaultValue instanceof String) {
             return sp.getString(key, (String) defaultValue);
         } else if (defaultValue instanceof Integer) {
@@ -56,8 +51,17 @@ public class SPUtils {
         } else if (defaultValue instanceof Long) {
             return sp.getLong(key, (Long) defaultValue);
         }
-
         return null;
+    }
+
+    public static void putStrList(Context context, String key, List<String> strList) {
+        if (null == strList) return;
+
+        removeStrList(context, key);
+
+        int size = strList.size();
+        put(context, key + "size", size);
+        for (int i = 0; i < size; i++) put(context, key + i, strList.get(i));
     }
 
     public static List<String> getStrList(Context context, String key) {

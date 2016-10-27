@@ -7,14 +7,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.hunter.dribbble.App;
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.api.ApiClient;
 import com.hunter.dribbble.base.mvp.BaseMVPActivity;
 import com.hunter.dribbble.entity.TokenEntity;
-import com.hunter.lib.LibConstants;
-import com.hunter.lib.util.SPUtils;
 import com.hunter.dribbble.utils.UrlUtils;
+import com.hunter.lib.LibConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,8 +20,12 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> implements LoginContract.View {
 
+    public static final String EXTRA_AUTHORIZE_CODE = "extra_authorize_code";
+
+    public static final int REQUEST_CODE_AUTHORIZE = 1;
+
     @BindView(R.id.btn_to_authorize_web)
-    Button      mBtnLogin;
+    Button mBtnLogin;
     @BindView(R.id.progress_login)
     ProgressBar mProgressLogin;
 
@@ -38,7 +40,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
     void toAuthorizeWeb() {
         Intent intent = new Intent(this, AuthorizeActivity.class);
         intent.putExtra(LibConstants.EXTRA_WEB_LOAD_URL, UrlUtils.getAuthorizeUrl());
-        startActivityForResult(intent, AppConstants.REQUEST_CODE_AUTHORIZE);
+        startActivityForResult(intent, REQUEST_CODE_AUTHORIZE);
     }
 
     @OnClick(R.id.ibtn_login_close)
@@ -48,8 +50,8 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == AppConstants.REQUEST_CODE_AUTHORIZE) {
-            mPresenter.getToken(data.getStringExtra(AppConstants.EXTRA_AUTHORIZE_CODE));
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_AUTHORIZE) {
+            mPresenter.getToken(data.getStringExtra(EXTRA_AUTHORIZE_CODE));
             mProgressLogin.setVisibility(View.VISIBLE);
             mProgressLogin.setIndeterminate(true);
             mBtnLogin.setVisibility(View.GONE);
@@ -58,9 +60,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
 
     @Override
     public void getTokenOnSuccess(TokenEntity entity) {
-        String token = entity.getAccessToken();
-        SPUtils.put(this, AppConstants.SP_KEE_ACCESS_TOKEN, token);
-        App.getInstance().setToken(token);
+        App.getAppConfig().setToken(entity.getAccessToken());
         ApiClient.resetApiClient();
 
         mProgressLogin.setVisibility(View.GONE);

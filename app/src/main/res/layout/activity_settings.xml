@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/activity_settings"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -20,6 +19,7 @@
             android:background="@color/colorPrimary"
             app:navigationIcon="@drawable/iv_back_white_24dp"
             app:title="设置"
+            app:titleTextAppearance="@style/ToolbarTitleText"
             app:titleTextColor="@color/text_white"/>
     </android.support.design.widget.AppBarLayout>
 
@@ -41,16 +41,13 @@
         android:showDividers="middle">
 
         <android.support.v7.widget.SwitchCompat
-            style="@style/SwitchSettings"
-            android:text="仅Wi-Fi下联网"/>
-
-        <android.support.v7.widget.SwitchCompat
-            style="@style/SwitchSettings"
-            android:text="使用2G/3G/4G网络浏览图片"/>
-
-        <android.support.v7.widget.SwitchCompat
-            style="@style/SwitchSettings"
+            android:id="@+id/switch_settings_net_gif"
+            style="@style/TextSettings"
             android:text="使用2G/3G/4G网络浏览动图"/>
+
+        <TextView
+            style="@style/TextSettings"
+            android:text="图片浏览设置"/>
     </LinearLayout>
 
     <View
@@ -64,7 +61,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="10dp"
-        android:text="浏览和下载"
+        android:text="图片缓存"
         android:textColor="@color/text_grey"
         android:textSize="12sp"/>
 
@@ -75,38 +72,69 @@
         android:orientation="vertical"
         android:showDividers="middle">
 
-        <TextView
-            style="@style/SwitchSettings"
-            android:text="图片浏览设置"/>
-
         <RelativeLayout
+            android:id="@+id/rl_settings_cache_size"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="设置下载目录"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="设置图片缓存上限"
                 android:textColor="@color/text_black"/>
 
             <TextView
-                android:id="@+id/tv_settings_download_dir"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="16dp"
-                android:text="/dribble/image"
+                android:gravity="center"
                 android:textColor="@color/text_grey"
-                android:textSize="13sp"/>
+                android:textSize="12sp"
+                tools:text="100.0M"/>
         </RelativeLayout>
 
-        <TextView
-            style="@style/SwitchSettings"
-            android:text="缓存设置"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清除图片缓存"
+                    android:textColor="@color/text_black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="超过上限部分自动清除"
+                    android:textColor="@color/text_grey"
+                    android:textSize="10sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp"
+                tools:text="80.0M"/>
+        </RelativeLayout>
     </LinearLayout>
 
     <View
@@ -124,18 +152,9 @@
         android:textColor="@color/text_grey"
         android:textSize="12sp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/shape_divider_horizontal"
-        android:orientation="vertical"
-        android:showDividers="middle">
-
-        <TextView
-            style="@style/SwitchSettings"
-            android:text="关于 Dribbble"/>
-
-    </LinearLayout>
+    <TextView
+        style="@style/TextSettings"
+        android:text="关于 Dribbble"/>
 
     <View
         android:layout_width="match_parent"
@@ -145,9 +164,11 @@
     <TextView
         android:id="@+id/tv_settings_logout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center"
-        android:padding="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:text="切换账号"
         android:textColor="@color/colorAccent"/>
 

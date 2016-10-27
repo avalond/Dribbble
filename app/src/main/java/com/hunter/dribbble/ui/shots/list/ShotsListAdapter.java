@@ -19,7 +19,7 @@ import com.hunter.dribbble.utils.glide.GlideUtils;
 
 import java.util.List;
 
-public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
+public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity, BaseViewHolder> {
 
     private Activity mActivity;
 
@@ -75,7 +75,7 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
                 Intent intent = new Intent(mContext, ShotsDetailActivity.class);
                 intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ENTITY, shotsEntity);
                 intent.putExtra(ShotsDetailActivity.EXTRA_IS_FROM_SEARCH, true);
-                IntentUtils.startActivityWithShare(mActivity, view, intent);
+                mContext.startActivity(intent);
             }
         });
     }
@@ -87,7 +87,7 @@ public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity> {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ProfileActivity.class);
                 intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, userEntity);
-                IntentUtils.startActivityWithShare(mActivity, v, intent);
+                IntentUtils.startActivity(mActivity, v, intent);
             }
         });
     }

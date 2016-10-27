@@ -27,19 +27,15 @@ public class MaterialSpinner extends TextView implements View.OnClickListener {
 
     private Context mContext;
 
-    private OnItemSelectedListener mListener;
-
     private RecyclerView mRecyclerView;
-    private PopupWindow  mPopDropDown;
-    private Drawable     mArrowDrawable;
+    private PopupWindow mPopDropDown;
+    private Drawable mArrowDrawable;
 
     private SimpleSpinnerAdapter mAdapter;
 
-    private int  mIconPadding;
+    private int mIconPadding;
     private Rect mRect;
-    private int  mDrawableWidth;
-
-    private ObjectAnimator mRotateAnim;
+    private int mDrawableWidth;
 
     public interface OnItemSelectedListener<T> {
 
@@ -66,17 +62,10 @@ public class MaterialSpinner extends TextView implements View.OnClickListener {
         mPopDropDown = new PopupWindow(mContext);
         mPopDropDown.setContentView(mRecyclerView);
         mPopDropDown.setOutsideTouchable(true);
-//        mPopDropDown.setFocusable(true);
-//        mPopDropDown.setOnDismissListener(new PopupWindow.OnDismissListener() {
-//            @Override
-//            public void onDismiss() {
-//                animateArrow(false);
-//            }
-//        });
 
-        mRotateAnim = ObjectAnimator.ofInt(mArrowDrawable, "level", 0, 0);
-        mRotateAnim.setDuration(200);
-        mRotateAnim.setInterpolator(new DecelerateInterpolator());
+        ObjectAnimator rotateAnim = ObjectAnimator.ofInt(mArrowDrawable, "level", 0, 0);
+        rotateAnim.setDuration(200);
+        rotateAnim.setInterpolator(new DecelerateInterpolator());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPopDropDown.setElevation(10);
@@ -127,28 +116,16 @@ public class MaterialSpinner extends TextView implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (!mPopDropDown.isShowing()) {
-//            animateArrow(true);
-            mPopDropDown.showAsDropDown(this);
-        }
+        if (!mPopDropDown.isShowing()) mPopDropDown.showAsDropDown(this);
     }
 
-    private void animateArrow(boolean isDrop) {
-        int levelStart = isDrop ? 0 : 10000;
-        int levelEnd = isDrop ? 10000 : 0;
-        mRotateAnim.setIntValues(levelStart, levelEnd);
-        mRotateAnim.start();
-    }
-
-    public void setItems(String... items) {
+    public void setItems(final OnItemSelectedListener listener, String... items) {
         mAdapter = new SimpleSpinnerAdapter(mContext, Arrays.asList(items));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<String>() {
             @Override
             public void onItemClick(int position, final String data) {
-                if (mListener != null) {
-                    mListener.onItemSelected(MaterialSpinner.this, position, mAdapter.getItemData(position));
-                }
+                listener.onItemSelected(MaterialSpinner.this, position, mAdapter.getItemData(position));
                 post(new TimerTask() {
                     @Override
                     public void run() {
@@ -159,10 +136,6 @@ public class MaterialSpinner extends TextView implements View.OnClickListener {
                 });
             }
         });
-    }
-
-    public void setOnItemClickListener(OnItemSelectedListener listener) {
-        mListener = listener;
     }
 
 }

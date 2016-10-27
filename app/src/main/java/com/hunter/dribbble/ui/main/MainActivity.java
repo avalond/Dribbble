@@ -44,8 +44,9 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoModel> implements UserInfoContract.View,
         AccountHeader.OnAccountHeaderListener, Toolbar.OnMenuItemClickListener, Drawer.OnDrawerItemClickListener {
 
-    private static final String TAG_SEARCH = "tag_search";
-
+    /**
+     * 侧滑菜单 Item 标识
+     */
     private static final int NAV_IDENTITY_PROFILE = 100;
     private static final int NAV_IDENTITY_HOME = 101;
     private static final int NAV_IDENTITY_FOLLOWING = 102;
@@ -53,12 +54,24 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
     private static final int NAV_IDENTITY_LIKES = 104;
     private static final int NAV_IDENTITY_SETTINGS = 105;
 
+    /**
+     * Spinner 菜单
+     */
+    private static final String[] SELECTOR_TYPE = {"全部", "团队", "首秀", "精品", "再创作", "动画"};
+    private static final String[] SELECTOR_SORT = {"最热", "最新", "浏览最多", "评论最多"};
+    private static final String[] SELECTOR_TIME = {"当前", "周", "月", "年", "所有"};
+
+    /**
+     * Toolbar 菜单栏图标
+     */
     private static final int VIEW_MODE_ICON_RES[] = {
             R.mipmap.ic_action_small_info,
             R.mipmap.ic_action_small,
             R.mipmap.ic_action_large_info,
             R.mipmap.ic_action_large
     };
+
+    public static final int REQUEST_CODE_LOGIN = 2;
 
     @BindView(R.id.toolbar_main)
     Toolbar mToolbar;
@@ -89,14 +102,27 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
         initUserInfo();
     }
 
+    private void shouldAuthorize() {
+        if (!(boolean) SPUtils.get(this, AppConstants.SP_IS_FIRST_RUN, false)) {
+            startActivityForResult(new Intent(this, LoginActivity.class), REQUEST_CODE_LOGIN);
+            SPUtils.put(this, AppConstants.SP_IS_FIRST_RUN, true);
+        }
+    }
+
     private void initNavDrawer() {
         setSupportActionBar(mToolbar);
         mToolbar.setOnMenuItemClickListener(this);
 
         ProfileDrawerItem navHeader = new ProfileDrawerItem();
-        navHeader.withName("点击头像登录")
-                 .withIcon(ContextCompat.getDrawable(this, R.mipmap.ic_launcher))
-                 .withIdentifier(NAV_IDENTITY_PROFILE);
+        if (App.getAppConfig().isLogin()) {
+            navHeader.withName(UserInfoUtils.getCurrentUser(this).getName())
+                     .withIcon(UserInfoUtils.getCurrentUser(this).getAvatarUrl())
+                     .withIdentifier(NAV_IDENTITY_PROFILE);
+        } else {
+            navHeader.withName("点击头像登录")
+                     .withIcon(ContextCompat.getDrawable(this, R.mipmap.ic_launcher))
+                     .withIdentifier(NAV_IDENTITY_PROFILE);
+        }
         mAccountHeader = new AccountHeaderBuilder().withActivity(this)
                                                    .addProfiles(navHeader)
                                                    .withSelectionListEnabled(false)
@@ -104,38 +130,39 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
                                                    .build();
 
         PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem();
-        homeDrawerItem.withName("Home")
+        homeDrawerItem.withName("首页")
                       .withIcon(R.drawable.iv_home_grey_24dp)
                       .withIdentifier(NAV_IDENTITY_HOME)
                       .withOnDrawerItemClickListener(this)
                       .withSelectedIcon(R.drawable.iv_home_pink_24dp);
 
         PrimaryDrawerItem followingDrawerItem = new PrimaryDrawerItem();
-        followingDrawerItem.withName("Following")
+        followingDrawerItem.withName("关注的人")
                            .withIdentifier(NAV_IDENTITY_FOLLOWING)
                            .withIcon(R.drawable.iv_follower_grey_24dp)
                            .withOnDrawerItemClickListener(this)
                            .withSelectedIcon(R.drawable.iv_follower_pink_24dp);
 
         PrimaryDrawerItem bucketsDrawerItem = new PrimaryDrawerItem();
-        bucketsDrawerItem.withName("Buckets")
+        bucketsDrawerItem.withName("收藏夹")
                          .withIdentifier(NAV_IDENTITY_BUCKETS)
                          .withIcon(R.drawable.iv_bucket_grey_24dp)
                          .withOnDrawerItemClickListener(this)
                          .withSelectedIcon(R.drawable.iv_bucket_pink_24dp);
 
         PrimaryDrawerItem likesDrawerItem = new PrimaryDrawerItem();
-        likesDrawerItem.withName("Likes")
+        likesDrawerItem.withName("喜欢")
                        .withIdentifier(NAV_IDENTITY_LIKES)
                        .withIcon(R.drawable.iv_like_grey_24dp)
                        .withOnDrawerItemClickListener(this)
                        .withSelectedIcon(R.drawable.iv_like_pink_24dp);
 
         SecondaryDrawerItem settingsDrawerItem = new SecondaryDrawerItem();
-        settingsDrawerItem.withName("Settings")
+        settingsDrawerItem.withName("设置")
                           .withIdentifier(NAV_IDENTITY_SETTINGS)
                           .withIcon(R.drawable.iv_settings_grey_24dp)
                           .withOnDrawerItemClickListener(this)
+                          .withSelectable(false)
                           .withSelectedIcon(R.drawable.iv_settings_pink_24dp);
 
         DrawerBuilder builder = new DrawerBuilder();
@@ -172,21 +199,9 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
     }
 
     private void initSpinner() {
-        mSpinnerSelectorType.setItems(AppConstants.SELECTOR_TYPE);
-        mSpinnerSelectorType.setOnItemClickListener(mShotsListFragment);
-
-        mSpinnerSelectorSort.setItems(AppConstants.SELECTOR_SORT);
-        mSpinnerSelectorSort.setOnItemClickListener(mShotsListFragment);
-
-        mSpinnerSelectorTime.setItems(AppConstants.SELECTOR_TIME);
-        mSpinnerSelectorTime.setOnItemClickListener(mShotsListFragment);
-    }
-
-    private void shouldAuthorize() {
-        if (!(boolean) SPUtils.get(this, AppConstants.SP_IS_FIRST, false)) {
-            startActivityForResult(new Intent(this, LoginActivity.class), AppConstants.REQUEST_CODE_LOGIN);
-            SPUtils.put(this, AppConstants.SP_IS_FIRST, true);
-        }
+        mSpinnerSelectorType.setItems(mShotsListFragment, SELECTOR_TYPE);
+        mSpinnerSelectorSort.setItems(mShotsListFragment, SELECTOR_SORT);
+        mSpinnerSelectorTime.setItems(mShotsListFragment, SELECTOR_TIME);
     }
 
     private void initFragment() {
@@ -198,13 +213,14 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
     }
 
     private void initUserInfo() {
-        if (App.getInstance().isLogin()) mPresenter.getUserInfo();
+        if (App.getAppConfig().isLogin()) mPresenter.getUserInfo();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == AppConstants.REQUEST_CODE_LOGIN) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_LOGIN) {
             showToast("授权成功");
+            mPresenter.getUserInfo();
         }
     }
 
@@ -213,11 +229,11 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
      */
     @Override
     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-        if (App.getInstance().isLogin()) {
+        if (App.getAppConfig().isLogin()) {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, UserInfoUtils.getCurrentUser(this));
             startActivity(intent);
-        } else startActivityForResult(new Intent(this, LoginActivity.class), AppConstants.REQUEST_CODE_LOGIN);
+        } else startActivityForResult(new Intent(this, LoginActivity.class), REQUEST_CODE_LOGIN);
 
         return false;
     }
@@ -242,7 +258,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
                 showToastForStrong("浏览模式切换为", getString(ViewModelUtils.VIEW_MODE_TITLE_RES[viewModeIndex]));
                 break;
             case R.id.menu_search:
-                mSearchFragment.show(getSupportFragmentManager(), TAG_SEARCH);
+                mSearchFragment.show(getSupportFragmentManager(), SearchFragment.class.getSimpleName());
                 break;
         }
         return false;
@@ -250,7 +266,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_view_mode).setIcon(VIEW_MODE_ICON_RES[App.getInstance().getViewMode()]);
+        menu.findItem(R.id.menu_view_mode).setIcon(VIEW_MODE_ICON_RES[App.getAppConfig().getViewMode()]);
         return true;
     }
 

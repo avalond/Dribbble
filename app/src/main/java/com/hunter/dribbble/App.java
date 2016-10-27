@@ -4,11 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.hunter.lib.util.SPUtils;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
@@ -16,19 +14,12 @@ import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 
 public class App extends Application {
 
-    private static App sApp;
-
-    private String mToken;
-
-    private int mLayoutType;
+    private static AppConfig sAppConfig;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        sApp = this;
-
-        mToken = (String) SPUtils.get(this, AppConstants.SP_KEE_ACCESS_TOKEN, "");
-        mLayoutType = (int) SPUtils.get(this, AppConstants.SP_VIEW_MODE, AppConstants.VIEW_MODE_SMALL_WITH_INFO);
+        sAppConfig = new AppConfig(this);
 
         initMaterialDrawer();
     }
@@ -60,29 +51,8 @@ public class App extends Application {
         });
     }
 
-    public static App getInstance() {
-        return sApp;
-    }
-
-    public int getViewMode() {
-        return mLayoutType;
-    }
-
-    public void setViewMode(int layoutType) {
-        mLayoutType = layoutType;
-        SPUtils.put(this, AppConstants.SP_VIEW_MODE, layoutType);
-    }
-
-    public String getToken() {
-        return mToken;
-    }
-
-    public void setToken(String token) {
-        mToken = token;
-    }
-
-    public boolean isLogin() {
-        return !TextUtils.isEmpty(mToken);
+    public static AppConfig getAppConfig() {
+        return sAppConfig;
     }
 
 }

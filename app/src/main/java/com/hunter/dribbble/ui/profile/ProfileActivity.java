@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,11 +70,13 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         StatusBarCompat.translucentStatusBar(this);
-        mUserEntity = (UserEntity) getIntent().getSerializableExtra(EXTRA_USER_ENTITY);
-        init();
+
+        initToolbar();
+        initUserInfo();
+        initPager();
     }
 
-    private void init() {
+    private void initToolbar() {
         setSupportActionBar(mToolbarProfile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbarProfile.setOnMenuItemClickListener(this);
@@ -83,12 +86,10 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
                 onBackPressed();
             }
         });
-
-        initUserInfo();
-        initPager();
     }
 
     private void initUserInfo() {
+        mUserEntity = (UserEntity) getIntent().getSerializableExtra(EXTRA_USER_ENTITY);
         GlideUtils.setAvatar(this, mUserEntity.getAvatarUrl(), mIvProfileAvatar);
         Glide.with(this)
              .load(mUserEntity.getAvatarUrl())
@@ -97,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
              .into(mAvatarBackground);
 
         mTvUserNickname.setText(mUserEntity.getName());
-        mTvUserBio.setText(mUserEntity.getBio());
+        mTvUserBio.setText(Html.fromHtml(mUserEntity.getBio()));
     }
 
     private void initPager() {

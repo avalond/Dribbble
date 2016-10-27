@@ -21,20 +21,20 @@
 
             <TextView
                 android:id="@+id/tv_profile_detail_shots"
-                style="@style/TextDrawable"
+                style="@style/TextProfile"
                 android:drawableLeft="@drawable/iv_image_grey_24dp"
                 tools:text='1234 作品'/>
 
             <TextView
                 android:id="@+id/tv_profile_detail_like"
-                style="@style/TextDrawable"
+                style="@style/TextProfile"
                 android:layout_marginTop="12dp"
                 android:drawableLeft="@drawable/iv_like_grey_24dp"
                 tools:text='1234 赞'/>
 
             <TextView
                 android:id="@+id/tv_profile_detail_buckets"
-                style="@style/TextDrawable"
+                style="@style/TextProfile"
                 android:layout_marginTop="12dp"
                 android:drawableLeft="@drawable/iv_bucket_grey_24dp"
                 tools:text='1234 收藏'/>
@@ -57,20 +57,20 @@
 
             <TextView
                 android:id="@+id/tv_profile_detail_follower"
-                style="@style/TextDrawable"
+                style="@style/TextProfile"
                 android:drawableLeft="@drawable/iv_follower_grey_24dp"
                 tools:text='1234 关注'/>
 
             <TextView
                 android:id="@+id/tv_profile_detail_following"
-                style="@style/TextDrawable"
+                style="@style/TextProfile"
                 android:layout_marginTop="12dp"
                 android:drawableLeft="@drawable/iv_following_grey_24dp"
                 tools:text='1234 粉丝'/>
 
             <TextView
                 android:id="@+id/tv_profile_detail_project"
-                style="@style/TextDrawable"
+                style="@style/TextProfile"
                 android:layout_marginTop="12dp"
                 android:drawableLeft="@drawable/iv_project_grey_24dp"
                 tools:text='1234 项目'/>
@@ -88,20 +88,20 @@
 
         <TextView
             android:id="@+id/tv_profile_detail_location"
-            style="@style/TextDrawable"
+            style="@style/TextProfile"
             android:drawableLeft="@drawable/iv_location_grey_24dp"
             tools:text='1234 项目'/>
 
         <TextView
             android:id="@+id/tv_profile_detail_twitter"
-            style="@style/TextDrawable"
+            style="@style/TextProfile"
             android:layout_marginTop="12dp"
             android:drawableLeft="@drawable/iv_twitter_grey_24dp"
             tools:text='1234 项目'/>
 
         <TextView
             android:id="@+id/tv_profile_detail_web"
-            style="@style/TextDrawable"
+            style="@style/TextProfile"
             android:layout_marginTop="12dp"
             android:drawableLeft="@drawable/iv_browser_grey_24dp"
             tools:text='1234 项目'/>

@@ -22,6 +22,7 @@ import com.hunter.dribbble.ui.shots.detail.comments.ShotsCommentsFragment;
 import com.hunter.dribbble.ui.shots.detail.des.ShotsDesFragment;
 import com.hunter.dribbble.utils.ImageDownloadUtils;
 import com.hunter.dribbble.utils.ImageUrlUtils;
+import com.hunter.dribbble.utils.IntentUtils;
 import com.hunter.dribbble.utils.StatusBarCompat;
 import com.hunter.dribbble.utils.glide.GlideUtils;
 import com.hunter.dribbble.widget.ProportionImageView;
@@ -98,9 +99,11 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     }
 
     private void showImage() {
-        if (mShotsEntity.isAnimated()) GlideUtils.setGif(this, mShotsEntity.getImages().getHidpi(), mPivShotsImage);
-        else GlideUtils.setImageWithThumb(this, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()), mPivShotsImage);
-
+        if (mShotsEntity.isAnimated()) {
+            GlideUtils.setGif(this, mShotsEntity.getImages().getHidpi(), mPivShotsImage);
+        } else {
+            GlideUtils.setImageWithThumb(this, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()), mPivShotsImage);
+        }
     }
 
     private void initPager() {
@@ -108,7 +111,7 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
         fragments.add(ShotsDesFragment.newInstance(mShotsEntity));
         fragments.add(ShotsCommentsFragment.newInstance(mShotsEntity));
         BasePagerAdapter<Fragment> adapter = new BasePagerAdapter<>(getSupportFragmentManager(), fragments,
-                                                                    Arrays.asList(TAB_TITLES));
+                Arrays.asList(TAB_TITLES));
         mPagerShots.setAdapter(adapter);
         mTabShots.setupWithViewPager(mPagerShots);
     }
@@ -119,7 +122,7 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
         intent.putExtra(ImageWatcherActivity.EXTRA_IMAGE_URL, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()));
         intent.putExtra(ImageWatcherActivity.EXTRA_IS_ANIMATED, mShotsEntity.isAnimated());
         intent.putExtra(ImageWatcherActivity.EXTRA_IMAGE_TITLE, mShotsEntity.getTitle());
-        startActivity(intent);
+        IntentUtils.startActivity(this, mPivShotsImage, intent);
     }
 
     @Override
@@ -132,32 +135,36 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_share:
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setType("text/*");
-                intent.putExtra(Intent.EXTRA_TEXT, mShotsEntity.getHtmlUrl());
-                startActivity(Intent.createChooser(intent, "分享到"));
+                shareImage();
                 break;
-
             case R.id.menu_open_on_browser:
 
                 break;
-
             case R.id.menu_download:
-                RxPermissions.getInstance(this)
-                             .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                             .subscribe(new Action1<Boolean>() {
-                                 @Override
-                                 public void call(Boolean granted) {
-                                     if (granted)
-                                         ImageDownloadUtils.downloadImage(ShotsDetailActivity.this, mShotsEntity);
-                                     else showToast("获取权限失败，请重试");
-                                 }
-                             });
+                downloadImage();
                 break;
-
         }
         return true;
+    }
+
+    private void shareImage() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setType("text/*");
+        intent.putExtra(Intent.EXTRA_TEXT, mShotsEntity.getHtmlUrl());
+        startActivity(Intent.createChooser(intent, "分享到"));
+    }
+
+    private void downloadImage() {
+        RxPermissions.getInstance(this)
+                     .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                     .subscribe(new Action1<Boolean>() {
+                         @Override
+                         public void call(Boolean granted) {
+                             if (granted) ImageDownloadUtils.downloadImage(ShotsDetailActivity.this, mShotsEntity);
+                             else showToast("获取权限失败，请重试");
+                         }
+                     });
     }
 
     /**
@@ -173,7 +180,6 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
                 mPressX = x;
                 mPressY = y;
                 break;
-
             case MotionEvent.ACTION_MOVE:
                 if (!mIsVerticalMove) {
                     float differX = Math.abs(x - mPressX);
@@ -181,18 +187,14 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
                     double differ = Math.sqrt(differX * differX + differY * differY);
                     int angle = Math.round((float) (Math.asin(differY / differ) / Math.PI * 180));
                     mIsVerticalMove = angle > 45;
-                    if (mIsVerticalMove) {
-                        mPagerShots.setEnabled(false);
-                    }
+                    if (mIsVerticalMove) mPagerShots.setEnabled(false);
                 }
                 break;
-
             case MotionEvent.ACTION_UP:
                 if (mIsVerticalMove) {
                     mPagerShots.setEnabled(true);
                     mIsVerticalMove = false;
                 }
-
                 break;
         }
 

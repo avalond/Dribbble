@@ -16,7 +16,7 @@ import com.hunter.dribbble.utils.glide.GlideUtils;
 
 import java.util.List;
 
-public class FollowersAdapter extends BaseQuickAdapter<FollowerEntity> {
+public class FollowersAdapter extends BaseQuickAdapter<FollowerEntity, BaseViewHolder> {
 
     public FollowersAdapter(List<FollowerEntity> data) {
         super(R.layout.item_profile_followers, data);

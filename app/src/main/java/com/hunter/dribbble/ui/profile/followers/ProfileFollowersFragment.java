@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPListFragment;
 import com.hunter.dribbble.entity.FollowerEntity;
@@ -20,6 +19,8 @@ import butterknife.BindView;
 public class ProfileFollowersFragment extends BaseMVPListFragment<FollowersPresenter, FollowersModel> implements
         FollowersContract.View {
 
+    public static final String ARGS_USER_ID = "args_user_id";
+
     @BindView(R.id.rv_single_list)
     RecyclerView mRvFollowers;
     @BindView(R.id.refresh_single_list)
@@ -29,7 +30,7 @@ public class ProfileFollowersFragment extends BaseMVPListFragment<FollowersPrese
 
     public static ProfileFollowersFragment newInstance(String id) {
         Bundle args = new Bundle();
-        args.putString(AppConstants.EXTRA_USER_ID, id);
+        args.putString(ARGS_USER_ID, id);
         ProfileFollowersFragment fragment = new ProfileFollowersFragment();
         fragment.setArguments(args);
         return fragment;
@@ -49,7 +50,7 @@ public class ProfileFollowersFragment extends BaseMVPListFragment<FollowersPrese
     @Override
     protected void requestData(boolean isRefresh) {
         super.requestData(isRefresh);
-        mPresenter.getFollowers(getArguments().getString(AppConstants.EXTRA_USER_ID), mPage);
+        mPresenter.getFollowers(getArguments().getString(ARGS_USER_ID), mPage);
     }
 
     private void initList() {

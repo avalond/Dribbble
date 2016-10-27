@@ -1,11 +1,17 @@
 package com.hunter.dribbble.ui.settings;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.hunter.dribbble.App;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseActivity;
 import com.hunter.dribbble.ui.user.login.LoginActivity;
@@ -20,12 +26,8 @@ public class SettingsActivity extends BaseActivity {
 
     @BindView(R.id.toolbar_settings)
     Toolbar mToolbarSettings;
-    @BindView(R.id.switch_settings_net)
-    SwitchCompat mSwitchNet;
-    @BindView(R.id.switch_settings_net_png)
-    SwitchCompat mSwitchNetPng;
     @BindView(R.id.switch_settings_net_gif)
-    SwitchCompat mSwitchNetGif;
+    SwitchCompat mSwitchNetGIF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,23 +51,38 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void initSwitchNet() {
-
+        mSwitchNetGIF.setChecked(App.getAppConfig().getShowGIFValue());
     }
 
-    @OnCheckedChanged({R.id.switch_settings_net, R.id.switch_settings_net_png, R.id.switch_settings_net_gif})
-    void netControl(SwitchCompat switchButton, boolean isChecked) {
-        switch (switchButton.getId()) {
-            case R.id.switch_settings_net:
-                mSwitchNetPng.setChecked(isChecked);
-                mSwitchNetGif.setChecked(isChecked);
-                break;
-            case R.id.switch_settings_net_png:
+    /**
+     * 使用2G/3G/4G网络浏览动图
+     */
+    @OnCheckedChanged(R.id.switch_settings_net_gif)
+    void setShowGIF(SwitchCompat switchButton, boolean isChecked) {
+        App.getAppConfig().setShowGIF(isChecked);
+    }
 
-                break;
-            case R.id.switch_settings_net_gif:
+    /**
+     * 图片缓存大小
+     */
+    @OnClick(R.id.rl_settings_cache_size)
+    void setCacheSize() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        View view = LayoutInflater.from(this)
+                                  .inflate(R.layout.dialog_cache_size, (ViewGroup) findViewById(R.id.dialog_cache_size),
+                                          false);
+        builder.setView(view);
 
-                break;
-        }
+        TextInputLayout textInputLayout = (TextInputLayout) view.findViewById(R.id.input_dialog_cache_size);
+        textInputLayout.setHint("设置图片缓存上限");
+
+        builder.show();
     }
 
     @OnClick(R.id.tv_settings_logout)

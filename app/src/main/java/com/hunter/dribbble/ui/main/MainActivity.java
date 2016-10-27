@@ -114,7 +114,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
         mToolbar.setOnMenuItemClickListener(this);
 
         ProfileDrawerItem navHeader = new ProfileDrawerItem();
-        if (App.getInstance().isLogin()) {
+        if (App.getAppConfig().isLogin()) {
             navHeader.withName(UserInfoUtils.getCurrentUser(this).getName())
                      .withIcon(UserInfoUtils.getCurrentUser(this).getAvatarUrl())
                      .withIdentifier(NAV_IDENTITY_PROFILE);
@@ -213,7 +213,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
     }
 
     private void initUserInfo() {
-        if (App.getInstance().isLogin()) mPresenter.getUserInfo();
+        if (App.getAppConfig().isLogin()) mPresenter.getUserInfo();
     }
 
     @Override
@@ -229,7 +229,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
      */
     @Override
     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-        if (App.getInstance().isLogin()) {
+        if (App.getAppConfig().isLogin()) {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtra(ProfileActivity.EXTRA_USER_ENTITY, UserInfoUtils.getCurrentUser(this));
             startActivity(intent);
@@ -266,7 +266,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_view_mode).setIcon(VIEW_MODE_ICON_RES[App.getInstance().getViewMode()]);
+        menu.findItem(R.id.menu_view_mode).setIcon(VIEW_MODE_ICON_RES[App.getAppConfig().getViewMode()]);
         return true;
     }
 

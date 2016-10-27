@@ -99,8 +99,11 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     }
 
     private void showImage() {
-        if (mShotsEntity.isAnimated()) GlideUtils.setGif(this, mShotsEntity.getImages().getHidpi(), mPivShotsImage);
-        else GlideUtils.setImageWithThumb(this, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()), mPivShotsImage);
+        if (mShotsEntity.isAnimated()) {
+            GlideUtils.setGif(this, mShotsEntity.getImages().getHidpi(), mPivShotsImage);
+        } else {
+            GlideUtils.setImageWithThumb(this, ImageUrlUtils.getImageUrl(mShotsEntity.getImages()), mPivShotsImage);
+        }
     }
 
     private void initPager() {

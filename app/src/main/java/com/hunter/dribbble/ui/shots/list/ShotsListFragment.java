@@ -67,7 +67,7 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
         mAdapter = new ShotsListAdapter(getActivity(), new ArrayList<ShotsEntity>());
         mRvShotsList.setAdapter(mAdapter);
 
-        ViewModelUtils.changeLayoutManager(mRvShotsList, App.getInstance().getViewMode());
+        ViewModelUtils.changeLayoutManager(mRvShotsList, App.getAppConfig().getViewMode());
         mRvShotsList.setItemAnimator(new DefaultItemAnimator());
     }
 

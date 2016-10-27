@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseFragment;
 import com.hunter.dribbble.entity.ShotsEntity;
@@ -25,24 +24,18 @@ import butterknife.OnClick;
 
 public class ShotsDesFragment extends BaseFragment {
 
+    public static final String ARGS_SHOTS_ENTITY = "args_shots_entity";
+
     @BindView(R.id.tv_shots_detail_title)
     TextView mTvShotsTitle;
     @BindView(R.id.tv_shots_detail_des)
     TextView mTvShotsDes;
-
-    /**
-     * 用户相关
-     */
     @BindView(R.id.tv_shots_detail_user_name)
     TextView mTvShotsUserName;
     @BindView(R.id.iv_shots_detail_avatar)
     ImageView mIvShotsAvatar;
     @BindView(R.id.tv_shots_detail_post_time)
     TextView mTvShotsPostTime;
-
-    /**
-     * 赞 浏览 收藏 评论
-     */
     @BindView(R.id.tv_shots_detail_like)
     TextView mTvShotsLike;
     @BindView(R.id.tv_shots_detail_view)
@@ -59,7 +52,7 @@ public class ShotsDesFragment extends BaseFragment {
 
     public static ShotsDesFragment newInstance(ShotsEntity entity) {
         Bundle args = new Bundle();
-        args.putSerializable(AppConstants.EXTRA_SHOTS_ENTITY, entity);
+        args.putSerializable(ARGS_SHOTS_ENTITY, entity);
         ShotsDesFragment fragment = new ShotsDesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -72,7 +65,7 @@ public class ShotsDesFragment extends BaseFragment {
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
-        mShotsEntity = (ShotsEntity) getArguments().getSerializable(AppConstants.EXTRA_SHOTS_ENTITY);
+        mShotsEntity = (ShotsEntity) getArguments().getSerializable(ARGS_SHOTS_ENTITY);
 
         mTvShotsTitle.setText(mShotsEntity.getTitle());
         String des = mShotsEntity.getDescription();

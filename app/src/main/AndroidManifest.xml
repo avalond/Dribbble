@@ -15,7 +15,7 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomTheme">
+            android:theme="@style/MainActivityCustomTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -42,6 +42,8 @@
             android:name=".ui.user.search.SearchActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.settings.SettingsActivity">
+        </activity>
+        <activity android:name=".ui.settings.SettingsCacheActivity">
         </activity>
     </application>
 

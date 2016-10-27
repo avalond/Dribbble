@@ -3,17 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.hunter.dribbble.ui.shots.ImageWatcherActivity">
 
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/photo_watch_image"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@color/colorPrimary"
-        tools:context="com.hunter.dribbble.ui.shots.ImageWatcherActivity"/>
+        android:transitionName="@string/share_transition"
+        tools:targetApi="lollipop"/>
 
     <ImageView
         android:id="@+id/iv_image_watcher_rotation"

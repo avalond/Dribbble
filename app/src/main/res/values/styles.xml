@@ -8,8 +8,24 @@
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
+    <!-- MaterialDrawer Theme-->
+    <style name="MainActivityCustomTheme" parent="AppTheme">
+        <item name="material_drawer_background">@color/colorPrimary</item>
+        <item name="material_drawer_primary_text">@color/text_white</item>
+        <item name="material_drawer_primary_icon">@color/colorPrimary</item>
+        <item name="material_drawer_secondary_text">@color/text_white</item>
+        <item name="material_drawer_selected">@color/colorPrimaryDark</item>
+        <item name="material_drawer_selected_text">@color/colorAccent</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+    </style>
+
     <style name="ToolbarTitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TabLayoutText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- 黑底白字 Menu 溢出菜单 -->
@@ -25,18 +41,7 @@
         <item name="android:background">@color/divider</item>
     </style>
 
-    <!-- MaterialDrawer Theme-->
-    <style name="CustomTheme" parent="AppTheme">
-        <item name="material_drawer_background">@color/colorPrimary</item>
-        <item name="material_drawer_primary_text">@color/text_white</item>
-        <item name="material_drawer_primary_icon">@color/colorPrimary</item>
-        <item name="material_drawer_secondary_text">@color/text_white</item>
-        <item name="material_drawer_selected">@color/colorPrimaryDark</item>
-        <item name="material_drawer_selected_text">@color/colorAccent</item>
-        <item name="material_drawer_divider">@color/material_drawer_divider</item>
-    </style>
-
-    <style name="TabSelectorText">
+    <style name="SpinnerSelectorText">
         <item name="android:textColor">@color/text_white</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -48,7 +53,7 @@
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
-    <style name="TextDrawable">
+    <style name="TextProfile">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:drawablePadding">16dp</item>
@@ -70,23 +75,12 @@
         <item name="@android:windowExitAnimation">@null</item>
     </style>
 
-    <style name="TabLayoutText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="SwitchSettings">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:textColor">@color/text_black</item>
-        <item name="android:foreground">?android:attr/selectableItemBackground</item>
-    </style>
-
     <style name="TextSettings">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/text_black</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>

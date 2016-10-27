@@ -9,7 +9,7 @@ import android.view.View;
 
 public class IntentUtils {
 
-    public static void startActivityWithShare(Activity activity, View v, Intent intent) {
+    public static void startActivity(Activity activity, View v, Intent intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(activity, v, "shareTransition").toBundle();
             activity.startActivity(intent, bundle);

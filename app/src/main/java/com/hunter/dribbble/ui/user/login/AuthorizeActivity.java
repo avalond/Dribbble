@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.api.ApiConstants;
 import com.hunter.dribbble.base.BaseWebActivity;
 
@@ -26,7 +25,7 @@ public class AuthorizeActivity extends BaseWebActivity {
                     String code = url.replace(ApiConstants.Url.REDIRECT_URL + "?code=", "")
                                      .replace("&state=hunter", "");
                     Intent intent = new Intent();
-                    intent.putExtra(AppConstants.EXTRA_AUTHORIZE_CODE, code);
+                    intent.putExtra(LoginActivity.EXTRA_AUTHORIZE_CODE, code);
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {

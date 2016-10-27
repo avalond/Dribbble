@@ -6,7 +6,6 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseFragment;
 import com.hunter.dribbble.entity.UserEntity;
@@ -15,6 +14,8 @@ import com.hunter.dribbble.utils.HtmlFormatUtils;
 import butterknife.BindView;
 
 public class ProfileDetailFragment extends BaseFragment {
+
+    public static final  String ARGS_USER_ENTITY = "args_user_entity";
 
     @BindView(R.id.tv_profile_detail_shots)
     TextView mTvShots;
@@ -37,7 +38,7 @@ public class ProfileDetailFragment extends BaseFragment {
 
     public static ProfileDetailFragment newInstance(UserEntity userEntity) {
         Bundle args = new Bundle();
-        args.putSerializable(AppConstants.EXTRA_USER_ENTITY, userEntity);
+        args.putSerializable(ARGS_USER_ENTITY, userEntity);
         ProfileDetailFragment fragment = new ProfileDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -50,7 +51,7 @@ public class ProfileDetailFragment extends BaseFragment {
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
-        UserEntity userEntity = (UserEntity) getArguments().getSerializable(AppConstants.EXTRA_USER_ENTITY);
+        UserEntity userEntity = (UserEntity) getArguments().getSerializable(ARGS_USER_ENTITY);
 
         mTvShots.setText(HtmlFormatUtils.setupBold(userEntity.getShotsCount(), "作品"));
         mTvLike.setText(HtmlFormatUtils.setupBold(userEntity.getLikesCount(), "赞"));

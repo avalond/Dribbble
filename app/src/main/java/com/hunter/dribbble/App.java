@@ -27,7 +27,7 @@ public class App extends Application {
         super.onCreate();
         sApp = this;
 
-        mToken = (String) SPUtils.get(this, AppConstants.SP_KEE_ACCESS_TOKEN, "");
+        mToken = (String) SPUtils.get(this, AppConstants.SP_ACCESS_TOKEN, "");
         mLayoutType = (int) SPUtils.get(this, AppConstants.SP_VIEW_MODE, AppConstants.VIEW_MODE_SMALL_WITH_INFO);
 
         initMaterialDrawer();

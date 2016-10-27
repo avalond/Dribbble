@@ -6,14 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 
 public class ProfileShotsFragment extends Fragment {
 
+    public static final String ARGS_USER_ID = "args_user_id";
+
     public static ProfileShotsFragment newInstance(String id) {
         Bundle args = new Bundle();
-        args.putString(AppConstants.EXTRA_USER_ID, id);
+        args.putString(ARGS_USER_ID, id);
         ProfileShotsFragment fragment = new ProfileShotsFragment();
         fragment.setArguments(args);
         return fragment;

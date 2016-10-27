@@ -41,19 +41,13 @@
         android:showDividers="middle">
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switch_settings_net"
-            style="@style/TextSettings"
-            android:text="仅Wi-Fi下联网"/>
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switch_settings_net_png"
-            style="@style/TextSettings"
-            android:text="使用2G/3G/4G网络浏览图片"/>
-
-        <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch_settings_net_gif"
             style="@style/TextSettings"
             android:text="使用2G/3G/4G网络浏览动图"/>
+
+        <TextView
+            style="@style/TextSettings"
+            android:text="图片浏览设置"/>
     </LinearLayout>
 
     <View
@@ -76,14 +70,15 @@
         android:layout_height="wrap_content"
         android:divider="@drawable/shape_divider_horizontal"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:showDividers="middle">
 
         <RelativeLayout
+            android:id="@+id/rl_settings_cache_size"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -105,7 +100,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"

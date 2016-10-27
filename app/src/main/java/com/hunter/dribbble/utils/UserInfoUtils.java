@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class UserInfoUtils {
 
-    public static final String KEY_CURRENT_USER = "current_user";
+    public static final String KEY_CURRENT_USER = "user";
 
     private static Map<String, UserEntity> sUserEntity = new HashMap<>();
 
@@ -38,5 +38,4 @@ public class UserInfoUtils {
         sUserEntity.put(KEY_CURRENT_USER, entity);
         SPUtils.put(context, AppConstants.SP_CURRENT_USER, new Gson().toJson(entity));
     }
-
 }

@@ -455,6 +455,6 @@ public class ShotsEntity implements Serializable, MultiItemEntity {
 
     @Override
     public int getItemType() {
-        return App.getInstance().getViewMode();
+        return App.getAppConfig().getViewMode();
     }
 }

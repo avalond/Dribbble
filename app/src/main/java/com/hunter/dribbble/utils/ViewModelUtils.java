@@ -31,6 +31,6 @@ public class ViewModelUtils {
         }
 
         SPUtils.put(rv.getContext(), AppConstants.SP_VIEW_MODE, viewMode);
-        App.getInstance().setViewMode(viewMode);
+        App.getAppConfig().setViewMode(viewMode);
     }
 }

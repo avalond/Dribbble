@@ -7,8 +7,11 @@ public interface AppConstants {
     String SP_VIEW_MODE = "view_mode";
     String SP_SEARCH_HISTORY = "search_history";
     String SP_CURRENT_USER = "current_user";
-    String SP_NET_BROWSE_PNG = "net_browse_png";
-    String SP_NET_BROWSE_GIF = "net_browse_gif";
+
+    /**
+     * 网络开关
+     */
+    String SP_SHOW_GIF = "show_gif";
 
     int VIEW_MODE_SMALL_WITH_INFO = 0;
     int VIEW_MODE_SMALL = 1;

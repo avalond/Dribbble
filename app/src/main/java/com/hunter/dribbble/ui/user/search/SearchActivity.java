@@ -59,7 +59,7 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
         mShotsAdapter = new ShotsListAdapter(this, new ArrayList<ShotsEntity>());
         mRvResult.setAdapter(mShotsAdapter);
 
-        ViewModelUtils.changeLayoutManager(mRvResult, App.getInstance().getViewMode());
+        ViewModelUtils.changeLayoutManager(mRvResult, App.getAppConfig().getViewMode());
         mRvResult.setItemAnimator(new DefaultItemAnimator());
     }
 

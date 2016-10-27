@@ -7,14 +7,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.hunter.dribbble.App;
-import com.hunter.dribbble.AppConstants;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.api.ApiClient;
 import com.hunter.dribbble.base.mvp.BaseMVPActivity;
 import com.hunter.dribbble.entity.TokenEntity;
-import com.hunter.lib.LibConstants;
-import com.hunter.lib.util.SPUtils;
 import com.hunter.dribbble.utils.UrlUtils;
+import com.hunter.lib.LibConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,9 +60,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
 
     @Override
     public void getTokenOnSuccess(TokenEntity entity) {
-        String token = entity.getAccessToken();
-        SPUtils.put(this, AppConstants.SP_ACCESS_TOKEN, token);
-        App.getInstance().setToken(token);
+        App.getAppConfig().setToken(entity.getAccessToken());
         ApiClient.resetApiClient();
 
         mProgressLogin.setVisibility(View.GONE);

@@ -29,12 +29,14 @@
             android:gravity="center"
             android:text="Hello Dribbble！"
             android:textColor="@color/text_white"
-            android:textSize="15sp"/>
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/tv_login_welcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="登录 Dribbble 立即体验所有功能"
             android:textColor="@color/text_white"

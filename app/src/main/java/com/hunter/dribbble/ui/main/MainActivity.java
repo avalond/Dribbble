@@ -162,8 +162,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
                           .withIdentifier(NAV_IDENTITY_SETTINGS)
                           .withIcon(R.drawable.iv_settings_grey_24dp)
                           .withOnDrawerItemClickListener(this)
-                          .withSelectable(false)
-                          .withSelectedIcon(R.drawable.iv_settings_pink_24dp);
+                          .withSelectable(false);
 
         DrawerBuilder builder = new DrawerBuilder();
         builder.withActivity(this)

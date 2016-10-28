@@ -56,15 +56,16 @@ public class ImageDownloadUtils {
             public void onNext(File file) {
                 String suffix = isAnim ? ".gif" : ".png";
                 File saveFile = FileUtils.saveToExternalCustomDir(FileUtils.getBytesFromFile(file), FILE_DIR,
-                        title + suffix);
+                                                                  title + suffix);
                 if (saveFile != null) {
                     activity.showToastForStrongWithAction("保存至",
-                            saveFile.getPath().replace(getExternalBaseDir(), "根目录"), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+                                                          saveFile.getPath().replace(getExternalBaseDir(), "根目录"),
+                                                          new View.OnClickListener() {
+                                                              @Override
+                                                              public void onClick(View v) {
 
-                                }
-                            });
+                                                              }
+                                                          });
                     activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(saveFile)));
                 } else {
                     activity.showToast("下载失败，请重试");

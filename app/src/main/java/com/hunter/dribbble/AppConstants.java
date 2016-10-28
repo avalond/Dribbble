@@ -1,5 +1,7 @@
 package com.hunter.dribbble;
 
+import java.io.File;
+
 public interface AppConstants {
 
     String SP_IS_FIRST_RUN = "is_first_run";
@@ -17,4 +19,6 @@ public interface AppConstants {
     int VIEW_MODE_SMALL = 1;
     int VIEW_MODE_LARGE_WITH_INFO = 2;
     int VIEW_MODE_LARGE = 3;
+
+    String WEB_VIEW_CACHE_DIR = File.separator + "/web_view_cache";
 }

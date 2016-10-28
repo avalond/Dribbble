@@ -2,6 +2,7 @@ package com.hunter.dribbble.ui.user.login;
 
 import com.hunter.dribbble.api.BaseSubscriber;
 import com.hunter.dribbble.entity.TokenEntity;
+import com.hunter.dribbble.entity.UserEntity;
 
 public class LoginPresenter extends LoginContract.Presenter {
 
@@ -18,6 +19,15 @@ public class LoginPresenter extends LoginContract.Presenter {
                 mView.showToast(msg);
             }
         });
+    }
 
+    @Override
+    void getUserInfo() {
+        subscribe(mModel.getUserInfo(), new BaseSubscriber<UserEntity>(mView) {
+            @Override
+            protected void onSuccess(UserEntity entity) {
+                mView.getUserInfoOnSuccess(entity);
+            }
+        });
     }
 }

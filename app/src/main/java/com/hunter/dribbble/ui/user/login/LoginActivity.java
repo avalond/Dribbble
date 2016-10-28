@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.hunter.dribbble.App;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.api.ApiClient;
 import com.hunter.dribbble.base.mvp.BaseMVPActivity;
 import com.hunter.dribbble.entity.TokenEntity;
+import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.utils.UrlUtils;
+import com.hunter.dribbble.utils.UserInfoUtils;
 import com.hunter.lib.LibConstants;
 
 import butterknife.BindView;
@@ -24,6 +27,8 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
 
     public static final int REQUEST_CODE_AUTHORIZE = 1;
 
+    @BindView(R.id.tv_login_welcome)
+    TextView mTvWelcome;
     @BindView(R.id.btn_to_authorize_web)
     Button mBtnLogin;
     @BindView(R.id.progress_login)
@@ -55,6 +60,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
             mProgressLogin.setVisibility(View.VISIBLE);
             mProgressLogin.setIndeterminate(true);
             mBtnLogin.setVisibility(View.GONE);
+            mTvWelcome.setText("欢迎回来");
         }
     }
 
@@ -62,12 +68,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
     public void getTokenOnSuccess(TokenEntity entity) {
         App.getAppConfig().setToken(entity.getAccessToken());
         ApiClient.resetApiClient();
-
-        mProgressLogin.setVisibility(View.GONE);
-        mProgressLogin.setIndeterminate(false);
-
-        setResult(RESULT_OK);
-        finish();
+        mPresenter.getUserInfo();
     }
 
     @Override
@@ -75,4 +76,10 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter, LoginModel> i
         mBtnLogin.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void getUserInfoOnSuccess(UserEntity entity) {
+        UserInfoUtils.setUserInfo(this, entity);
+        setResult(RESULT_OK);
+        finish();
+    }
 }

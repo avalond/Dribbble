@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.widget.TextView;
 
 import com.hunter.dribbble.App;
@@ -87,7 +88,29 @@ public class SettingsActivity extends BaseActivity {
 
     @OnClick(R.id.tv_settings_logout)
     void logout() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage("确定退出当前账号吗？");
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                cleanLocalInfo();
+            }
+        });
+        dialog.setNegativeButton("取消", null);
+        dialog.show();
+    }
+
+    private void cleanLocalInfo() {
+        /* 删除本地用户数据 */
         UserInfoUtils.clearUserInfo(this);
+
+        /* 删除网页表单 */
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookie();
+
+        /* 删除本地 token */
+        App.getAppConfig().setToken("");
+
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

@@ -3,6 +3,7 @@ package com.hunter.dribbble.ui.user.login;
 import com.hunter.dribbble.api.ApiClient;
 import com.hunter.dribbble.api.ApiConstants;
 import com.hunter.dribbble.entity.TokenEntity;
+import com.hunter.dribbble.entity.UserEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,5 +21,10 @@ public class LoginModel implements LoginContract.Model {
         params.put(ApiConstants.ParamKey.CODE, code);
 
         return ApiClient.getForOAuth().getToken(params);
+    }
+
+    @Override
+    public Observable<UserEntity> getUserInfo() {
+        return ApiClient.getForRest().getUserInfo();
     }
 }

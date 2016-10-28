@@ -16,7 +16,7 @@
 
         <meta-data
             android:name="com.hunter.dribbble.utils.glide.DribbbleGlideModule"
-            android:value="DribbbleGlideModule" />
+            android:value="DribbbleGlideModule"/>
 
         <activity
             android:name=".ui.main.MainActivity"

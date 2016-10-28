@@ -26,7 +26,7 @@ public class FileCacheUtils {
             deleteDir(context.getExternalCacheDir());
     }
 
-    private static boolean deleteDir(File dir) {
+    public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             for (String aChildren : children) {

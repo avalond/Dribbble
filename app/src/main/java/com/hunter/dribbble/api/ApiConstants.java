@@ -19,17 +19,19 @@ public interface ApiConstants {
 
         String TOKEN = "token";
 
-        String SHOTS_LIST = "shots";
+        String SHOTS = "shots";
 
         String SHOTS_DETAIL = "shots/{id}";
 
-        String COMMENTS = "shots/{id}/comments";
-
-        String FOLLOWERS = "users/{id}/followers";
+        String SHOTS_COMMENTS = "shots/{id}/comments";
 
         String SEARCH = "search";
 
         String USER = "user";
+
+        String USER_FOLLOWERS = "users/{id}/followers";
+
+        String USER_SHOTS = "users/{id}/shots";
     }
 
     interface ParamKey {

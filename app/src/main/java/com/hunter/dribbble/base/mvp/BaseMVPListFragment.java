@@ -3,6 +3,7 @@ package com.hunter.dribbble.base.mvp;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,8 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     }
 
     protected void setupList(SwipeRefreshLayout refreshLayout, RecyclerView recyclerView, BaseQuickAdapter adapter) {
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         LayoutInflater inflater = LayoutInflater.from(mContext);
         /* 空页面 */
         mEmptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
@@ -102,6 +105,8 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
                 requestData(true);
             }
         }, 200);
+
+        recyclerView.setAdapter(adapter);
     }
 
     protected void requestData(boolean isRefresh) {

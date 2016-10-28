@@ -19,11 +19,11 @@ import com.hunter.dribbble.utils.glide.GlideUtils;
 
 import java.util.List;
 
-public class ShotsListAdapter extends BaseMultiItemQuickAdapter<ShotsEntity, BaseViewHolder> {
+public class ShotsAdapter extends BaseMultiItemQuickAdapter<ShotsEntity, BaseViewHolder> {
 
     private Activity mActivity;
 
-    public ShotsListAdapter(Activity activity, List<ShotsEntity> data) {
+    public ShotsAdapter(Activity activity, List<ShotsEntity> data) {
         super(data);
         mActivity = activity;
 

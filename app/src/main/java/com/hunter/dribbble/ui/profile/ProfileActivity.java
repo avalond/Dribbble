@@ -1,6 +1,5 @@
 package com.hunter.dribbble.ui.profile;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,10 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,17 +58,18 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
     TextView mTvUserNickname;
     @BindView(R.id.tv_profile_user_bio)
     TextView mTvUserBio;
+    @BindView(R.id.ll_profile_avatar)
+    View mLayoutProfileAvatar;
 
     private UserEntity mUserEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         StatusBarCompat.translucentStatusBar(this);
+        mUserEntity = (UserEntity) getIntent().getSerializableExtra(EXTRA_USER_ENTITY);
 
         initToolbar();
         initUserInfo();
@@ -86,10 +86,16 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
                 onBackPressed();
             }
         });
+
+        mAppBarProfile.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                mLayoutProfileAvatar.scrollTo(0, -verticalOffset / 2);
+            }
+        });
     }
 
     private void initUserInfo() {
-        mUserEntity = (UserEntity) getIntent().getSerializableExtra(EXTRA_USER_ENTITY);
         GlideUtils.setAvatar(this, mUserEntity.getAvatarUrl(), mIvProfileAvatar);
         Glide.with(this)
              .load(mUserEntity.getAvatarUrl())

@@ -15,7 +15,7 @@ import butterknife.BindView;
 
 public class ProfileDetailFragment extends BaseFragment {
 
-    public static final  String ARGS_USER_ENTITY = "args_user_entity";
+    public static final String ARGS_USER_ENTITY = "args_user_entity";
 
     @BindView(R.id.tv_profile_detail_shots)
     TextView mTvShots;

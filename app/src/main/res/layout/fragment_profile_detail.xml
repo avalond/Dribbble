@@ -1,4 +1,4 @@
-<LinearLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,102 +9,108 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="24dp">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="24dp">
 
-            <TextView
-                android:id="@+id/tv_profile_detail_shots"
-                style="@style/TextProfile"
-                android:drawableLeft="@drawable/iv_image_grey_24dp"
-                tools:text='1234 作品'/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_profile_detail_like"
-                style="@style/TextProfile"
-                android:layout_marginTop="12dp"
-                android:drawableLeft="@drawable/iv_like_grey_24dp"
-                tools:text='1234 赞'/>
+                <TextView
+                    android:id="@+id/tv_profile_detail_shots"
+                    style="@style/TextProfile"
+                    android:drawableLeft="@drawable/iv_image_grey_24dp"
+                    tools:text='1234 作品'/>
 
-            <TextView
-                android:id="@+id/tv_profile_detail_buckets"
-                style="@style/TextProfile"
-                android:layout_marginTop="12dp"
-                android:drawableLeft="@drawable/iv_bucket_grey_24dp"
-                tools:text='1234 收藏'/>
+                <TextView
+                    android:id="@+id/tv_profile_detail_like"
+                    style="@style/TextProfile"
+                    android:layout_marginTop="12dp"
+                    android:drawableLeft="@drawable/iv_like_grey_24dp"
+                    tools:text='1234 赞'/>
 
+                <TextView
+                    android:id="@+id/tv_profile_detail_buckets"
+                    style="@style/TextProfile"
+                    android:layout_marginTop="12dp"
+                    android:drawableLeft="@drawable/iv_bucket_grey_24dp"
+                    tools:text='1234 收藏'/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5sp"
+                android:layout_height="96dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/divider"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_profile_detail_follower"
+                    style="@style/TextProfile"
+                    android:drawableLeft="@drawable/iv_follower_grey_24dp"
+                    tools:text='1234 关注'/>
+
+                <TextView
+                    android:id="@+id/tv_profile_detail_following"
+                    style="@style/TextProfile"
+                    android:layout_marginTop="12dp"
+                    android:drawableLeft="@drawable/iv_following_grey_24dp"
+                    tools:text='1234 粉丝'/>
+
+                <TextView
+                    android:id="@+id/tv_profile_detail_project"
+                    style="@style/TextProfile"
+                    android:layout_marginTop="12dp"
+                    android:drawableLeft="@drawable/iv_project_grey_24dp"
+                    tools:text='1234 项目'/>
+            </LinearLayout>
         </LinearLayout>
 
         <View
-            android:layout_width="0.5sp"
-            android:layout_height="96dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/divider"/>
+            style="@style/HDivider"/>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp">
 
             <TextView
-                android:id="@+id/tv_profile_detail_follower"
+                android:id="@+id/tv_profile_detail_location"
                 style="@style/TextProfile"
-                android:drawableLeft="@drawable/iv_follower_grey_24dp"
-                tools:text='1234 关注'/>
-
-            <TextView
-                android:id="@+id/tv_profile_detail_following"
-                style="@style/TextProfile"
-                android:layout_marginTop="12dp"
-                android:drawableLeft="@drawable/iv_following_grey_24dp"
-                tools:text='1234 粉丝'/>
-
-            <TextView
-                android:id="@+id/tv_profile_detail_project"
-                style="@style/TextProfile"
-                android:layout_marginTop="12dp"
-                android:drawableLeft="@drawable/iv_project_grey_24dp"
+                android:drawableLeft="@drawable/iv_location_grey_24dp"
                 tools:text='1234 项目'/>
+
+            <TextView
+                android:id="@+id/tv_profile_detail_twitter"
+                style="@style/TextProfile"
+                android:layout_marginTop="12dp"
+                android:drawableLeft="@drawable/iv_twitter_grey_24dp"
+                tools:text='1234 项目'/>
+
+            <TextView
+                android:id="@+id/tv_profile_detail_web"
+                style="@style/TextProfile"
+                android:layout_marginTop="12dp"
+                android:drawableLeft="@drawable/iv_browser_grey_24dp"
+                tools:text='1234 项目'/>
+
         </LinearLayout>
     </LinearLayout>
-
-    <View
-        style="@style/HDivider"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-        <TextView
-            android:id="@+id/tv_profile_detail_location"
-            style="@style/TextProfile"
-            android:drawableLeft="@drawable/iv_location_grey_24dp"
-            tools:text='1234 项目'/>
-
-        <TextView
-            android:id="@+id/tv_profile_detail_twitter"
-            style="@style/TextProfile"
-            android:layout_marginTop="12dp"
-            android:drawableLeft="@drawable/iv_twitter_grey_24dp"
-            tools:text='1234 项目'/>
-
-        <TextView
-            android:id="@+id/tv_profile_detail_web"
-            style="@style/TextProfile"
-            android:layout_marginTop="12dp"
-            android:drawableLeft="@drawable/iv_browser_grey_24dp"
-            tools:text='1234 项目'/>
-
-    </LinearLayout>
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

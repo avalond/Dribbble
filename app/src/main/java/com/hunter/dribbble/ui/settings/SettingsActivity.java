@@ -1,20 +1,19 @@
 package com.hunter.dribbble.ui.settings;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hunter.dribbble.App;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.BaseActivity;
 import com.hunter.dribbble.ui.user.login.LoginActivity;
+import com.hunter.dribbble.utils.FileCacheUtils;
 import com.hunter.dribbble.utils.UserInfoUtils;
 
 import butterknife.BindView;
@@ -28,6 +27,8 @@ public class SettingsActivity extends BaseActivity {
     Toolbar mToolbarSettings;
     @BindView(R.id.switch_settings_net_gif)
     SwitchCompat mSwitchNetGIF;
+    @BindView(R.id.tv_settings_cache_size)
+    TextView mTvCacheSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class SettingsActivity extends BaseActivity {
 
         initToolbar();
         initSwitchNet();
+        initCache();
     }
 
     private void initToolbar() {
@@ -55,34 +57,32 @@ public class SettingsActivity extends BaseActivity {
     }
 
     /**
-     * 使用2G/3G/4G网络浏览动图
+     * context.getApplicationContext().getCacheDir()
+     * context.getApplicationContext().getExternalCacheDir()
      */
+    private void initCache() {
+        mTvCacheSize.setText(FileCacheUtils.getTotalCacheSize(this));
+    }
+
     @OnCheckedChanged(R.id.switch_settings_net_gif)
     void setShowGIF(SwitchCompat switchButton, boolean isChecked) {
         App.getAppConfig().setShowGIF(isChecked);
     }
 
-    /**
-     * 图片缓存大小
-     */
-    @OnClick(R.id.rl_settings_cache_size)
-    void setCacheSize() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+    @OnClick(R.id.item_settings_clean_cache)
+    void cleanCache() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage("确定清除缓存吗？");
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                FileCacheUtils.clearAllCache(SettingsActivity.this);
+                showToast("缓存已清除");
+                mTvCacheSize.setText(FileCacheUtils.getTotalCacheSize(SettingsActivity.this));
             }
         });
-        builder.setNegativeButton("取消", null);
-        View view = LayoutInflater.from(this)
-                                  .inflate(R.layout.dialog_cache_size, (ViewGroup) findViewById(R.id.dialog_cache_size),
-                                          false);
-        builder.setView(view);
-
-        TextInputLayout textInputLayout = (TextInputLayout) view.findViewById(R.id.input_dialog_cache_size);
-        textInputLayout.setHint("设置图片缓存上限");
-
-        builder.show();
+        dialog.setNegativeButton("取消", null);
+        dialog.show();
     }
 
     @OnClick(R.id.tv_settings_logout)

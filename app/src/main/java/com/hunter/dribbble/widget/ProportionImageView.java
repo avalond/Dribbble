@@ -31,7 +31,7 @@ public class ProportionImageView extends ImageView {
         if (mProportionWH != 0) {
             setMeasuredDimension(getDefaultSize(0, widthMeasureSpec), getDefaultSize(0, heightMeasureSpec));
             heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (getMeasuredWidth() / mProportionWH) - 2,
-                                                            MeasureSpec.EXACTLY);
+                    MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }

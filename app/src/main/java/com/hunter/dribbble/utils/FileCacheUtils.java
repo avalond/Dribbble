@@ -6,7 +6,7 @@ import android.os.Environment;
 import java.io.File;
 import java.math.BigDecimal;
 
-public class FileCachUtils {
+public class FileCacheUtils {
 
     public static String getTotalCacheSize(Context context) {
         try {

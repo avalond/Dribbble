@@ -65,7 +65,6 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
 
     private void initList() {
         mAdapter = new CommentsAdapter(new ArrayList<CommentEntity>());
-        mRvList.setAdapter(mAdapter);
         mRvList.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
     }

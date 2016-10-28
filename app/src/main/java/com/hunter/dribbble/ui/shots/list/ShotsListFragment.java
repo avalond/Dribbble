@@ -2,7 +2,6 @@ package com.hunter.dribbble.ui.shots.list;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -31,7 +30,7 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
     @BindView(R.id.refresh_single_list)
     SwipeRefreshLayout mRefresh;
 
-    private ShotsListAdapter mAdapter;
+    private ShotsAdapter mAdapter;
 
     private int mType;
     private int mSort;
@@ -64,11 +63,8 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
     }
 
     private void initList() {
-        mAdapter = new ShotsListAdapter(getActivity(), new ArrayList<ShotsEntity>());
-        mRvShotsList.setAdapter(mAdapter);
-
+        mAdapter = new ShotsAdapter(getActivity(), new ArrayList<ShotsEntity>());
         ViewModelUtils.changeLayoutManager(mRvShotsList, App.getAppConfig().getViewMode());
-        mRvShotsList.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override

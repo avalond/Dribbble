@@ -33,22 +33,10 @@
         android:textColor="@color/text_grey"
         android:textSize="12sp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/shape_divider_horizontal"
-        android:orientation="vertical"
-        android:showDividers="middle">
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switch_settings_net_gif"
-            style="@style/TextSettings"
-            android:text="使用2G/3G/4G网络浏览动图"/>
-
-        <TextView
-            style="@style/TextSettings"
-            android:text="图片浏览设置"/>
-    </LinearLayout>
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switch_settings_net_gif"
+        style="@style/TextSettings"
+        android:text="使用2G/3G/4G网络浏览动图"/>
 
     <View
         android:layout_width="match_parent"
@@ -65,77 +53,32 @@
         android:textColor="@color/text_grey"
         android:textSize="12sp"/>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/item_settings_clean_cache"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/shape_divider_horizontal"
-        android:orientation="vertical"
-        android:showDividers="middle">
+        android:layout_height="48dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-        <RelativeLayout
-            android:id="@+id/rl_settings_cache_size"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="清除图片缓存"
+            android:textColor="@color/text_black"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="设置图片缓存上限"
-                android:textColor="@color/text_black"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:textColor="@color/text_grey"
-                android:textSize="12sp"
-                tools:text="100.0M"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="清除图片缓存"
-                    android:textColor="@color/text_black"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="超过上限部分自动清除"
-                    android:textColor="@color/text_grey"
-                    android:textSize="10sp"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:textColor="@color/text_grey"
-                android:textSize="12sp"
-                tools:text="80.0M"/>
-        </RelativeLayout>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_settings_cache_size"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:textColor="@color/text_grey"
+            android:textSize="12sp"
+            tools:text="80.0M"/>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

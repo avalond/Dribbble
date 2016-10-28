@@ -2,7 +2,6 @@ package com.hunter.dribbble.ui.shots.detail;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPActivity;
@@ -64,8 +62,6 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_shots_detail);
         ButterKnife.bind(this);
 

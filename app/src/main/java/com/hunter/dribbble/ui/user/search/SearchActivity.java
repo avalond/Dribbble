@@ -13,7 +13,7 @@ import com.hunter.dribbble.R;
 import com.hunter.dribbble.api.ApiConstants;
 import com.hunter.dribbble.base.mvp.BaseMVPListActivity;
 import com.hunter.dribbble.entity.ShotsEntity;
-import com.hunter.dribbble.ui.shots.list.ShotsListAdapter;
+import com.hunter.dribbble.ui.shots.list.ShotsAdapter;
 import com.hunter.dribbble.utils.ViewModelUtils;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
 
     private String mSearchKey;
 
-    private ShotsListAdapter mShotsAdapter;
+    private ShotsAdapter mShotsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
     }
 
     private void initShotsList() {
-        mShotsAdapter = new ShotsListAdapter(this, new ArrayList<ShotsEntity>());
+        mShotsAdapter = new ShotsAdapter(this, new ArrayList<ShotsEntity>());
         mRvResult.setAdapter(mShotsAdapter);
 
         ViewModelUtils.changeLayoutManager(mRvResult, App.getAppConfig().getViewMode());

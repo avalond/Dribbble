@@ -43,7 +43,6 @@ public class GlideUtils {
             Glide.with(context)
                  .load(url)
                  .asBitmap()
-                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                  .placeholder(R.drawable.shape_grey)
                  .into(imageView);
         }

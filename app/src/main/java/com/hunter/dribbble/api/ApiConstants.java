@@ -25,6 +25,8 @@ public interface ApiConstants {
 
         String SHOTS_COMMENTS = "shots/{id}/comments";
 
+        String SHOTS_LIKE = "shots/{id}/like";
+
         String SEARCH = "search";
 
         String USER = "user";

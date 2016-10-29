@@ -71,7 +71,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
             R.mipmap.ic_action_large
     };
 
-    public static final int REQUEST_CODE_LOGIN = 2;
+    public static final int REQUEST_CODE_LOGIN = 100;
 
     @BindView(R.id.toolbar_main)
     Toolbar mToolbar;
@@ -170,7 +170,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
                .withActionBarDrawerToggleAnimated(true)
                .withAccountHeader(mAccountHeader)
                .addDrawerItems(homeDrawerItem, followingDrawerItem, bucketsDrawerItem, likesDrawerItem,
-                       new DividerDrawerItem(), settingsDrawerItem);
+                               new DividerDrawerItem(), settingsDrawerItem);
 
         builder.build();
     }

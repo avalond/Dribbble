@@ -2,6 +2,7 @@ package com.hunter.dribbble.ui.shots.detail;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.hunter.dribbble.R;
-import com.hunter.dribbble.base.mvp.BaseMVPActivity;
+import com.hunter.dribbble.base.BaseActivity;
 import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.dribbble.ui.shots.ImageWatcherActivity;
 import com.hunter.dribbble.ui.shots.detail.comments.ShotsCommentsFragment;
@@ -36,11 +37,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.functions.Action1;
 
-public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, ShotsDetailModel> implements
-        ShotsDetailContract.View, Toolbar.OnMenuItemClickListener {
+public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
     public static final String EXTRA_SHOTS_ENTITY = "extra_shots_entity";
-    public static final String EXTRA_IS_FROM_SEARCH = "extra_is_from_search";
+    public static final String EXTRA_IS_NEED_REQUEST = "extra_is_need_request";
 
     private static final String[] TAB_TITLES = {"简介", "评论"};
 
@@ -59,6 +59,8 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
     private float mPressY;
     private boolean mIsVerticalMove;
 
+    private boolean mIsNeedRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,14 +73,9 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
 
         Intent intent = getIntent();
         mShotsEntity = (ShotsEntity) intent.getSerializableExtra(EXTRA_SHOTS_ENTITY);
-        boolean isFromSearch = intent.getBooleanExtra(EXTRA_IS_FROM_SEARCH, false);
-        if (isFromSearch) {
-            showImage();
-            mPresenter.getShotsDetail(mShotsEntity.getId());
-        } else {
-            showImage();
-            initPager();
-        }
+        mIsNeedRequest = intent.getBooleanExtra(EXTRA_IS_NEED_REQUEST, false);
+        showImage();
+        initPager();
     }
 
     private void initToolbar() {
@@ -104,10 +101,13 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
 
     private void initPager() {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(ShotsDesFragment.newInstance(mShotsEntity));
-        fragments.add(ShotsCommentsFragment.newInstance(mShotsEntity));
+
+        if (mIsNeedRequest) fragments.add(ShotsDesFragment.newInstance(mShotsEntity.getId()));
+        else fragments.add(ShotsDesFragment.newInstance(mShotsEntity));
+        fragments.add(ShotsCommentsFragment.newInstance(mShotsEntity.getId()));
+
         BasePagerAdapter<Fragment> adapter = new BasePagerAdapter<>(getSupportFragmentManager(), fragments,
-                Arrays.asList(TAB_TITLES));
+                                                                    Arrays.asList(TAB_TITLES));
         mPagerShots.setAdapter(adapter);
         mTabShots.setupWithViewPager(mPagerShots);
     }
@@ -134,7 +134,7 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
                 shareImage();
                 break;
             case R.id.menu_open_on_browser:
-
+                showInBrowser();
                 break;
             case R.id.menu_download:
                 downloadImage();
@@ -149,6 +149,13 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
         intent.setType("text/*");
         intent.putExtra(Intent.EXTRA_TEXT, mShotsEntity.getHtmlUrl());
         startActivity(Intent.createChooser(intent, "分享到"));
+    }
+
+    private void showInBrowser() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mShotsEntity.getHtmlUrl()));
+        Intent chooserIntent = Intent.createChooser(intent, "选择一个应用打开该链接");
+        if (chooserIntent == null) return;
+        startActivity(chooserIntent);
     }
 
     private void downloadImage() {
@@ -197,9 +204,4 @@ public class ShotsDetailActivity extends BaseMVPActivity<ShotsDetailPresenter, S
         return super.dispatchTouchEvent(event);
     }
 
-    @Override
-    public void getShotsDetailOnSuccess(ShotsEntity data) {
-        mShotsEntity = data;
-        initPager();
-    }
 }

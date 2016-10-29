@@ -17,7 +17,6 @@ public class AuthorizeActivity extends BaseWebActivity {
 
     @Override
     protected WebViewClient getWebViewClient() {
-
         return new MyWebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -31,7 +30,6 @@ public class AuthorizeActivity extends BaseWebActivity {
                 } else {
                     view.loadUrl(url);
                 }
-
                 return true;
             }
         };

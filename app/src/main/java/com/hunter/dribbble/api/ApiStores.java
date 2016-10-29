@@ -1,5 +1,6 @@
 package com.hunter.dribbble.api;
 
+import com.hunter.dribbble.entity.CheckLikeEntity;
 import com.hunter.dribbble.entity.CommentEntity;
 import com.hunter.dribbble.entity.FollowerEntity;
 import com.hunter.dribbble.entity.ShotsEntity;
@@ -9,6 +10,7 @@ import com.hunter.dribbble.entity.UserEntity;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -28,6 +30,15 @@ public interface ApiStores {
 
     @GET(ApiConstants.Path.SHOTS_COMMENTS)
     Observable<List<CommentEntity>> getComments(@Path("id") String id, @QueryMap Map<String, String> params);
+
+    @GET(ApiConstants.Path.SHOTS_LIKE)
+    Observable<CheckLikeEntity> checkShotsLike(@Path("id") String id);
+
+    @POST(ApiConstants.Path.SHOTS_LIKE)
+    Observable<CheckLikeEntity> likeShots(@Path("id") String id);
+
+    @DELETE(ApiConstants.Path.SHOTS_LIKE)
+    Observable<CheckLikeEntity> unlikeShots(@Path("id") String id);
 
     @GET(ApiConstants.Path.USER_FOLLOWERS)
     Observable<List<FollowerEntity>> getFollowers(@Path("id") String id, @QueryMap Map<String, String> params);

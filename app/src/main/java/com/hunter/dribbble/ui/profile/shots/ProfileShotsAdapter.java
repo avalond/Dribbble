@@ -35,7 +35,7 @@ public class ProfileShotsAdapter extends BaseQuickAdapter<ShotsEntity, BaseViewH
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ShotsDetailActivity.class);
                 intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ENTITY, shotsEntity);
-                intent.putExtra(ShotsDetailActivity.EXTRA_IS_FROM_SEARCH, true);
+                intent.putExtra(ShotsDetailActivity.EXTRA_IS_NEED_REQUEST, true);
                 mContext.startActivity(intent);
             }
         });

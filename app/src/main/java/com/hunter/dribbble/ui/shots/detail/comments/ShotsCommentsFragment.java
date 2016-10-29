@@ -9,7 +9,6 @@ import android.view.View;
 import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPListFragment;
 import com.hunter.dribbble.entity.CommentEntity;
-import com.hunter.dribbble.entity.ShotsEntity;
 import com.hunter.lib.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import butterknife.BindView;
 public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPresenter, ShotsCommentsModel> implements
         ShotsCommentsContract.View {
 
-    public static final String ARGS_SHOTS_ENTITY = "args_shots_entity";
+    public static final String ARGS_SHOTS_ID = "args_shots_id";
 
     @BindView(R.id.rv_single_list)
     RecyclerView mRvList;
@@ -31,9 +30,9 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
 
     private CommentsAdapter mAdapter;
 
-    public static ShotsCommentsFragment newInstance(ShotsEntity entity) {
+    public static ShotsCommentsFragment newInstance(int shotsId) {
         Bundle args = new Bundle();
-        args.putSerializable(ARGS_SHOTS_ENTITY, entity);
+        args.putInt(ARGS_SHOTS_ID, shotsId);
         ShotsCommentsFragment fragment = new ShotsCommentsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -46,10 +45,8 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
-        ShotsEntity shotsEntity = (ShotsEntity) getArguments().getSerializable(ARGS_SHOTS_ENTITY);
-        mShotsId = shotsEntity.getId();
+        mShotsId = getArguments().getInt(ARGS_SHOTS_ID);
         initList();
-        setupList(mRefresh, mRvList, mAdapter);
     }
 
     @Override
@@ -67,6 +64,7 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
         mAdapter = new CommentsAdapter(new ArrayList<CommentEntity>());
         mRvList.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
+        setupList(mRefresh, mRvList, mAdapter);
     }
 
     @Override

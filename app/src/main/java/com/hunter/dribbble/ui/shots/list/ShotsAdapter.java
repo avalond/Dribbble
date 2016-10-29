@@ -74,7 +74,7 @@ public class ShotsAdapter extends BaseMultiItemQuickAdapter<ShotsEntity, BaseVie
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ShotsDetailActivity.class);
                 intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ENTITY, shotsEntity);
-                intent.putExtra(ShotsDetailActivity.EXTRA_IS_FROM_SEARCH, true);
+                intent.putExtra(ShotsDetailActivity.EXTRA_IS_NEED_REQUEST, false);
                 mContext.startActivity(intent);
             }
         });

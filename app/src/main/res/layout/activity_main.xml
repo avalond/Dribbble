@@ -31,19 +31,19 @@
                 android:layout_height="40dp"
                 android:orientation="horizontal">
 
-                <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                <com.hunter.cookies.widget.spinner.MaterialSpinner
                     android:id="@+id/spinner_selector_type"
                     style="@style/SpinnerSelectorText"
                     android:text="全部"
                     app:icon_padding="6dp"/>
 
-                <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                <com.hunter.cookies.widget.spinner.MaterialSpinner
                     android:id="@+id/spinner_selector_sort"
                     style="@style/SpinnerSelectorText"
                     android:text="最热"
                     app:icon_padding="6dp"/>
 
-                <com.hunter.dribbble.widget.spinner.MaterialSpinner
+                <com.hunter.cookies.widget.spinner.MaterialSpinner
                     android:id="@+id/spinner_selector_time"
                     style="@style/SpinnerSelectorText"
                     android:text="当前"

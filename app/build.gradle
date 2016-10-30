@@ -6,7 +6,7 @@ android {
     buildToolsVersion '24.0.3'
 
     defaultConfig {
-        applicationId "com.hunter.dribbble"
+        applicationId "com.hunter.cookies"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1

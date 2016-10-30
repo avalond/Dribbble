@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <com.hunter.dribbble.widget.ProportionImageView
+            <com.hunter.cookies.widget.ProportionImageView
                 android:id="@+id/piv_item_shots_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

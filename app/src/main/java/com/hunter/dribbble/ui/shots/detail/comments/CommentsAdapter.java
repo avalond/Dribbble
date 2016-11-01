@@ -1,6 +1,7 @@
 package com.hunter.dribbble.ui.shots.detail.comments;
 
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -27,7 +28,8 @@ public class CommentsAdapter extends BaseQuickAdapter<CommentEntity, BaseViewHol
         holder.setText(R.id.tv_item_comments_user_name, userEntity.getUsername());
 
         holder.setText(R.id.tv_item_comments_like, commentEntity.getLikesCount() + "");
-        holder.setText(R.id.tv_item_comments_content, HtmlFormatUtils.Html2String(commentEntity.getBody()));
+        TextView tvComment = holder.getView(R.id.tv_item_comments_content);
+        HtmlFormatUtils.Html2StringNoP(tvComment, commentEntity.getBody());
         holder.setText(R.id.tv_item_comments_time, TimeUtils.getTimeFromISO8601(commentEntity.getUpdatedAt()));
     }
 }

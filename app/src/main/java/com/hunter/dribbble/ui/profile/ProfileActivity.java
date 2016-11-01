@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +20,7 @@ import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.ui.profile.detail.ProfileDetailFragment;
 import com.hunter.dribbble.ui.profile.followers.ProfileFollowersFragment;
 import com.hunter.dribbble.ui.profile.shots.ProfileShotsFragment;
+import com.hunter.dribbble.utils.HtmlFormatUtils;
 import com.hunter.dribbble.utils.StatusBarCompat;
 import com.hunter.dribbble.utils.glide.GlideUtils;
 import com.hunter.dribbble.widget.ProportionImageView;
@@ -104,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity implements Toolbar.OnMenu
              .into(mAvatarBackground);
 
         mTvUserNickname.setText(mUserEntity.getName());
-        mTvUserBio.setText(Html.fromHtml(mUserEntity.getBio()));
+        HtmlFormatUtils.Html2String(mTvUserBio, mUserEntity.getBio());
     }
 
     private void initPager() {

@@ -7,9 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -106,8 +104,7 @@ public class ShotsDesFragment extends BaseMVPFragment<ShotsDetailPresenter, Shot
         mTvShotsTitle.setText(mShotsEntity.getTitle());
         String des = mShotsEntity.getDescription();
         if (!TextUtils.isEmpty(des)) {
-            mTvShotsDes.setText(Html.fromHtml(des));
-            mTvShotsDes.setMovementMethod(LinkMovementMethod.getInstance());
+            HtmlFormatUtils.Html2String(mTvShotsDes, des);
         } else {
             mTvShotsDes.setVisibility(View.GONE);
         }

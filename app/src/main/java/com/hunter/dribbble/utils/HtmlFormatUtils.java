@@ -1,13 +1,27 @@
 package com.hunter.dribbble.utils;
 
 import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.widget.TextView;
+
+import com.hunter.dribbble.widget.NoLineSpan;
 
 public class HtmlFormatUtils {
 
-    public static String Html2String(String htmlStr) {
+    public static void Html2StringNoP(TextView textView, String htmlStr) {
         htmlStr = htmlStr.replace("<p>", "");
         htmlStr = htmlStr.replace("</p>", "");
-        return Html.fromHtml(htmlStr).toString();
+        Html2String(textView, htmlStr);
+    }
+
+    public static void Html2String(TextView textView, String htmlStr) {
+        textView.setText(Html.fromHtml(htmlStr));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        Spannable spannable = (Spannable) textView.getText();
+        NoLineSpan noLineSpan = new NoLineSpan();
+        spannable.setSpan(noLineSpan, 0, spannable.length(), Spanned.SPAN_MARK_MARK);
     }
 
     public static String setupBold(String text, String normalText) {

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_item_buckets_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Great Mark"/>
+
+    <TextView
+        android:id="@+id/tv_item_buckets_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/text_black"
+        tools:text="1 Shots"/>
+
+    <TextView
+        android:id="@+id/tv_item_buckets_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/text_black"
+        tools:text="This is description"/>
+
+    <TextView
+        android:id="@+id/tv_item_buckets_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/text_grey"
+        android:textSize="12sp"
+        tools:text="创建时间：2016-06-22T08:01:37Z"/>
+
+    <TextView
+        android:id="@+id/tv_item_buckets_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/text_grey"
+        android:textSize="12sp"
+        tools:text="修改时间：2016-06-22T08:01:37Z"/>
+</LinearLayout>

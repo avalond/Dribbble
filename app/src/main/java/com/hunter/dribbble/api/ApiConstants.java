@@ -34,6 +34,8 @@ public interface ApiConstants {
         String USER_FOLLOWERS = "users/{id}/followers";
 
         String USER_SHOTS = "users/{id}/shots";
+
+        String USER_BUCKETS = "user/buckets";
     }
 
     interface ParamKey {

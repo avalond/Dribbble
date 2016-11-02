@@ -2,6 +2,7 @@ package com.hunter.dribbble.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,7 @@ import com.hunter.dribbble.R;
 import com.hunter.dribbble.base.mvp.BaseMVPActivity;
 import com.hunter.dribbble.entity.UserEntity;
 import com.hunter.dribbble.event.EventViewMode;
+import com.hunter.dribbble.ui.buckets.BucketsFragment;
 import com.hunter.dribbble.ui.profile.ProfileActivity;
 import com.hunter.dribbble.ui.settings.SettingsActivity;
 import com.hunter.dribbble.ui.shots.list.ShotsListFragment;
@@ -37,6 +39,9 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,7 +87,11 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
     @BindView(R.id.spinner_selector_time)
     MaterialSpinner mSpinnerSelectorTime;
 
+    private List<Fragment> mFragmentList;
     private ShotsListFragment mShotsListFragment;
+
+    private FragmentManager mFragmentManager;
+
     private SearchFragment mSearchFragment;
 
     private long mExitTime;
@@ -179,13 +188,16 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
         switch ((int) drawerItem.getIdentifier()) {
             case NAV_IDENTITY_HOME:
+                mToolbar.setTitle(getString(R.string.app_name));
+                showFragmentByIndex(0);
                 break;
 
             case NAV_IDENTITY_FOLLOWING:
 
                 break;
             case NAV_IDENTITY_BUCKETS:
-
+                mToolbar.setTitle("收藏夹");
+                showFragmentByIndex(1);
                 break;
             case NAV_IDENTITY_LIKES:
 
@@ -204,11 +216,20 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
     }
 
     private void initFragment() {
+        mFragmentManager = getSupportFragmentManager();
+
+        mFragmentList = new ArrayList<>();
         mShotsListFragment = ShotsListFragment.newInstance();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.container_main, mShotsListFragment).commit();
+        mFragmentList.add(mShotsListFragment);
+        mFragmentList.add(BucketsFragment.newInstance());
+
+        showFragmentByIndex(0);
 
         mSearchFragment = SearchFragment.newInstance();
+    }
+
+    private void showFragmentByIndex(int showIndex) {
+        mFragmentManager.beginTransaction().replace(R.id.container_main, mFragmentList.get(showIndex)).commit();
     }
 
     private void initUserInfo() {

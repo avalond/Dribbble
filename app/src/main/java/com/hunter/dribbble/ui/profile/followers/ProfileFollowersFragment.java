@@ -55,7 +55,6 @@ public class ProfileFollowersFragment extends BaseMVPListFragment<FollowersPrese
 
     private void initList() {
         mAdapter = new FollowersAdapter(new ArrayList<FollowerEntity>());
-        mRvFollowers.setAdapter(mAdapter);
         mRvFollowers.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvFollowers.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
     }

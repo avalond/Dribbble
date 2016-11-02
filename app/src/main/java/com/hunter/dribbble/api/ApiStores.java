@@ -1,5 +1,6 @@
 package com.hunter.dribbble.api;
 
+import com.hunter.dribbble.entity.BucketsEntity;
 import com.hunter.dribbble.entity.CheckLikeEntity;
 import com.hunter.dribbble.entity.CommentEntity;
 import com.hunter.dribbble.entity.FollowerEntity;
@@ -51,4 +52,9 @@ public interface ApiStores {
 
     @GET(ApiConstants.Path.USER_SHOTS)
     Observable<List<ShotsEntity>> getUserShots(@Path("id") String id, @QueryMap Map<String, String> params);
+
+    @GET(ApiConstants.Path.USER_BUCKETS)
+    Observable<List<BucketsEntity>> getUserBuckets();
+
+
 }

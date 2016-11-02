@@ -28,6 +28,7 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
 
     private View mEmptyView;
     private View mNoMoreView;
+    private View mErrorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,6 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         mPresenter = TUtils.getT(this, 0);
         mModel = TUtils.getT(this, 1);
         if (this instanceof BaseView) mPresenter.setVM(this, mModel);
-
     }
 
     @Override
@@ -50,6 +50,7 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         mEmptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
         TextView tvEmptyViewMsg = (TextView) mEmptyView.findViewById(R.id.tv_empty_view_msg);
         tvEmptyViewMsg.setText(getEmptyViewMsg());
+        adapter.setEmptyView(mEmptyView);
 
         /* 没有更多数据 */
         mNoMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
@@ -75,6 +76,7 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
                 requestData(false);
             }
         });
+        adapter.addFooterView(mNoMoreView);
 
         /* 首次进入自动刷新 */
         mRefreshLayout.setRefreshing(true);
@@ -98,12 +100,7 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     protected <T> void setData(List<T> datas, BaseQuickAdapter adapter) {
         if (mIsRefresh) {
             adapter.setNewData(datas);
-            if (datas.size() == 0 && adapter.getEmptyView() == null) {
-                adapter.setEmptyView(mEmptyView);
-            } else if (datas.size() < getPageSize()) {
-                adapter.loadComplete();
-                adapter.addFooterView(mNoMoreView);
-            }
+            adapter.loadComplete();
         } else {
             if (datas.size() == 0) {
                 adapter.loadComplete();
@@ -115,9 +112,12 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     public void showLoading() {
     }
 
+    public void showError(CharSequence errorMsg) {
+
+    }
+
     public void onComplete() {
         mRefreshLayout.setRefreshing(false);
     }
-
 
 }

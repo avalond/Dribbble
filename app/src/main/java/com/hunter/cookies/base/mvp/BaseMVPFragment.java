@@ -23,14 +23,14 @@ public abstract class BaseMVPFragment<P extends BasePresenter, M extends BaseMod
         if (mPresenter != null) mPresenter.onDestroy();
     }
 
-    public void showLoading(CharSequence msg) {
+    public void showLoading() {
+    }
+
+    public void showError(CharSequence errorMsg) {
+
     }
 
     public void onComplete() {
-
-    }
-
-    public void onError(){
 
     }
 

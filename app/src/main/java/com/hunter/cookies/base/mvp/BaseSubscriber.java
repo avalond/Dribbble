@@ -1,7 +1,5 @@
 package com.hunter.cookies.base.mvp;
 
-import android.text.TextUtils;
-
 import rx.Subscriber;
 
 public abstract class BaseSubscriber<T> extends Subscriber<T> {
@@ -10,25 +8,27 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
     private String mDialogMsg;
 
+    private boolean mIsShowLoading;
+
     public BaseSubscriber(BaseView view) {
         mView = view;
     }
 
-    public BaseSubscriber(BaseView view, String dialogMsg) {
+    public BaseSubscriber(BaseView view, boolean isShowLoading) {
         mView = view;
-        mDialogMsg = dialogMsg;
+        mIsShowLoading = isShowLoading;
     }
 
     @Override
     public void onStart() {
-        if (!TextUtils.isEmpty(mDialogMsg) && mView != null) mView.showLoading(mDialogMsg);
+        if (mIsShowLoading && mView != null) mView.showLoading();
     }
 
     @Override
     public void onCompleted() {
         if (mView != null) {
             mView.onComplete();
-            if (!TextUtils.isEmpty(mDialogMsg)) mView.showLoading(mDialogMsg);
+            if (mIsShowLoading) mView.showLoading();
         }
         mView = null;
     }
@@ -39,6 +39,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
         onFail(e.getMessage());
         if (mView != null) {
             mView.onComplete();
+            mView.showError(e.getMessage());
             mView.showToast(e.getMessage());
         }
     }

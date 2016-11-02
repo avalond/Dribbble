@@ -105,7 +105,6 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
                 requestData(true);
             }
         }, 200);
-
         recyclerView.setAdapter(adapter);
     }
 
@@ -136,17 +135,16 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         }
     }
 
-    public void showLoading(CharSequence msg) {
+    public void showLoading() {
+    }
+
+    public void showError(CharSequence errorMsg) {
+
     }
 
     public void onComplete() {
         mRefreshLayout.setRefreshing(false);
         mLoadFrameLayout.showContentView();
-    }
-
-    public void showError() {
-        mRefreshLayout.setRefreshing(false);
-        mLoadFrameLayout.showErrorView();
     }
 
     @Override

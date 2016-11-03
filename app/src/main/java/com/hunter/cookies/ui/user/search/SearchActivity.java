@@ -2,7 +2,6 @@ package com.hunter.cookies.ui.user.search;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -52,15 +51,12 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
         mEtInput.setSelection(mSearchKey.length());
 
         initShotsList();
-        setupList(mRefresh, mRvResult, mShotsAdapter);
     }
 
     private void initShotsList() {
         mShotsAdapter = new ShotsAdapter(this, new ArrayList<ShotsEntity>());
-        mRvResult.setAdapter(mShotsAdapter);
-
         ViewModelUtils.changeLayoutManager(mRvResult, App.getAppConfig().getViewMode());
-        mRvResult.setItemAnimator(new DefaultItemAnimator());
+        setupList(mRefresh, mRvResult, mShotsAdapter);
     }
 
     @Override
@@ -76,7 +72,7 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
 
     @Override
     public void searchShotsOnSuccess(List<ShotsEntity> data) {
-        setData(data, mShotsAdapter);
+        setData(data);
     }
 
     @Override

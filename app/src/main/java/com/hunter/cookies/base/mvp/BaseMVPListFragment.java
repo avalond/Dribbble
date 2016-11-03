@@ -14,27 +14,25 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hunter.cookies.R;
 import com.hunter.cookies.api.ApiConstants;
 import com.hunter.cookies.base.BaseFragment;
-import com.hunter.cookies.widget.LoadFrameLayout;
-import com.hunter.cookies.widget.ErrorView;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseMVPListFragment<P extends BasePresenter, M extends BaseModel> extends BaseFragment implements
-        View.OnClickListener {
+public abstract class BaseMVPListFragment<P extends BasePresenter, M extends BaseModel> extends BaseFragment {
 
     public P mPresenter;
     public M mModel;
 
     private SwipeRefreshLayout mRefreshLayout;
 
+    private BaseQuickAdapter mAdapter;
+
     protected boolean mIsRefresh;
     protected int mPage;
 
-    private View mEmptyView;
     private View mNoMoreView;
-    private LoadFrameLayout mLoadFrameLayout;
+    private View mErrorView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,13 +46,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, mRootView);
-        ErrorView errorView = new ErrorView(mContext);
-        errorView.setOnClickListener(this);
-        mLoadFrameLayout = new LoadFrameLayout(mContext);
-        mLoadFrameLayout.setContentView(mRootView);
-        mLoadFrameLayout.setErrorView(errorView);
-        ButterKnife.bind(this, mLoadFrameLayout);
-        return mLoadFrameLayout;
+        return mRootView;
     }
 
     @Override
@@ -64,16 +56,29 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     }
 
     protected void setupList(SwipeRefreshLayout refreshLayout, RecyclerView recyclerView, BaseQuickAdapter adapter) {
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        /* 空页面 */
-        mEmptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
-        TextView tvEmptyViewMsg = (TextView) mEmptyView.findViewById(R.id.tv_empty_view_msg);
+        mAdapter = adapter;
+
+        /* 没有数据 */
+        View emptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
+        TextView tvEmptyViewMsg = (TextView) emptyView.findViewById(R.id.tv_empty_view_msg);
         tvEmptyViewMsg.setText(getEmptyViewMsg());
+        mAdapter.setEmptyView(emptyView);
+        mAdapter.isUseEmpty(false);
 
         /* 没有更多数据 */
         mNoMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
+
+        /* 加载失败 */
+        mErrorView = inflater.inflate(R.layout.layout_error_view, (ViewGroup) recyclerView.getParent(), false);
+        TextView tvErrorViewMsg = (TextView) mErrorView.findViewById(R.id.tv_error_view_retry);
+        tvErrorViewMsg.setText(getErrorViewMsg());
+        tvEmptyViewMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRefreshLayout.setRefreshing(true);
+            }
+        });
 
         /* 刷新 */
         mRefreshLayout = refreshLayout;
@@ -87,10 +92,10 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
 
         /* 加载更多 */
         View loadingView = inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false);
-        adapter.setLoadingView(loadingView);
-        adapter.openLoadAnimation();
-        adapter.openLoadMore(ApiConstants.ParamValue.PAGE_SIZE);
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mAdapter.setLoadingView(loadingView);
+        mAdapter.openLoadAnimation();
+        mAdapter.openLoadMore(ApiConstants.ParamValue.PAGE_SIZE);
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 requestData(false);
@@ -105,7 +110,9 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
                 requestData(true);
             }
         }, 200);
-        recyclerView.setAdapter(adapter);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
     }
 
     protected void requestData(boolean isRefresh) {
@@ -118,20 +125,23 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         return "没有更多内容";
     }
 
-    protected <T> void setData(List<T> datas, BaseQuickAdapter adapter) {
+    public String getErrorViewMsg() {
+        return "重新加载";
+    }
+
+    protected <T> void setData(List<T> datas) {
+        mAdapter.isUseEmpty(true);
         if (mIsRefresh) {
-            adapter.setNewData(datas);
-            if (datas.size() == 0 && adapter.getEmptyView() == null) {
-                adapter.setEmptyView(mEmptyView);
-            } else if (datas.size() < ApiConstants.ParamValue.PAGE_SIZE) {
-                adapter.loadComplete();
-                adapter.addFooterView(mNoMoreView);
+            mAdapter.setNewData(datas);
+            if (datas.size() < ApiConstants.ParamValue.PAGE_SIZE) {
+                mAdapter.loadComplete();
+                mAdapter.addFooterView(mNoMoreView);
             }
         } else {
             if (datas.size() == 0) {
-                adapter.loadComplete();
-                adapter.addFooterView(mNoMoreView);
-            } else adapter.addData(datas);
+                mAdapter.loadComplete();
+                mAdapter.addFooterView(mNoMoreView);
+            } else mAdapter.addData(datas);
         }
     }
 
@@ -139,20 +149,12 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     }
 
     public void showError(CharSequence errorMsg) {
-
+        mAdapter.isUseEmpty(true);
+        mAdapter.setEmptyView(mErrorView);
     }
 
     public void onComplete() {
         mRefreshLayout.setRefreshing(false);
-        mLoadFrameLayout.showContentView();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (!mRefreshLayout.isRefreshing()) {
-            mRefreshLayout.setRefreshing(true);
-            mLoadFrameLayout.showContentView();
-            requestData(true);
-        }
-    }
 }

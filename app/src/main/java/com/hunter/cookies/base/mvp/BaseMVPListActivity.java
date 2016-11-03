@@ -3,6 +3,7 @@ package com.hunter.cookies.base.mvp;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +24,11 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
 
     private SwipeRefreshLayout mRefreshLayout;
 
+    private BaseQuickAdapter mAdapter;
+
     protected boolean mIsRefresh;
     protected int mPage;
 
-    private View mEmptyView;
     private View mNoMoreView;
     private View mErrorView;
 
@@ -46,14 +48,28 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
 
     protected void setupList(SwipeRefreshLayout refreshLayout, RecyclerView recyclerView, BaseQuickAdapter adapter) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        /* 空页面 */
-        mEmptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
-        TextView tvEmptyViewMsg = (TextView) mEmptyView.findViewById(R.id.tv_empty_view_msg);
+        mAdapter = adapter;
+
+        /* 没有数据 */
+        View emptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
+        TextView tvEmptyViewMsg = (TextView) emptyView.findViewById(R.id.tv_empty_view_msg);
         tvEmptyViewMsg.setText(getEmptyViewMsg());
-        adapter.setEmptyView(mEmptyView);
+        mAdapter.setEmptyView(emptyView);
+        mAdapter.isUseEmpty(false);
 
         /* 没有更多数据 */
         mNoMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
+
+        /* 加载失败 */
+        mErrorView = inflater.inflate(R.layout.layout_error_view, (ViewGroup) recyclerView.getParent(), false);
+        TextView tvErrorViewMsg = (TextView) mErrorView.findViewById(R.id.tv_error_view_retry);
+        tvErrorViewMsg.setText(getErrorViewMsg());
+        tvEmptyViewMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRefreshLayout.setRefreshing(true);
+            }
+        });
 
         /* 刷新 */
         mRefreshLayout = refreshLayout;
@@ -66,21 +82,29 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         });
 
         /* 加载更多 */
-        View loadingView = inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false);
-        adapter.setLoadingView(loadingView);
-        adapter.openLoadAnimation();
-        adapter.openLoadMore(getPageSize());
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mAdapter.setLoadingView(
+                inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false));
+        mAdapter.openLoadAnimation();
+        mAdapter.openLoadMore(getPageSize());
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 requestData(false);
             }
         });
-        adapter.addFooterView(mNoMoreView);
+        mAdapter.addFooterView(mNoMoreView);
 
         /* 首次进入自动刷新 */
-        mRefreshLayout.setRefreshing(true);
-        requestData(true);
+        mRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.setRefreshing(true);
+                requestData(true);
+            }
+        }, 200);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
     }
 
     protected void requestData(boolean isRefresh) {
@@ -93,19 +117,27 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         return "没有更多内容";
     }
 
+    public String getErrorViewMsg() {
+        return "重新加载";
+    }
+
     protected int getPageSize() {
         return ApiConstants.ParamValue.PAGE_SIZE;
     }
 
-    protected <T> void setData(List<T> datas, BaseQuickAdapter adapter) {
+    protected <T> void setData(List<T> datas) {
+        mAdapter.isUseEmpty(true);
         if (mIsRefresh) {
-            adapter.setNewData(datas);
-            adapter.loadComplete();
+            mAdapter.setNewData(datas);
+            if (datas.size() < getPageSize()) {
+                mAdapter.loadComplete();
+                mAdapter.addFooterView(mNoMoreView);
+            }
         } else {
             if (datas.size() == 0) {
-                adapter.loadComplete();
-                adapter.addFooterView(mNoMoreView);
-            } else adapter.addData(datas);
+                mAdapter.loadComplete();
+                mAdapter.addFooterView(mNoMoreView);
+            } else mAdapter.addData(datas);
         }
     }
 
@@ -113,7 +145,9 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     }
 
     public void showError(CharSequence errorMsg) {
-
+        mAdapter.isUseEmpty(true);
+        mAdapter.setEmptyView(mErrorView);
+        mAdapter.notifyItemChanged(0);
     }
 
     public void onComplete() {

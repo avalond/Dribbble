@@ -61,6 +61,6 @@ public class ProfileShotsFragment extends BaseMVPListFragment<ProfileShotsPresen
 
     @Override
     public void getUserShotsOnSuccess(List<ShotsEntity> datas) {
-        setData(datas, mAdapter);
+        setData(datas);
     }
 }

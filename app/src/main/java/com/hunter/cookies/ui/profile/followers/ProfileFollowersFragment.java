@@ -62,7 +62,7 @@ public class ProfileFollowersFragment extends BaseMVPListFragment<FollowersPrese
 
     @Override
     public void getFollowersOnSuccess(List<FollowerEntity> data) {
-        setData(data, mAdapter);
+        setData(data);
     }
 
 }

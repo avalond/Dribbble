@@ -29,8 +29,6 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
 
     private int mShotsId;
 
-    private CommentsAdapter mAdapter;
-
     public static ShotsCommentsFragment newInstance(int shotsId) {
         Bundle args = new Bundle();
         args.putInt(ARGS_SHOTS_ID, shotsId);
@@ -62,15 +60,15 @@ public class ShotsCommentsFragment extends BaseMVPListFragment<ShotsCommentsPres
     }
 
     private void initList() {
-        mAdapter = new CommentsAdapter(new ArrayList<CommentEntity>());
+        CommentsAdapter adapter = new CommentsAdapter(new ArrayList<CommentEntity>());
         mRvList.setLayoutManager(new LinearLayoutManager(mActivity));
         mRvList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
-        setupList(mRefresh, mRvList, mAdapter);
+        setupList(mRefresh, mRvList, adapter);
     }
 
     @Override
     public void getCommentsOnSuccess(List<CommentEntity> data) {
-        setData(data, mAdapter);
+        setData(data);
     }
 
     @Override

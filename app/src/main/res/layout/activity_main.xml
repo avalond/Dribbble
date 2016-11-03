@@ -48,7 +48,6 @@
                     style="@style/SpinnerSelectorText"
                     android:text="当前"
                     app:icon_padding="6dp"/>
-
             </LinearLayout>
         </android.support.design.widget.AppBarLayout>
 

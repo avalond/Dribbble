@@ -30,8 +30,6 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
     @BindView(R.id.refresh_single_list)
     SwipeRefreshLayout mRefresh;
 
-    private ShotsAdapter mAdapter;
-
     private int mType;
     private int mSort;
     private int mTime;
@@ -53,7 +51,6 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
         EventBus.getDefault().register(this);
 
         initList();
-        setupList(mRefresh, mRvShotsList, mAdapter);
     }
 
     @Override
@@ -63,8 +60,9 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
     }
 
     private void initList() {
-        mAdapter = new ShotsAdapter(getActivity(), new ArrayList<ShotsEntity>());
+        ShotsAdapter adapter = new ShotsAdapter(getActivity(), new ArrayList<ShotsEntity>());
         ViewModelUtils.changeLayoutManager(mRvShotsList, App.getAppConfig().getViewMode());
+        setupList(mRefresh, mRvShotsList, adapter);
     }
 
     @Override
@@ -100,6 +98,6 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
 
     @Override
     public void getShotsOnSuccess(List<ShotsEntity> data) {
-        setData(data, mAdapter);
+        setData(data);
     }
 }

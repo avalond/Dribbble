@@ -1,4 +1,4 @@
-package com.hunter.dribbble.widget;
+package com.hunter.cookies.widget;
 
 import android.text.TextPaint;
 import android.text.style.UnderlineSpan;

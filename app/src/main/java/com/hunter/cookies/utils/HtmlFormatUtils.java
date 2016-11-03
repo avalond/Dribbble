@@ -6,7 +6,7 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
-import com.hunter.dribbble.widget.NoLineSpan;
+import com.hunter.cookies.widget.NoLineSpan;
 
 public class HtmlFormatUtils {
 

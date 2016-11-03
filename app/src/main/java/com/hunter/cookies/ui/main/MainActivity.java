@@ -17,6 +17,7 @@ import com.hunter.cookies.R;
 import com.hunter.cookies.base.mvp.BaseMVPActivity;
 import com.hunter.cookies.entity.UserEntity;
 import com.hunter.cookies.event.EventViewMode;
+import com.hunter.cookies.ui.buckets.BucketsFragment;
 import com.hunter.cookies.ui.profile.ProfileActivity;
 import com.hunter.cookies.ui.settings.SettingsActivity;
 import com.hunter.cookies.ui.shots.list.ShotsListFragment;
@@ -79,6 +80,8 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
 
     @BindView(R.id.toolbar_main)
     Toolbar mToolbar;
+    @BindView(R.id.layout_main_spinner)
+    View mLayoutSpinner;
     @BindView(R.id.spinner_selector_type)
     MaterialSpinner mSpinnerSelectorType;
     @BindView(R.id.spinner_selector_sort)
@@ -228,6 +231,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
     }
 
     private void showFragmentByIndex(int showIndex) {
+        mLayoutSpinner.setVisibility(showIndex == 0 ? View.VISIBLE : View.GONE);
         mFragmentManager.beginTransaction().replace(R.id.container_main, mFragmentList.get(showIndex)).commit();
     }
 

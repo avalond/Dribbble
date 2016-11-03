@@ -1,9 +1,9 @@
-package com.hunter.dribbble.ui.buckets;
+package com.hunter.cookies.ui.buckets;
 
-import com.hunter.dribbble.base.mvp.BaseModel;
-import com.hunter.dribbble.base.mvp.BasePresenter;
-import com.hunter.dribbble.base.mvp.BaseView;
-import com.hunter.dribbble.entity.BucketsEntity;
+import com.hunter.cookies.base.mvp.BaseModel;
+import com.hunter.cookies.base.mvp.BasePresenter;
+import com.hunter.cookies.base.mvp.BaseView;
+import com.hunter.cookies.entity.BucketsEntity;
 
 import java.util.List;
 

@@ -6,6 +6,7 @@ import com.hunter.cookies.entity.FollowerEntity;
 import com.hunter.cookies.entity.ShotsEntity;
 import com.hunter.cookies.entity.TokenEntity;
 import com.hunter.cookies.entity.UserEntity;
+import com.hunter.cookies.entity.BucketsEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public interface ApiStores {
 
     @POST(ApiConstants.Path.SHOTS_PUT_COMMENTS)
     Observable<ShotsEntity> putComments(@Path("shots") String shots, @Path("id") String id,
-                                                @QueryMap Map<String, String> params);
+                                        @QueryMap Map<String, String> params);
 
     @DELETE(ApiConstants.Path.SHOTS_PUT_COMMENTS)
     Observable<String> deleteComments(@Path("shots") String shots, @Path("id") String id);
@@ -61,6 +62,5 @@ public interface ApiStores {
 
     @GET(ApiConstants.Path.USER_BUCKETS)
     Observable<List<BucketsEntity>> getUserBuckets();
-
 
 }

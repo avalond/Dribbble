@@ -1,4 +1,4 @@
-package com.hunter.dribbble.entity;
+package com.hunter.cookies.entity;
 
 import com.google.gson.annotations.SerializedName;
 

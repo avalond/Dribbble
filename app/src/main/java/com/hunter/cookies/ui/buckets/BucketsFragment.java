@@ -1,4 +1,4 @@
-package com.hunter.dribbble.ui.buckets;
+package com.hunter.cookies.ui.buckets;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -6,9 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.hunter.dribbble.R;
-import com.hunter.dribbble.base.mvp.BaseMVPListFragment;
-import com.hunter.dribbble.entity.BucketsEntity;
+import com.hunter.cookies.R;
+import com.hunter.cookies.base.mvp.BaseMVPListFragment;
+import com.hunter.cookies.entity.BucketsEntity;
 import com.hunter.lib.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class BucketsFragment extends BaseMVPListFragment<BucketsPresenter, Bucke
 
     @Override
     public void getBucketsOnSuccess(List<BucketsEntity> datas) {
-        setData(datas, mAdapter);
+        setData(datas);
     }
 
 }

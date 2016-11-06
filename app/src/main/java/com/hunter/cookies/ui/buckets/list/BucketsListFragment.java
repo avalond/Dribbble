@@ -1,4 +1,4 @@
-package com.hunter.cookies.ui.buckets;
+package com.hunter.cookies.ui.buckets.list;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,51 +9,47 @@ import android.view.View;
 import com.hunter.cookies.R;
 import com.hunter.cookies.base.mvp.BaseMVPListFragment;
 import com.hunter.cookies.entity.BucketsEntity;
-import com.hunter.lib.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class BucketsFragment extends BaseMVPListFragment<BucketsPresenter, BucketsModel> implements
-        BucketsContract.View {
+public class BucketsListFragment extends BaseMVPListFragment<BucketsListPresenter, BucketsListModel> implements
+        BucketsListContract.View {
 
-    @BindView(R.id.rv_buckets)
+    @BindView(R.id.rv_buckets_list)
     RecyclerView mRvBuckets;
-    @BindView(R.id.refresh_buckets)
+    @BindView(R.id.refresh_buckets_list)
     SwipeRefreshLayout mRefresh;
 
-    private BucketsAdapter mAdapter;
-
-    public static BucketsFragment newInstance() {
+    public static BucketsListFragment newInstance() {
         Bundle args = new Bundle();
-        BucketsFragment fragment = new BucketsFragment();
+        BucketsListFragment fragment = new BucketsListFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_buckets;
+        return R.layout.fragment_buckets_list;
     }
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
-        mAdapter = new BucketsAdapter(new ArrayList<BucketsEntity>());
+        BucketsAdapter adapter = new BucketsAdapter(new ArrayList<BucketsEntity>());
         mRvBuckets.setLayoutManager(new LinearLayoutManager(mContext));
-        mRvBuckets.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.LIST_VERTICAL));
-        setupList(mRefresh, mRvBuckets, mAdapter);
+        setupList(mRefresh, mRvBuckets, adapter);
     }
 
     @Override
     protected void requestData(boolean isRefresh) {
         super.requestData(isRefresh);
-        mPresenter.getBuckets();
+        mPresenter.getBucketsList();
     }
 
     @Override
-    public void getBucketsOnSuccess(List<BucketsEntity> datas) {
+    public void getBucketsListOnSuccess(List<BucketsEntity> datas) {
         setData(datas);
     }
 

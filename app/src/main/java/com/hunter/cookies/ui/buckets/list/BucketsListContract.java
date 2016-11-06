@@ -1,4 +1,4 @@
-package com.hunter.cookies.ui.buckets;
+package com.hunter.cookies.ui.buckets.list;
 
 import com.hunter.cookies.base.mvp.BaseModel;
 import com.hunter.cookies.base.mvp.BasePresenter;
@@ -9,20 +9,20 @@ import java.util.List;
 
 import rx.Observable;
 
-public interface BucketsContract {
+public interface BucketsListContract {
 
     interface Model extends BaseModel {
 
-        Observable<List<BucketsEntity>> getBuckets();
+        Observable<List<BucketsEntity>> getBucketsList();
     }
 
     interface View extends BaseView {
 
-        void getBucketsOnSuccess(List<BucketsEntity> datas);
+        void getBucketsListOnSuccess(List<BucketsEntity> datas);
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {
 
-        abstract void getBuckets();
+        abstract void getBucketsList();
     }
 }

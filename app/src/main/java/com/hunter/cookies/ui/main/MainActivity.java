@@ -17,7 +17,7 @@ import com.hunter.cookies.R;
 import com.hunter.cookies.base.mvp.BaseMVPActivity;
 import com.hunter.cookies.entity.UserEntity;
 import com.hunter.cookies.event.EventViewMode;
-import com.hunter.cookies.ui.buckets.BucketsFragment;
+import com.hunter.cookies.ui.buckets.list.BucketsListFragment;
 import com.hunter.cookies.ui.profile.ProfileActivity;
 import com.hunter.cookies.ui.settings.SettingsActivity;
 import com.hunter.cookies.ui.shots.list.ShotsListFragment;
@@ -223,7 +223,7 @@ public class MainActivity extends BaseMVPActivity<UserInfoPresenter, UserInfoMod
         mFragmentList = new ArrayList<>();
         mShotsListFragment = ShotsListFragment.newInstance();
         mFragmentList.add(mShotsListFragment);
-        mFragmentList.add(BucketsFragment.newInstance());
+        mFragmentList.add(BucketsListFragment.newInstance());
 
         showFragmentByIndex(0);
 

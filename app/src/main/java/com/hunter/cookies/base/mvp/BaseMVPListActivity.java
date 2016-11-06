@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.hunter.adapter.BaseQuickAdapter;
 import com.hunter.cookies.R;
 import com.hunter.cookies.api.ApiConstants;
 import com.hunter.cookies.base.BaseActivity;

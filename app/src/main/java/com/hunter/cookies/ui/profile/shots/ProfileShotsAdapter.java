@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.hunter.adapter.BaseQuickAdapter;
+import com.hunter.adapter.BaseViewHolder;
 import com.hunter.cookies.R;
 import com.hunter.cookies.entity.ShotsEntity;
 import com.hunter.cookies.ui.shots.detail.ShotsDetailActivity;

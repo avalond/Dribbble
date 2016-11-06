@@ -2,8 +2,8 @@ package com.hunter.cookies.utils.listener;
 
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.SimpleClickListener;
+import com.hunter.adapter.BaseQuickAdapter;
+import com.hunter.adapter.listener.SimpleClickListener;
 
 public class SimpleAdapterClickListener extends SimpleClickListener {
 

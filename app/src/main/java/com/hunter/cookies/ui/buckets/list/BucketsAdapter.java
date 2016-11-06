@@ -1,11 +1,11 @@
-package com.hunter.cookies.ui.buckets;
+package com.hunter.cookies.ui.buckets.list;
 
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.hunter.adapter.BaseQuickAdapter;
+import com.hunter.adapter.BaseViewHolder;
 import com.hunter.cookies.R;
 import com.hunter.cookies.entity.BucketsEntity;
 import com.hunter.cookies.utils.HtmlFormatUtils;

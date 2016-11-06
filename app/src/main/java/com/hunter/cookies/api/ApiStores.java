@@ -61,6 +61,8 @@ public interface ApiStores {
     Observable<List<ShotsEntity>> getUserShots(@Path("id") String id, @QueryMap Map<String, String> params);
 
     @GET(ApiConstants.Path.USER_BUCKETS)
-    Observable<List<BucketsEntity>> getUserBuckets();
+    Observable<List<BucketsEntity>> getBucketsList();
 
+    @GET(ApiConstants.Path.BUCKETS_DETAIL)
+    Observable<List<ShotsEntity>> getBucketsDetail(@Path("id") String id, @QueryMap Map<String, String> params);
 }

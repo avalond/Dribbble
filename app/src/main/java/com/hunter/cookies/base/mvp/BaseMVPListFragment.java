@@ -134,12 +134,12 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         if (mIsRefresh) {
             mAdapter.setNewData(datas);
             if (datas.size() < ApiConstants.ParamValue.PAGE_SIZE) {
-                mAdapter.loadComplete();
+                mAdapter.notifyComplete();
                 mAdapter.addFooterView(mNoMoreView);
             }
         } else {
             if (datas.size() == 0) {
-                mAdapter.loadComplete();
+                mAdapter.notifyComplete();
                 mAdapter.addFooterView(mNoMoreView);
             } else mAdapter.addData(datas);
         }

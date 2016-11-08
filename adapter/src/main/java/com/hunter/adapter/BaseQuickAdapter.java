@@ -2,7 +2,6 @@ package com.hunter.adapter;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.support.annotation.IntDef;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutParams;
@@ -16,13 +15,7 @@ import android.widget.LinearLayout;
 
 import com.hunter.adapter.animation.AlphaInAnimation;
 import com.hunter.adapter.animation.BaseAnimation;
-import com.hunter.adapter.animation.ScaleInAnimation;
-import com.hunter.adapter.animation.SlideInBottomAnimation;
-import com.hunter.adapter.animation.SlideInLeftAnimation;
-import com.hunter.adapter.animation.SlideInRightAnimation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,18 +23,6 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends RecyclerView.Adapter<VH> {
-
-    public static final int ALPHA_IN = 0x00000001;
-    public static final int SCALE_IN = 0x00000002;
-    public static final int SLIDE_IN_BOTTOM = 0x00000003;
-    public static final int SLIDE_IN_LEFT = 0x00000004;
-    public static final int SLIDE_IN_RIGHT = 0x00000005;
-
-    @IntDef({ALPHA_IN, SCALE_IN, SLIDE_IN_BOTTOM, SLIDE_IN_LEFT, SLIDE_IN_RIGHT})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface AnimationType {
-
-    }
 
     public static final int HEADER_VIEW = 0x00000001;
     public static final int LOADING_VIEW = 0x00000002;
@@ -57,8 +38,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     private boolean mOpenAnimationEnable = false;
 
-    private boolean mEmptyEnable;
-
     private boolean mIsUseEmpty = true;
 
     private boolean mHeadAndEmptyEnable;
@@ -73,16 +52,15 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     private RequestLoadMoreListener mRequestLoadMoreListener;
 
-    private BaseAnimation mCustomAnimation;
-    private BaseAnimation mSelectAnimation = new AlphaInAnimation();
+    private BaseAnimation mItemAnimation;
 
     private LinearLayout mHeaderView;
     private LinearLayout mFooterView;
-    private int mPageSize = -1;
-    /**
-     * View to show if there are no items to show.
-     */
     private View mEmptyView;
+    private View mLoadingView;
+    private View mNoMoreView;
+
+    private int mPageSize = -1;
 
     private View mLoadMoreFailedView;
 
@@ -91,7 +69,10 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     protected LayoutInflater mLayoutInflater;
     protected List<T> mData;
 
-    private View mLoadingView;
+    public interface RequestLoadMoreListener {
+
+        void onLoadMoreRequested();
+    }
 
     public BaseQuickAdapter(List<T> data) {
         this(0, data);
@@ -126,7 +107,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     }
 
     public void setNewData(List<T> data) {
-        this.mData = data == null ? new ArrayList<T>() : data;
+        mData = data == null ? new ArrayList<T>() : data;
         if (mRequestLoadMoreListener != null) {
             mNextLoadEnable = true;
             // mFooterView = null;
@@ -212,7 +193,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
             }
 
             if ((mHeadAndEmptyEnable && getHeaderViewCount() == 1 && count == 1) || count == 0) {
-                mEmptyEnable = true;
                 count += getEmptyViewCount();
             }
         }
@@ -224,7 +204,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         if (mHeaderView != null && position == 0) return HEADER_VIEW;
 
         /* 没有数据时，已设置 EmptyView */
-        if (mData.size() == 0 && mEmptyEnable && mEmptyView != null && position <= 2) {
+        if (mData.size() == 0 && mEmptyView != null && position <= 2) {
             if ((mHeadAndEmptyEnable || mFootAndEmptyEnable) && position == 1) {
                 /* 显示 footer */
                 if (mHeaderView == null && mFooterView != null) return FOOTER_VIEW;
@@ -239,8 +219,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
             } else if ((!mFootAndEmptyEnable || !mHeadAndEmptyEnable) && position == 1 && mFooterView != null) {
                 return FOOTER_VIEW;
             }
-        } else if (mData.size() == 0 && mEmptyView != null && getItemCount() == (mHeadAndEmptyEnable ? 2 : 1) &&
-                mEmptyEnable) {
+        } else if (mData.size() == 0 && mEmptyView != null && getItemCount() == (mHeadAndEmptyEnable ? 2 : 1)) {
             return EMPTY_VIEW;
         } else if (position == mData.size() + getHeaderViewCount()) {
             if (mNextLoadEnable) return LOADING_VIEW;
@@ -248,7 +227,11 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         } else if (position > mData.size() + getHeaderViewCount()) {
             return FOOTER_VIEW;
         }
-        return super.getItemViewType(position - getHeaderViewCount());
+        return getDefItemViewType(position - getHeaderViewCount());
+    }
+
+    protected int getDefItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     @Override
@@ -306,12 +289,12 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         if (mOpenAnimationEnable) {
             if (!mFirstOnlyEnable || holder.getLayoutPosition() > mLastPosition) {
                 BaseAnimation animation;
-                if (mCustomAnimation != null) animation = mCustomAnimation;
-                else animation = mSelectAnimation;
-
-                for (Animator anim : animation.getAnimators(holder.itemView)) {
-                    anim.setDuration(mDuration).start();
-                    anim.setInterpolator(mInterpolator);
+                if (mItemAnimation != null) {
+                    animation = mItemAnimation;
+                    for (Animator anim : animation.getAnimators(holder.itemView)) {
+                        anim.setDuration(mDuration).start();
+                        anim.setInterpolator(mInterpolator);
+                    }
                 }
                 mLastPosition = holder.getLayoutPosition();
             }
@@ -389,10 +372,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         return mHeaderView;
     }
 
-    public LinearLayout getFooterView() {
-        return mFooterView;
-    }
-
     public void addHeaderView(View header) {
         addHeaderView(header, -1);
     }
@@ -421,11 +400,30 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         notifyDataSetChanged();
     }
 
+    public void removeHeaderView(View header) {
+        if (mHeaderView == null) return;
+        mHeaderView.removeView(header);
+        if (mHeaderView.getChildCount() == 0) mHeaderView = null;
+        notifyItemChanged(0);
+    }
+
+    public void removeAllHeaderView() {
+        if (mHeaderView == null) return;
+        mHeaderView.removeAllViews();
+        mHeaderView = null;
+        notifyItemChanged(0);
+    }
+
+    public LinearLayout getFooterView() {
+        return mFooterView;
+    }
+
     public void addFooterView(View footer) {
         addFooterView(footer, -1);
     }
 
     public void addFooterView(View footer, int index) {
+        if (footer == null) return;
         mNextLoadEnable = false;
         if (mFooterView == null) {
             mFooterView = new LinearLayout(footer.getContext());
@@ -437,34 +435,18 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         notifyItemChanged(getItemCount());
     }
 
-    public void removeHeaderView(View header) {
-        if (mHeaderView == null) return;
-
-        mHeaderView.removeView(header);
-        if (mHeaderView.getChildCount() == 0) mHeaderView = null;
-        notifyDataSetChanged();
-    }
-
     public void removeFooterView(View footer) {
         if (mFooterView == null) return;
-
         mFooterView.removeView(footer);
         if (mFooterView.getChildCount() == 0) mFooterView = null;
-        notifyDataSetChanged();
-    }
-
-    public void removeAllHeaderView() {
-        if (mHeaderView == null) return;
-        mHeaderView.removeAllViews();
-
-        mHeaderView = null;
+        notifyItemChanged(mData.size());
     }
 
     public void removeAllFooterView() {
         if (mFooterView == null) return;
-
         mFooterView.removeAllViews();
         mFooterView = null;
+        notifyItemChanged(mData.size());
     }
 
     public void setLoadMoreFailedView(View view) {
@@ -478,11 +460,8 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         });
     }
 
-    /**
-     * Call this method when load more failed.
-     */
     public void showLoadMoreFailedView() {
-        loadComplete();
+        notifyComplete();
         if (mLoadMoreFailedView == null) {
             mLoadMoreFailedView = mLayoutInflater.inflate(R.layout.def_load_more_failed, null);
             mLoadMoreFailedView.setOnClickListener(new View.OnClickListener() {
@@ -496,105 +475,67 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         addFooterView(mLoadMoreFailedView);
     }
 
-    /**
-     * Sets the view to show if the adapter is empty
-     */
+    public View getEmptyView() {
+        return mEmptyView;
+    }
+
     public void setEmptyView(View emptyView) {
         setEmptyView(false, false, emptyView);
     }
 
-    /**
-     * @param isHeadAndEmpty false will not show headView if the data is empty true will show emptyView and headView
-     */
     public void setEmptyView(boolean isHeadAndEmpty, View emptyView) {
         setEmptyView(isHeadAndEmpty, false, emptyView);
     }
 
-    /**
-     * set emptyView show if adapter is empty and want to show headview and footview
-     */
     public void setEmptyView(boolean isHeadAndEmpty, boolean isFootAndEmpty, View emptyView) {
         mHeadAndEmptyEnable = isHeadAndEmpty;
         mFootAndEmptyEnable = isFootAndEmpty;
         mEmptyView = emptyView;
-        mEmptyEnable = true;
     }
 
     public void isUseEmpty(boolean isUseEmpty) {
         mIsUseEmpty = isUseEmpty;
     }
 
-    /**
-     * When the current adapter is empty, the BaseQuickAdapter can display a special view
-     * called the empty view. The empty view is used to provide feedback to the user
-     * that no data is available in this AdapterView.
-     *
-     * @return The view to show if the adapter is empty.
-     */
-    public View getEmptyView() {
-        return mEmptyView;
-    }
-
-    /**
-     * Finished pull to refresh on the load
-     */
-    public void loadComplete() {
+    public void notifyComplete() {
         mNextLoadEnable = false;
         mLoadingMoreEnable = false;
         notifyDataSetChanged();
+    }
+
+    public void loadComplete(boolean isRefresh, List<T> datas) {
+        if (datas == null) datas = new ArrayList<>();
+        if (isRefresh) {
+            setNewData(datas);
+            if (datas.size() < mPageSize) {
+                notifyComplete();
+                addFooterView(mNoMoreView);
+            }
+        } else {
+            if (datas.size() == 0) {
+                notifyComplete();
+                addFooterView(mNoMoreView);
+            } else {
+                addData(datas);
+            }
+        }
     }
 
     public void isFirstOnly(boolean firstOnly) {
         mFirstOnlyEnable = firstOnly;
     }
 
-    /**
-     * @param layoutResId ID for an XML layout resource to load
-     * @param parent      Optional view to be the parent of the generated hierarchy or else simply an object that
-     *                    provides a set of LayoutParams values for root of the returned
-     *                    hierarchy
-     * @return view will be return
-     */
     protected View getItemView(int layoutResId, ViewGroup parent) {
         return mLayoutInflater.inflate(layoutResId, parent, false);
     }
 
-    public interface RequestLoadMoreListener {
-
-        void onLoadMoreRequested();
-    }
-
-    public void openLoadAnimation(@AnimationType int animationType) {
-        this.mOpenAnimationEnable = true;
-        mCustomAnimation = null;
-        switch (animationType) {
-            case ALPHA_IN:
-                mSelectAnimation = new AlphaInAnimation();
-                break;
-            case SCALE_IN:
-                mSelectAnimation = new ScaleInAnimation();
-                break;
-            case SLIDE_IN_BOTTOM:
-                mSelectAnimation = new SlideInBottomAnimation();
-                break;
-            case SLIDE_IN_LEFT:
-                mSelectAnimation = new SlideInLeftAnimation();
-                break;
-            case SLIDE_IN_RIGHT:
-                mSelectAnimation = new SlideInRightAnimation();
-                break;
-            default:
-                break;
-        }
+    public void openLoadAnimation() {
+        openLoadAnimation(new AlphaInAnimation());
     }
 
     public void openLoadAnimation(BaseAnimation animation) {
         mOpenAnimationEnable = true;
-        mCustomAnimation = animation;
-    }
-
-    public void openLoadAnimation() {
-        mOpenAnimationEnable = true;
+        mItemAnimation = animation;
     }
 
     protected abstract void convert(VH helper, T item);
@@ -602,10 +543,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     @Override
     public long getItemId(int position) {
         return position;
-    }
-
-    private int getItemPosition(T item) {
-        return item != null && mData != null && !mData.isEmpty() ? mData.indexOf(item) : -1;
     }
 
 }

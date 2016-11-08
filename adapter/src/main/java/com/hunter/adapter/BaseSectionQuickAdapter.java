@@ -22,7 +22,7 @@ public abstract class BaseSectionQuickAdapter<T extends SectionEntity, K extends
      */
     public BaseSectionQuickAdapter(int layoutResId, int sectionHeadResId, List<T> data) {
         super(layoutResId, data);
-        this.mSectionHeadResId = sectionHeadResId;
+        mSectionHeadResId = sectionHeadResId;
     }
 
     @Override

@@ -130,12 +130,12 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         if (mIsRefresh) {
             mAdapter.setNewData(datas);
             if (datas.size() < getPageSize()) {
-                mAdapter.loadComplete();
+                mAdapter.notifyComplete();
                 mAdapter.addFooterView(mNoMoreView);
             }
         } else {
             if (datas.size() == 0) {
-                mAdapter.loadComplete();
+                mAdapter.notifyComplete();
                 mAdapter.addFooterView(mNoMoreView);
             } else mAdapter.addData(datas);
         }

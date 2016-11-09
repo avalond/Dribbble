@@ -3,7 +3,6 @@ package com.hunter.cookies.base.mvp;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hunter.adapter.BaseQuickAdapter;
+import com.hunter.adapter.animation.AlphaInAnimation;
+import com.hunter.adapter.animation.BaseAnimation;
 import com.hunter.cookies.R;
 import com.hunter.cookies.api.ApiConstants;
 import com.hunter.cookies.base.BaseFragment;
@@ -93,7 +94,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         /* 加载更多 */
         View loadingView = inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false);
         mAdapter.setLoadingView(loadingView);
-        mAdapter.openLoadAnimation();
+        mAdapter.openItemAnimation();
         mAdapter.openLoadMore(ApiConstants.ParamValue.PAGE_SIZE);
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -111,7 +112,8 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
             }
         }, 200);
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter.openItemAnimation(getItemAnimator());
+
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -157,4 +159,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         mRefreshLayout.setRefreshing(false);
     }
 
+    protected BaseAnimation getItemAnimator() {
+        return new AlphaInAnimation();
+    }
 }

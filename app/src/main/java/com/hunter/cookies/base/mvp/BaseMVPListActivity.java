@@ -84,7 +84,7 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         /* 加载更多 */
         mAdapter.setLoadingView(
                 inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false));
-        mAdapter.openLoadAnimation();
+        mAdapter.openItemAnimation();
         mAdapter.openLoadMore(getPageSize());
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override

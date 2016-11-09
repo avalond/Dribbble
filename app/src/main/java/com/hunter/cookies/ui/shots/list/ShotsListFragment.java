@@ -5,6 +5,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.hunter.adapter.animation.BaseAnimation;
+import com.hunter.adapter.animation.ScaleAlphaAnimation;
 import com.hunter.cookies.App;
 import com.hunter.cookies.R;
 import com.hunter.cookies.base.mvp.BaseMVPListFragment;
@@ -69,6 +71,11 @@ public class ShotsListFragment extends BaseMVPListFragment<ShotsListPresenter, S
     protected void requestData(boolean isRefresh) {
         super.requestData(isRefresh);
         mPresenter.getShots(mType, mSort, mTime, mPage);
+    }
+
+    @Override
+    protected BaseAnimation getItemAnimator() {
+        return new ScaleAlphaAnimation();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

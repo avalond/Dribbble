@@ -32,7 +32,7 @@ public class ShotsAdapter extends BaseMultiItemQuickAdapter<ShotsEntity, BaseVie
         addItemType(AppConstants.VIEW_MODE_SMALL, R.layout.item_shots_small);
         addItemType(AppConstants.VIEW_MODE_SMALL_WITH_INFO, R.layout.item_shots_small_with_info);
 
-        openLoadAnimation();
+        openItemAnimation();
     }
 
     @Override

@@ -9,8 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import com.hunter.adapter.animation.AlphaInAnimation;
@@ -24,31 +23,30 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends RecyclerView.Adapter<VH> {
 
-    public static final int HEADER_VIEW = 0x00000001;
-    public static final int LOADING_VIEW = 0x00000002;
-    public static final int FOOTER_VIEW = 0x00000003;
-    public static final int EMPTY_VIEW = 0x00000004;
-    public static final int ERROR_VIEW = 0x00000005;
+    public static final int ITEM_VIEW = 100;
+    public static final int HEADER_VIEW = 101;
+    public static final int LOADING_VIEW = 102;
+    public static final int FOOTER_VIEW = 103;
+    public static final int EMPTY_VIEW = 104;
+    public static final int ERROR_VIEW = 105;
 
-    private boolean mNextLoadEnable = false;
+    public static final int DEF_ANIM_DURATION = 225;
 
-    private boolean mLoadingMoreEnable = false;
+    private boolean mNextLoadEnable;
+
+    private boolean mLoadingMoreEnable;
 
     private boolean mFirstOnlyEnable = true;
-
-    private boolean mOpenAnimationEnable = false;
+    private boolean mOpenAnimationEnable;
 
     private boolean mIsUseEmpty = true;
 
     private boolean mHeadAndEmptyEnable;
-
     private boolean mFootAndEmptyEnable;
 
-    private Interpolator mInterpolator = new LinearInterpolator();
+    private int mDuration = DEF_ANIM_DURATION;
 
-    private int mDuration = 300;
-
-    private int mLastPosition = -1;
+    private int mLastAddedAnimPos = -1;
 
     private RequestLoadMoreListener mRequestLoadMoreListener;
 
@@ -115,7 +113,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         if (mLoadMoreFailedView != null) {
             removeFooterView(mLoadMoreFailedView);
         }
-        mLastPosition = -1;
+        mLastAddedAnimPos = -1;
         notifyDataSetChanged();
     }
 
@@ -204,7 +202,8 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         if (mHeaderView != null && position == 0) return HEADER_VIEW;
 
         /* 没有数据时，已设置 EmptyView */
-        if (mData.size() == 0 && mEmptyView != null && position <= 2) {
+        if (mData.size() == 0 && position <= 2) {
+            if (position == 0)
             if ((mHeadAndEmptyEnable || mFootAndEmptyEnable) && position == 1) {
                 /* 显示 footer */
                 if (mHeaderView == null && mFooterView != null) return FOOTER_VIEW;
@@ -231,7 +230,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     }
 
     protected int getDefItemViewType(int position) {
-        return super.getItemViewType(position);
+        return ITEM_VIEW;
     }
 
     @Override
@@ -287,16 +286,16 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     private void addAnimation(RecyclerView.ViewHolder holder) {
         if (mOpenAnimationEnable) {
-            if (!mFirstOnlyEnable || holder.getLayoutPosition() > mLastPosition) {
+            if (!mFirstOnlyEnable || holder.getLayoutPosition() > mLastAddedAnimPos) {
                 BaseAnimation animation;
                 if (mItemAnimation != null) {
                     animation = mItemAnimation;
                     for (Animator anim : animation.getAnimators(holder.itemView)) {
                         anim.setDuration(mDuration).start();
-                        anim.setInterpolator(mInterpolator);
+                        anim.setInterpolator(new AccelerateDecelerateInterpolator());
                     }
                 }
-                mLastPosition = holder.getLayoutPosition();
+                mLastAddedAnimPos = holder.getLayoutPosition();
             }
         }
     }
@@ -331,9 +330,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     @Override
     public void onBindViewHolder(VH holder, int positions) {
         switch (holder.getItemViewType()) {
-            case 0:
-                convert(holder, mData.get(holder.getLayoutPosition() - getHeaderViewCount()));
-                break;
             case LOADING_VIEW:
                 addLoadMore();
                 break;
@@ -376,10 +372,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         addHeaderView(header, -1);
     }
 
-    /**
-     * When index = -1 or index >= child count in mHeaderView
-     * the effect of this method is the same as that of {@link #addHeaderView(View)}.
-     */
     public void addHeaderView(View header, int index) {
         addHeaderView(header, index, LinearLayout.VERTICAL);
     }
@@ -529,11 +521,11 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         return mLayoutInflater.inflate(layoutResId, parent, false);
     }
 
-    public void openLoadAnimation() {
-        openLoadAnimation(new AlphaInAnimation());
+    public void openItemAnimation() {
+        openItemAnimation(new AlphaInAnimation());
     }
 
-    public void openLoadAnimation(BaseAnimation animation) {
+    public void openItemAnimation(BaseAnimation animation) {
         mOpenAnimationEnable = true;
         mItemAnimation = animation;
     }

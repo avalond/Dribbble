@@ -30,7 +30,7 @@ public abstract class BaseMultiItemQuickAdapter<T extends MultiItemEntity, K ext
 
     @Override
     protected int getDefItemViewType(int position) {
-        Object item = mData.get(position);
+        Object item = mDatas.get(position);
         if (item instanceof MultiItemEntity) {
             return ((MultiItemEntity) item).getItemType();
         }
@@ -42,7 +42,7 @@ public abstract class BaseMultiItemQuickAdapter<T extends MultiItemEntity, K ext
     }
 
     @Override
-    protected K onCreateDefViewHolder(ViewGroup parent, int viewType) {
+    protected K createDefViewHolder(ViewGroup parent, int viewType) {
         return createBaseViewHolder(parent, getLayoutId(viewType));
     }
 

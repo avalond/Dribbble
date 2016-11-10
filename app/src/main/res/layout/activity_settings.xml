@@ -96,8 +96,9 @@
         android:textSize="12sp"/>
 
     <TextView
+        android:id="@+id/tv_settings_to_about"
         style="@style/TextSettings"
-        android:text="关于 Dribbble"/>
+        android:text="关于 Cookies"/>
 
     <View
         android:layout_width="match_parent"

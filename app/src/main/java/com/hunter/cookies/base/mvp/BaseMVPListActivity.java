@@ -86,7 +86,7 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
                 inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false));
         mAdapter.openItemAnimation();
         mAdapter.openLoadMore(getPageSize());
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.LoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 requestData(false);

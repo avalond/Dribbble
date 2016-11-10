@@ -96,7 +96,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         mAdapter.setLoadingView(loadingView);
         mAdapter.openItemAnimation();
         mAdapter.openLoadMore(ApiConstants.ParamValue.PAGE_SIZE);
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.LoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 requestData(false);

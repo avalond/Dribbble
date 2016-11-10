@@ -30,12 +30,6 @@
                 app:layout_collapseParallaxMultiplier="0.7"
                 app:proportion_w_h="1"/>
 
-            <com.github.mmin18.widget.RealtimeBlurView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:realtimeBlurRadius="10dp"
-                app:realtimeOverlayColor="#6623242A"/>
-
             <LinearLayout
                 android:id="@+id/ll_profile_avatar"
                 android:layout_width="match_parent"

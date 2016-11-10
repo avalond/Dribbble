@@ -25,241 +25,83 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     public static final int ITEM_VIEW = 100;
     public static final int HEADER_VIEW = 101;
-    public static final int LOADING_VIEW = 102;
-    public static final int FOOTER_VIEW = 103;
-    public static final int EMPTY_VIEW = 104;
-    public static final int ERROR_VIEW = 105;
+    public static final int FOOTER_VIEW = 102;
+    public static final int EMPTY_VIEW = 103;
+    public static final int ERROR_VIEW = 104;
+    public static final int LOADING_VIEW = 105;
+    public static final int LOAD_NO_MORE_VIEW = 106;
+    public static final int LOAD_MORE_FAIL_VIEW = 107;
+
+    public static final int STATUS_NORMAL = 0;
+    public static final int STATUS_ERROR = 1;
+    public static final int STATUS_EMPTY = 2;
+    public static final int STATUS_LOADING = 3;
+    public static final int STATUS_LOAD_NO_MORE = 4;
+    public static final int STATUS_LOAD_MORE_FAIL = 5;
 
     public static final int DEF_ANIM_DURATION = 225;
 
     private boolean mNextLoadEnable;
 
-    private boolean mLoadingMoreEnable;
+    private boolean mIsLoading;
 
-    private boolean mFirstOnlyEnable = true;
+    private BaseAnimation mItemAnimation;
     private boolean mOpenAnimationEnable;
-
-    private boolean mIsUseEmpty = true;
-
-    private boolean mHeadAndEmptyEnable;
-    private boolean mFootAndEmptyEnable;
-
-    private int mDuration = DEF_ANIM_DURATION;
 
     private int mLastAddedAnimPos = -1;
 
-    private RequestLoadMoreListener mRequestLoadMoreListener;
-
-    private BaseAnimation mItemAnimation;
+    private LoadMoreListener mLoadMoreListener;
 
     private LinearLayout mHeaderView;
-    private LinearLayout mFooterView;
+
+    private int mItemStatus;
     private View mEmptyView;
+    private View mErrorView;
+
+    private int mFooterStatus;
+    private LinearLayout mFooterView;
     private View mLoadingView;
-    private View mNoMoreView;
+    private View mLoadNoMoreView;
+    private View mLoadMoreFailedView;
 
     private int mPageSize = -1;
-
-    private View mLoadMoreFailedView;
 
     protected Context mContext;
     protected int mLayoutResId;
     protected LayoutInflater mLayoutInflater;
-    protected List<T> mData;
+    protected List<T> mDatas;
 
-    public interface RequestLoadMoreListener {
+    public interface LoadMoreListener {
 
         void onLoadMoreRequested();
     }
 
-    public BaseQuickAdapter(List<T> data) {
-        this(0, data);
+    public BaseQuickAdapter(List<T> datas) {
+        this(0, datas);
     }
 
-    public BaseQuickAdapter(int layoutResId, List<T> data) {
-        mData = data == null ? new ArrayList<T>() : data;
+    public BaseQuickAdapter(int layoutResId, List<T> datas) {
+        mDatas = datas == null ? new ArrayList<T>() : datas;
         if (layoutResId != 0) mLayoutResId = layoutResId;
     }
 
-    public void setOnLoadMoreListener(RequestLoadMoreListener requestLoadMoreListener) {
-        mRequestLoadMoreListener = requestLoadMoreListener;
-    }
-
-    public void setDuration(int duration) {
-        mDuration = duration;
-    }
-
-    public void openLoadMore(int pageSize) {
-        mPageSize = pageSize;
-        mNextLoadEnable = true;
-    }
-
-    public void remove(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position + getHeaderViewCount());
-    }
-
-    public void add(int position, T item) {
-        mData.add(position, item);
-        notifyItemInserted(position);
-    }
-
-    public void setNewData(List<T> data) {
-        mData = data == null ? new ArrayList<T>() : data;
-        if (mRequestLoadMoreListener != null) {
-            mNextLoadEnable = true;
-            // mFooterView = null;
-        }
-        if (mLoadMoreFailedView != null) {
-            removeFooterView(mLoadMoreFailedView);
-        }
-        mLastAddedAnimPos = -1;
-        notifyDataSetChanged();
-    }
-
-    public void addData(int position, T data) {
-        if (0 <= position && position < mData.size()) {
-            mData.add(position, data);
-            notifyItemInserted(position);
-            notifyItemRangeChanged(position, mData.size() - position);
-        }
-    }
-
-    public void addData(T data) {
-        mData.add(data);
-        notifyItemInserted(mData.size() - 1);
-    }
-
-    public void addData(int position, List<T> data) {
-        if (0 <= position && position < mData.size()) {
-            mData.addAll(position, data);
-            notifyItemInserted(position);
-            notifyItemRangeChanged(position, mData.size() - position - data.size());
-        } else {
-            throw new ArrayIndexOutOfBoundsException("inserted position most greater than 0 and less than data size");
-        }
-    }
-
-    public void addData(List<T> newData) {
-        mData.addAll(newData);
-        hideLoadingMore();
-        //        notifyItemRangeInserted(mData.size() - newData.size() + getHeaderViewCount(), newData.size());
-        notifyDataSetChanged();
-    }
-
-    public boolean isLoading() {
-        return mLoadingMoreEnable;
-    }
-
-    public void hideLoadingMore() {
-        if (mNextLoadEnable) mLoadingMoreEnable = false;
-    }
-
-    public void setLoadingView(View loadingView) {
-        mLoadingView = loadingView;
-    }
-
-    public List<T> getData() {
-        return mData;
-    }
-
-    public T getItem(int position) {
-        return mData.get(position);
-    }
-
-    public int getHeaderViewCount() {
-        return mHeaderView == null ? 0 : 1;
-    }
-
-    public int getFooterLayoutCount() {
-        return mFooterView == null ? 0 : 1;
-    }
-
-    public int getEmptyViewCount() {
-        return mEmptyView == null ? 0 : 1;
-    }
-
     @Override
-    public int getItemCount() {
-        int i = isLoadMore() ? 1 : 0;
-        int count = mData.size() + i + getHeaderViewCount() + getFooterLayoutCount();
-        if (mData.size() == 0 && mEmptyView != null && mIsUseEmpty) {
-            if (count == 0 && (!mHeadAndEmptyEnable || !mFootAndEmptyEnable)) {
-                count += getEmptyViewCount();
-            } else if (mHeadAndEmptyEnable || mFootAndEmptyEnable) {
-                count += getEmptyViewCount();
-            }
-
-            if ((mHeadAndEmptyEnable && getHeaderViewCount() == 1 && count == 1) || count == 0) {
-                count += getEmptyViewCount();
-            }
+    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        /* 返回当前所在行数的最大列数，为了占满一行 */
+        if (manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int type = getItemViewType(position);
+                    if (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW ||
+                            type == LOAD_NO_MORE_VIEW || type == LOAD_MORE_FAIL_VIEW) return gridManager.getSpanCount();
+                    return 1;
+                }
+            });
         }
-        return count;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (mHeaderView != null && position == 0) return HEADER_VIEW;
-
-        /* 没有数据时，已设置 EmptyView */
-        if (mData.size() == 0 && position <= 2) {
-            if (position == 0)
-            if ((mHeadAndEmptyEnable || mFootAndEmptyEnable) && position == 1) {
-                /* 显示 footer */
-                if (mHeaderView == null && mFooterView != null) return FOOTER_VIEW;
-                /* 显示 EmptyView*/
-                else if (mHeaderView != null) return EMPTY_VIEW;
-            } else if (position == 0) {
-                if (mHeaderView == null) return EMPTY_VIEW;
-                else if (mFooterView != null) return EMPTY_VIEW;
-            } else if (position == 2 && (mFootAndEmptyEnable || mHeadAndEmptyEnable) && mHeaderView != null &&
-                    mEmptyView != null) {
-                return FOOTER_VIEW;
-            } else if ((!mFootAndEmptyEnable || !mHeadAndEmptyEnable) && position == 1 && mFooterView != null) {
-                return FOOTER_VIEW;
-            }
-        } else if (mData.size() == 0 && mEmptyView != null && getItemCount() == (mHeadAndEmptyEnable ? 2 : 1)) {
-            return EMPTY_VIEW;
-        } else if (position == mData.size() + getHeaderViewCount()) {
-            if (mNextLoadEnable) return LOADING_VIEW;
-            else return FOOTER_VIEW;
-        } else if (position > mData.size() + getHeaderViewCount()) {
-            return FOOTER_VIEW;
-        }
-        return getDefItemViewType(position - getHeaderViewCount());
-    }
-
-    protected int getDefItemViewType(int position) {
-        return ITEM_VIEW;
-    }
-
-    @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        VH viewHolder;
-        mContext = parent.getContext();
-        mLayoutInflater = LayoutInflater.from(mContext);
-        switch (viewType) {
-            case HEADER_VIEW:
-                viewHolder = createViewHolder(mHeaderView);
-                break;
-            case FOOTER_VIEW:
-                viewHolder = createViewHolder(mFooterView);
-                break;
-            case LOADING_VIEW:
-                if (mLoadingView == null) viewHolder = createViewHolder(parent, R.layout.def_loading);
-                else viewHolder = createViewHolder(mLoadingView);
-                break;
-            case EMPTY_VIEW:
-                viewHolder = createViewHolder(mEmptyView);
-                break;
-            default:
-                viewHolder = onCreateDefViewHolder(parent, viewType);
-        }
-        return viewHolder;
-    }
-
-    protected VH createViewHolder(View view) {
-        return (VH) new BaseViewHolder(view);
     }
 
     @Override
@@ -286,12 +128,12 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     private void addAnimation(RecyclerView.ViewHolder holder) {
         if (mOpenAnimationEnable) {
-            if (!mFirstOnlyEnable || holder.getLayoutPosition() > mLastAddedAnimPos) {
+            if (holder.getLayoutPosition() > mLastAddedAnimPos) {
                 BaseAnimation animation;
                 if (mItemAnimation != null) {
                     animation = mItemAnimation;
                     for (Animator anim : animation.getAnimators(holder.itemView)) {
-                        anim.setDuration(mDuration).start();
+                        anim.setDuration(DEF_ANIM_DURATION).start();
                         anim.setInterpolator(new AccelerateDecelerateInterpolator());
                     }
                 }
@@ -301,30 +143,85 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     }
 
     @Override
-    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        /* 返回当前所在行数的最大列数，为了占满一行 */
-        if (manager instanceof GridLayoutManager) {
-            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
-            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    int type = getItemViewType(position);
-                    if (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW)
-                        return gridManager.getSpanCount();
-                    return 1;
-                }
-            });
+    public int getItemCount() {
+        int count = mDatas.size() + (isLoadMore() ? 1 : 0) + getHeaderViewCount() + getFooterLayoutCount();
+        if (mDatas.size() == 0) {
+            if (mEmptyView != null && mItemStatus == STATUS_EMPTY) count++;
+            else if (mErrorView != null && mItemStatus == STATUS_ERROR) count++;
         }
+        return count;
+    }
 
-        recyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mRequestLoadMoreListener != null && mPageSize == -1)
-                    openLoadMore(recyclerView.getLayoutManager().getChildCount());
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mHeaderView != null && position == 0) return HEADER_VIEW;
+        if (mFooterView != null && position == getItemCount() - (mIsLoading ? 1 : 0) - 1) return FOOTER_VIEW;
+        if (mDatas.size() == 0) {
+            if (position == 0) {
+                if (mItemStatus == STATUS_EMPTY && mEmptyView != null) return EMPTY_VIEW;
+                if (mItemStatus == STATUS_ERROR && mErrorView != null) return ERROR_VIEW;
             }
-        });
+        }
+        if (position == getItemCount() - 1) {
+            if (mItemStatus == STATUS_LOAD_MORE_FAIL && mLoadMoreFailedView != null) return LOAD_MORE_FAIL_VIEW;
+            if (mItemStatus == STATUS_LOAD_NO_MORE && mLoadNoMoreView != null) return LOAD_NO_MORE_VIEW;
+            if (mLoadingView != null) return LOADING_VIEW;
+        }
+        return getDefItemViewType(position - getHeaderViewCount());
+    }
+
+    @Override
+    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+        VH viewHolder;
+        mContext = parent.getContext();
+        mLayoutInflater = LayoutInflater.from(mContext);
+        switch (viewType) {
+            case HEADER_VIEW:
+                viewHolder = createViewHolder(mHeaderView);
+                break;
+            case FOOTER_VIEW:
+                viewHolder = createViewHolder(mFooterView);
+                break;
+            case EMPTY_VIEW:
+                viewHolder = createViewHolder(mEmptyView);
+                break;
+            case ERROR_VIEW:
+                viewHolder = createViewHolder(mEmptyView);
+                break;
+            case LOADING_VIEW:
+                viewHolder = createViewHolder(mLoadingView);
+                break;
+            case LOAD_MORE_FAIL_VIEW:
+                viewHolder = createViewHolder(mLoadMoreFailedView);
+                break;
+            case LOAD_NO_MORE_VIEW:
+                viewHolder = createViewHolder(mLoadNoMoreView);
+                break;
+            default:
+                viewHolder = createDefViewHolder(parent, viewType);
+        }
+        return viewHolder;
+    }
+
+    protected VH createViewHolder(View view) {
+        return (VH) new BaseViewHolder(view);
+    }
+
+    protected VH createDefViewHolder(ViewGroup parent, int viewType) {
+        return createBaseViewHolder(parent, mLayoutResId);
+    }
+
+    protected VH createBaseViewHolder(ViewGroup parent, int layoutResId) {
+        return createViewHolder(getItemView(layoutResId, parent));
+    }
+
+    protected int getDefItemViewType(int position) {
+        return ITEM_VIEW;
     }
 
     @Override
@@ -334,34 +231,106 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
                 addLoadMore();
                 break;
             case HEADER_VIEW:
-                break;
             case EMPTY_VIEW:
-                break;
             case FOOTER_VIEW:
                 break;
             default:
-                convert(holder, mData.get(holder.getLayoutPosition() - getHeaderViewCount()));
+                convert(holder, mDatas.get(holder.getLayoutPosition() - getHeaderViewCount()));
                 break;
         }
     }
 
+    protected abstract void convert(VH helper, T item);
+
+    public void setOnLoadMoreListener(LoadMoreListener loadMoreListener) {
+        mLoadMoreListener = loadMoreListener;
+    }
+
+    public void openLoadMore(int pageSize) {
+        mPageSize = pageSize;
+        mNextLoadEnable = true;
+    }
+
+    public void remove(int position) {
+        mDatas.remove(position);
+        notifyItemRemoved(position + getHeaderViewCount());
+    }
+
+    public void add(int position, T item) {
+        mDatas.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void setNewData(List<T> data) {
+        mDatas = data == null ? new ArrayList<T>() : data;
+        if (mLoadMoreListener != null) {
+            mNextLoadEnable = true;
+        }
+        if (mLoadMoreFailedView != null) {
+            removeFooterView(mLoadMoreFailedView);
+        }
+        mLastAddedAnimPos = -1;
+        notifyDataSetChanged();
+    }
+
+    public void addData(int position, T data) {
+        if (0 <= position && position < mDatas.size()) {
+            mDatas.add(position, data);
+            notifyItemInserted(position);
+            notifyItemRangeChanged(position, mDatas.size() - position);
+        }
+    }
+
+    public void addData(T data) {
+        mDatas.add(data);
+        notifyItemInserted(mDatas.size() - 1);
+    }
+
+    public void addData(int position, List<T> data) {
+        if (0 <= position && position < mDatas.size()) {
+            mDatas.addAll(position, data);
+            notifyItemInserted(position);
+            notifyItemRangeChanged(position, mDatas.size() - position - data.size());
+        } else {
+            throw new ArrayIndexOutOfBoundsException("inserted position most greater than 0 and less than data size");
+        }
+    }
+
+    public void addData(List<T> newData) {
+        mDatas.addAll(newData);
+        if (mNextLoadEnable) mIsLoading = false;
+        notifyItemRangeInserted(mDatas.size() - newData.size() + getHeaderViewCount(), newData.size());
+    }
+
+    public void setLoadingView(View loadingView) {
+        mLoadingView = loadingView;
+    }
+
+    public List<T> getData() {
+        return mDatas;
+    }
+
+    public T getItem(int position) {
+        return mDatas.get(position);
+    }
+
+    public int getHeaderViewCount() {
+        return mHeaderView == null ? 0 : 1;
+    }
+
+    public int getFooterLayoutCount() {
+        return mFooterView == null ? 0 : 1;
+    }
+
     private void addLoadMore() {
-        if (isLoadMore() && !mLoadingMoreEnable) {
-            mLoadingMoreEnable = true;
-            mRequestLoadMoreListener.onLoadMoreRequested();
+        if (isLoadMore() && !mIsLoading) {
+            mIsLoading = true;
+            mLoadMoreListener.onLoadMoreRequested();
         }
     }
 
     private boolean isLoadMore() {
-        return mNextLoadEnable && mPageSize != -1 && mRequestLoadMoreListener != null && mData.size() >= mPageSize;
-    }
-
-    protected VH onCreateDefViewHolder(ViewGroup parent, int viewType) {
-        return createBaseViewHolder(parent, mLayoutResId);
-    }
-
-    protected VH createBaseViewHolder(ViewGroup parent, int layoutResId) {
-        return createViewHolder(getItemView(layoutResId, parent));
+        return mNextLoadEnable && mPageSize != -1 && mLoadMoreListener != null && mDatas.size() >= mPageSize;
     }
 
     public LinearLayout getHeaderView() {
@@ -373,19 +342,10 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     }
 
     public void addHeaderView(View header, int index) {
-        addHeaderView(header, index, LinearLayout.VERTICAL);
-    }
-
-    public void addHeaderView(View header, int index, int orientation) {
         if (mHeaderView == null) {
             mHeaderView = new LinearLayout(header.getContext());
-            if (orientation == LinearLayout.VERTICAL) {
-                mHeaderView.setOrientation(LinearLayout.VERTICAL);
-                mHeaderView.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-            } else {
-                mHeaderView.setOrientation(LinearLayout.HORIZONTAL);
-                mHeaderView.setLayoutParams(new LayoutParams(WRAP_CONTENT, MATCH_PARENT));
-            }
+            mHeaderView.setOrientation(LinearLayout.VERTICAL);
+            mHeaderView.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         }
         index = index >= mHeaderView.getChildCount() ? -1 : index;
         mHeaderView.addView(header, index);
@@ -431,14 +391,14 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         if (mFooterView == null) return;
         mFooterView.removeView(footer);
         if (mFooterView.getChildCount() == 0) mFooterView = null;
-        notifyItemChanged(mData.size());
+        notifyItemChanged(mDatas.size());
     }
 
     public void removeAllFooterView() {
         if (mFooterView == null) return;
         mFooterView.removeAllViews();
         mFooterView = null;
-        notifyItemChanged(mData.size());
+        notifyItemChanged(mDatas.size());
     }
 
     public void setLoadMoreFailedView(View view) {
@@ -472,26 +432,15 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     }
 
     public void setEmptyView(View emptyView) {
-        setEmptyView(false, false, emptyView);
-    }
-
-    public void setEmptyView(boolean isHeadAndEmpty, View emptyView) {
-        setEmptyView(isHeadAndEmpty, false, emptyView);
-    }
-
-    public void setEmptyView(boolean isHeadAndEmpty, boolean isFootAndEmpty, View emptyView) {
-        mHeadAndEmptyEnable = isHeadAndEmpty;
-        mFootAndEmptyEnable = isFootAndEmpty;
         mEmptyView = emptyView;
     }
 
     public void isUseEmpty(boolean isUseEmpty) {
-        mIsUseEmpty = isUseEmpty;
     }
 
     public void notifyComplete() {
         mNextLoadEnable = false;
-        mLoadingMoreEnable = false;
+        mIsLoading = false;
         notifyDataSetChanged();
     }
 
@@ -501,20 +450,16 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
             setNewData(datas);
             if (datas.size() < mPageSize) {
                 notifyComplete();
-                addFooterView(mNoMoreView);
+                addFooterView(mLoadNoMoreView);
             }
         } else {
             if (datas.size() == 0) {
                 notifyComplete();
-                addFooterView(mNoMoreView);
+                addFooterView(mLoadNoMoreView);
             } else {
                 addData(datas);
             }
         }
-    }
-
-    public void isFirstOnly(boolean firstOnly) {
-        mFirstOnlyEnable = firstOnly;
     }
 
     protected View getItemView(int layoutResId, ViewGroup parent) {
@@ -529,12 +474,4 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         mOpenAnimationEnable = true;
         mItemAnimation = animation;
     }
-
-    protected abstract void convert(VH helper, T item);
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
 }

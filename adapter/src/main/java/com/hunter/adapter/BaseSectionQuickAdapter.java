@@ -27,14 +27,14 @@ public abstract class BaseSectionQuickAdapter<T extends SectionEntity, K extends
 
     @Override
     protected int getDefItemViewType(int position) {
-        return mData.get(position).isHeader ? SECTION_HEADER_VIEW : 0;
+        return mDatas.get(position).isHeader ? SECTION_HEADER_VIEW : 0;
     }
 
     @Override
-    protected K onCreateDefViewHolder(ViewGroup parent, int viewType) {
+    protected K createDefViewHolder(ViewGroup parent, int viewType) {
         if (viewType == SECTION_HEADER_VIEW) return createViewHolder(getItemView(mSectionHeadResId, parent));
 
-        return super.onCreateDefViewHolder(parent, viewType);
+        return super.createDefViewHolder(parent, viewType);
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class BaseSectionQuickAdapter<T extends SectionEntity, K extends
         switch (holder.getItemViewType()) {
             case SECTION_HEADER_VIEW:
                 setFullSpan(holder);
-                convertHead(holder, mData.get(holder.getLayoutPosition() - getHeaderViewCount()));
+                convertHead(holder, mDatas.get(holder.getLayoutPosition() - getHeaderViewCount()));
                 break;
             default:
                 super.onBindViewHolder(holder, positions);

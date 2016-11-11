@@ -32,7 +32,6 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     protected boolean mIsRefresh;
     protected int mPage;
 
-    private View mNoMoreView;
     private View mErrorView;
 
     @Override
@@ -68,18 +67,29 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         mAdapter.isUseEmpty(false);
 
         /* 没有更多数据 */
-        mNoMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
+        View noMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
+        mAdapter.setLoadNoMoreView(noMoreView);
+
 
         /* 加载失败 */
         mErrorView = inflater.inflate(R.layout.layout_error_view, (ViewGroup) recyclerView.getParent(), false);
         TextView tvErrorViewMsg = (TextView) mErrorView.findViewById(R.id.tv_error_view_retry);
         tvErrorViewMsg.setText(getErrorViewMsg());
-        tvEmptyViewMsg.setOnClickListener(new View.OnClickListener() {
+        tvErrorViewMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRefreshLayout.setRefreshing(true);
+                requestData(true);
             }
         });
+        mAdapter.setErrorView(mErrorView);
+
+          /* 加载更多失败 */
+        View loadMoreFail = inflater.inflate(R.layout.layout_load_more_fail, (ViewGroup) recyclerView.getParent(),
+                false);
+
+
+        mAdapter.setLoadMoreFailedView(loadMoreFail);
 
         /* 刷新 */
         mRefreshLayout = refreshLayout;
@@ -132,27 +142,15 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     }
 
     protected <T> void setData(List<T> datas) {
-        mAdapter.isUseEmpty(true);
-        if (mIsRefresh) {
-            mAdapter.setNewData(datas);
-            if (datas.size() < ApiConstants.ParamValue.PAGE_SIZE) {
-                mAdapter.notifyComplete();
-                mAdapter.addFooterView(mNoMoreView);
-            }
-        } else {
-            if (datas.size() == 0) {
-                mAdapter.notifyComplete();
-                mAdapter.addFooterView(mNoMoreView);
-            } else mAdapter.addData(datas);
-        }
+        mAdapter.loadSuccess(mIsRefresh, datas);
     }
 
     public void showLoading() {
     }
 
     public void showError(CharSequence errorMsg) {
-        mAdapter.isUseEmpty(true);
-        mAdapter.setEmptyView(mErrorView);
+        if (mIsRefresh) mAdapter.loadOnError();
+        else mAdapter.showLoadMoreFailedView();
     }
 
     public void onComplete() {

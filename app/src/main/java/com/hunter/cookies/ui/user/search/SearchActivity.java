@@ -37,8 +37,6 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
 
     private String mSearchKey;
 
-    private ShotsAdapter mShotsAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +52,9 @@ public class SearchActivity extends BaseMVPListActivity<SearchPresenter, SearchM
     }
 
     private void initShotsList() {
-        mShotsAdapter = new ShotsAdapter(this, new ArrayList<ShotsEntity>());
+        ShotsAdapter shotsAdapter = new ShotsAdapter(this, new ArrayList<ShotsEntity>());
         ViewModelUtils.changeLayoutManager(mRvResult, App.getAppConfig().getViewMode());
-        setupList(mRefresh, mRvResult, mShotsAdapter);
+        setupList(mRefresh, mRvResult, shotsAdapter);
     }
 
     @Override

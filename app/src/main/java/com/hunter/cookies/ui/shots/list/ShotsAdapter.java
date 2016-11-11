@@ -41,7 +41,6 @@ public class ShotsAdapter extends BaseMultiItemQuickAdapter<ShotsEntity, BaseVie
 
         switch (holder.getItemViewType()) {
             case AppConstants.VIEW_MODE_LARGE_WITH_INFO:
-                holder.addOnClickListener(R.id.item_shots_header_large);
                 holder.setText(R.id.tv_item_shots_title, shotsEntity.getTitle());
                 holder.setText(R.id.tv_item_shots_user_name, userEntity.getUsername());
                 String updateAt = shotsEntity.getCreatedAt();
@@ -69,9 +68,9 @@ public class ShotsAdapter extends BaseMultiItemQuickAdapter<ShotsEntity, BaseVie
             GlideUtils.setImageWithThumb(mContext, shotsEntity.getImages().getNormal(), ivPreview);
         }
 
-        holder.getView(R.id.item_shots).setOnClickListener(new View.OnClickListener() {
+        holder.setOnClickListener(R.id.item_shots, new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent(mContext, ShotsDetailActivity.class);
                 intent.putExtra(ShotsDetailActivity.EXTRA_SHOTS_ENTITY, shotsEntity);
                 intent.putExtra(ShotsDetailActivity.EXTRA_IS_NEED_REQUEST, false);

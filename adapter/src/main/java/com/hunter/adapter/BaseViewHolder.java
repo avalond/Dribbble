@@ -13,32 +13,16 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-
 public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     private final SparseArray<View> mViewSparseArray;
-
-    private final LinkedHashSet<Integer> mChildClickViewIds;
-    private final LinkedHashSet<Integer> mItemChildLongClickViewIds;
 
     public View mConvertView;
 
     public BaseViewHolder(View view) {
         super(view);
         mViewSparseArray = new SparseArray<>();
-        mChildClickViewIds = new LinkedHashSet<>();
-        mItemChildLongClickViewIds = new LinkedHashSet<>();
         mConvertView = view;
-    }
-
-    public HashSet<Integer> getItemChildLongClickViewIds() {
-        return mItemChildLongClickViewIds;
-    }
-
-    public HashSet<Integer> getChildClickViewIds() {
-        return mChildClickViewIds;
     }
 
     public View getConvertView() {
@@ -105,22 +89,6 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    public BaseViewHolder addOnClickListener(int viewId) {
-        mChildClickViewIds.add(viewId);
-        return this;
-    }
-
-    public BaseViewHolder addOnLongClickListener(int viewId) {
-        mItemChildLongClickViewIds.add(viewId);
-        return this;
-    }
-
-    public BaseViewHolder setOnTouchListener(int viewId, View.OnTouchListener listener) {
-        View view = getView(viewId);
-        view.setOnTouchListener(listener);
-        return this;
-    }
-
     public BaseViewHolder setOnLongClickListener(int viewId, View.OnLongClickListener listener) {
         View view = getView(viewId);
         view.setOnLongClickListener(listener);
@@ -148,18 +116,6 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public BaseViewHolder setOnCheckedChangeListener(int viewId, CompoundButton.OnCheckedChangeListener listener) {
         CompoundButton view = getView(viewId);
         view.setOnCheckedChangeListener(listener);
-        return this;
-    }
-
-    public BaseViewHolder setTag(int viewId, Object tag) {
-        View view = getView(viewId);
-        view.setTag(tag);
-        return this;
-    }
-
-    public BaseViewHolder setTag(int viewId, int key, Object tag) {
-        View view = getView(viewId);
-        view.setTag(key, tag);
         return this;
     }
 

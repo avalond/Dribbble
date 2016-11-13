@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:padding="16dp">
 
     <RelativeLayout
@@ -16,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="16sp"
             android:text="似乎出了点问题..."
             android:textColor="@color/text_grey"/>
 
@@ -34,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_load_more_fail_msg"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="16dp"
             android:layout_toRightOf="@id/tv_load_more_fail_retry"
             android:text="忽略"

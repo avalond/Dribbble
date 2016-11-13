@@ -40,7 +40,6 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
         if (mView != null) {
             mView.onComplete();
             mView.showError(e.getMessage());
-            mView.showToast(e.getMessage());
         }
     }
 

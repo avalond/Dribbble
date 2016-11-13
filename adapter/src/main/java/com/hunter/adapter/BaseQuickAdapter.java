@@ -485,20 +485,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         });
     }
 
-    public void showLoadMoreFailedView() {
-        notifyComplete();
-        if (mLoadMoreFailedView == null) {
-            mLoadMoreFailedView = mLayoutInflater.inflate(R.layout.def_load_more_failed, null);
-            mLoadMoreFailedView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    removeFooterView(mLoadMoreFailedView);
-                    openLoadMore(mPageSize);
-                }
-            });
-        }
-    }
-
     public View getEmptyView() {
         return mEmptyView;
     }
@@ -549,6 +535,11 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     public void loadOnError() {
         mItemStatus = STATUS_ERROR;
         mDatas.clear();
+        notifyComplete();
+    }
+
+    public void showLoadMoreFailedView() {
+        mItemStatus = STATUS_LOAD_MORE_FAIL;
         notifyComplete();
     }
 

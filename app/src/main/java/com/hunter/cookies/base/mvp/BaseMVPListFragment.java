@@ -59,20 +59,21 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         LayoutInflater inflater = LayoutInflater.from(mContext);
         mAdapter = adapter;
 
+        ViewGroup container = (ViewGroup) recyclerView.getParent();
         /* 没有数据 */
-        View emptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
+        View emptyView = inflater.inflate(R.layout.layout_empty_view, container, false);
         TextView tvEmptyViewMsg = (TextView) emptyView.findViewById(R.id.tv_empty_view_msg);
         tvEmptyViewMsg.setText(getEmptyViewMsg());
         mAdapter.setEmptyView(emptyView);
         mAdapter.isUseEmpty(false);
 
         /* 没有更多数据 */
-        View noMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
+        View noMoreView = inflater.inflate(R.layout.layout_no_more_view, container, false);
         mAdapter.setLoadNoMoreView(noMoreView);
 
 
         /* 加载失败 */
-        mErrorView = inflater.inflate(R.layout.layout_error_view, (ViewGroup) recyclerView.getParent(), false);
+        mErrorView = inflater.inflate(R.layout.layout_error_view, container, false);
         TextView tvErrorViewMsg = (TextView) mErrorView.findViewById(R.id.tv_error_view_retry);
         tvErrorViewMsg.setText(getErrorViewMsg());
         tvErrorViewMsg.setOnClickListener(new View.OnClickListener() {
@@ -85,10 +86,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         mAdapter.setErrorView(mErrorView);
 
           /* 加载更多失败 */
-        View loadMoreFail = inflater.inflate(R.layout.layout_load_more_fail, (ViewGroup) recyclerView.getParent(),
-                false);
-
-
+        View loadMoreFail = inflater.inflate(R.layout.layout_load_more_fail, container, false);
         mAdapter.setLoadMoreFailedView(loadMoreFail);
 
         /* 刷新 */
@@ -102,7 +100,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         });
 
         /* 加载更多 */
-        View loadingView = inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false);
+        View loadingView = inflater.inflate(R.layout.layout_load_more, container, false);
         mAdapter.setLoadingView(loadingView);
         mAdapter.openItemAnimation();
         mAdapter.openLoadMore(ApiConstants.ParamValue.PAGE_SIZE);

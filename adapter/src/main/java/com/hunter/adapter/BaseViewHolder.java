@@ -13,16 +13,32 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     private final SparseArray<View> mViewSparseArray;
+
+    private final LinkedHashSet<Integer> mItemChildClickViewIds;
+    private final LinkedHashSet<Integer> mItemChildLongClickViewIds;
 
     public View mConvertView;
 
     public BaseViewHolder(View view) {
         super(view);
         mViewSparseArray = new SparseArray<>();
+        mItemChildClickViewIds = new LinkedHashSet<>();
+        mItemChildLongClickViewIds = new LinkedHashSet<>();
         mConvertView = view;
+    }
+
+    public HashSet<Integer> getItemChildLongClickViewIds() {
+        return mItemChildLongClickViewIds;
+    }
+
+    public HashSet<Integer> getItemChildClickViewIds() {
+        return mItemChildClickViewIds;
     }
 
     public View getConvertView() {
@@ -86,6 +102,22 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public BaseViewHolder setOnClickListener(int viewId, View.OnClickListener listener) {
         View view = getView(viewId);
         view.setOnClickListener(listener);
+        return this;
+    }
+
+    public BaseViewHolder addOnClickListener(int viewId) {
+        mItemChildClickViewIds.add(viewId);
+        return this;
+    }
+
+    public BaseViewHolder addOnLongClickListener(int viewId) {
+        mItemChildLongClickViewIds.add(viewId);
+        return this;
+    }
+
+    public BaseViewHolder setOnTouchListener(int viewId, View.OnTouchListener listener) {
+        View view = getView(viewId);
+        view.setOnTouchListener(listener);
         return this;
     }
 

@@ -4,11 +4,11 @@ import android.view.View;
 
 import com.hunter.adapter.BaseQuickAdapter;
 
-public abstract class OnItemChildClickListener extends SimpleClickListener {
+public abstract class OnItemClickListener extends SimpleClickListener {
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        SimpleOnItemClick(adapter, view, position);
     }
 
     @Override
@@ -18,7 +18,7 @@ public abstract class OnItemChildClickListener extends SimpleClickListener {
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        SimpleOnItemChildClick(adapter, view, position);
+
     }
 
     @Override
@@ -26,6 +26,5 @@ public abstract class OnItemChildClickListener extends SimpleClickListener {
 
     }
 
-    public abstract void SimpleOnItemChildClick(BaseQuickAdapter adapter, View view, int position);
-
+    public abstract void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position);
 }

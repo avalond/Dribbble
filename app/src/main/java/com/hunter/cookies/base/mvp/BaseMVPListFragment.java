@@ -30,9 +30,8 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     private BaseQuickAdapter mAdapter;
 
     protected boolean mIsRefresh;
+    protected boolean mIsLoadMoreFail;
     protected int mPage;
-
-    private View mErrorView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +64,6 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         TextView tvEmptyViewMsg = (TextView) emptyView.findViewById(R.id.tv_empty_view_msg);
         tvEmptyViewMsg.setText(getEmptyViewMsg());
         mAdapter.setEmptyView(emptyView);
-        mAdapter.isUseEmpty(false);
 
         /* 没有更多数据 */
         View noMoreView = inflater.inflate(R.layout.layout_no_more_view, container, false);
@@ -73,8 +71,8 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
 
 
         /* 加载失败 */
-        mErrorView = inflater.inflate(R.layout.layout_error_view, container, false);
-        TextView tvErrorViewMsg = (TextView) mErrorView.findViewById(R.id.tv_error_view_retry);
+        View errorView = inflater.inflate(R.layout.layout_error_view, container, false);
+        TextView tvErrorViewMsg = (TextView) errorView.findViewById(R.id.tv_error_view_retry);
         tvErrorViewMsg.setText(getErrorViewMsg());
         tvErrorViewMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,11 +81,25 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
                 requestData(true);
             }
         });
-        mAdapter.setErrorView(mErrorView);
+        mAdapter.setErrorView(errorView);
 
-          /* 加载更多失败 */
+        /* 加载更多失败 */
         View loadMoreFail = inflater.inflate(R.layout.layout_load_more_fail, container, false);
+        loadMoreFail.findViewById(R.id.tv_load_more_fail_retry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.showLoading();
+            }
+        });
+        loadMoreFail.findViewById(R.id.tv_load_more_fail_ignore).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.resetItemStatus();
+            }
+        });
+
         mAdapter.setLoadMoreFailedView(loadMoreFail);
+
 
         /* 刷新 */
         mRefreshLayout = refreshLayout;
@@ -127,8 +139,12 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
 
     protected void requestData(boolean isRefresh) {
         mIsRefresh = isRefresh;
-        if (mIsRefresh) mPage = 1;
-        else mPage++;
+        if (mIsRefresh) {
+            mPage = 1;
+        } else {
+            if (mIsLoadMoreFail) mIsLoadMoreFail = false;
+            else mPage++;
+        }
     }
 
     protected String getEmptyViewMsg() {
@@ -147,8 +163,12 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     }
 
     public void showError(CharSequence errorMsg) {
-        if (mIsRefresh) mAdapter.loadOnError();
-        else mAdapter.showLoadMoreFailedView();
+        if (mIsRefresh) {
+            mAdapter.loadOnError();
+        } else {
+            mAdapter.showLoadMoreFailedView();
+            mIsLoadMoreFail = true;
+        }
     }
 
     public void onComplete() {

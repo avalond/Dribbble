@@ -55,7 +55,6 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         TextView tvEmptyViewMsg = (TextView) emptyView.findViewById(R.id.tv_empty_view_msg);
         tvEmptyViewMsg.setText(getEmptyViewMsg());
         mAdapter.setEmptyView(emptyView);
-        mAdapter.isUseEmpty(false);
 
         /* 没有更多数据 */
         mNoMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
@@ -126,16 +125,15 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     }
 
     protected <T> void setData(List<T> datas) {
-        mAdapter.isUseEmpty(true);
         if (mIsRefresh) {
             mAdapter.setNewData(datas);
             if (datas.size() < getPageSize()) {
-                mAdapter.notifyComplete();
+                mAdapter.notifyAllComplete(0);
                 mAdapter.addFooterView(mNoMoreView);
             }
         } else {
             if (datas.size() == 0) {
-                mAdapter.notifyComplete();
+                mAdapter.notifyAllComplete(0);
                 mAdapter.addFooterView(mNoMoreView);
             } else mAdapter.addData(datas);
         }
@@ -145,7 +143,6 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     }
 
     public void showError(CharSequence errorMsg) {
-        mAdapter.isUseEmpty(true);
         mAdapter.setEmptyView(mErrorView);
         mAdapter.notifyItemChanged(0);
     }

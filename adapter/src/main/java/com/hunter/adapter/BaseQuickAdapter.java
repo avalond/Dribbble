@@ -2,7 +2,6 @@ package com.hunter.adapter;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutParams;
@@ -15,10 +14,6 @@ import android.widget.LinearLayout;
 
 import com.hunter.adapter.animation.AlphaInAnimation;
 import com.hunter.adapter.animation.BaseAnimation;
-import com.hunter.adapter.listener.OnItemChildClickListener;
-import com.hunter.adapter.listener.OnItemChildLongClickListener;
-import com.hunter.adapter.listener.SimpleOnItemClickListener;
-import com.hunter.adapter.listener.SimpleOnItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +41,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     public static final int DEF_ANIM_DURATION = 225;
 
-    private boolean mNextLoadEnable;
-
-    private boolean mIsLoading;
+    private boolean mIsOpenLoadEnable;
 
     private BaseAnimation mItemAnimation;
     private boolean mOpenAnimationEnable;
@@ -75,19 +68,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     protected LayoutInflater mLayoutInflater;
     protected List<T> mDatas;
 
-    /**
-     * 子 View 点击事件
-     */
-    private OnItemChildClickListener<T> mChildClickListener;
-    private List<Integer> mChildClickResId;
-    private OnItemChildLongClickListener<T> mChildLongClickListener;
-    private List<Integer> mChildLongClickResId;
-
-    /**
-     * Item 点击事件
-     */
-    private SimpleOnItemClickListener<T> mItemClickListener;
-    private SimpleOnItemLongClickListener<T> mItemLongClickListener;
+    protected RecyclerView mRecyclerView;
 
     public interface LoadMoreListener {
 
@@ -101,14 +82,12 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     public BaseQuickAdapter(int layoutResId, List<T> datas) {
         mDatas = datas == null ? new ArrayList<T>() : datas;
         if (layoutResId != 0) mLayoutResId = layoutResId;
-
-        mChildClickResId = new ArrayList<>();
-        mChildLongClickResId = new ArrayList<>();
     }
 
     @Override
     public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = recyclerView;
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         /* 返回当前所在行数的最大列数，为了占满一行 */
         if (manager instanceof GridLayoutManager) {
@@ -128,11 +107,8 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     public void onViewAttachedToWindow(VH holder) {
         super.onViewAttachedToWindow(holder);
         int type = holder.getItemViewType();
-        if (isNeedFullSpan(type)) {
-            setFullSpan(holder);
-        } else {
-            addAnimation(holder);
-        }
+        if (isNeedFullSpan(type)) setFullSpan(holder);
+        addAnimation(holder);
     }
 
     private boolean isNeedFullSpan(int type) {
@@ -176,11 +152,14 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     public int getItemCount() {
         boolean isLoadMore = isLoadMore();
         mItemStatus = isLoadMore ? STATUS_LOADING : mItemStatus;
-        int count = mDatas.size() + (isLoadMore ? 1 : 0) + getHeaderViewCount() + getFooterLayoutCount();
+        int count = mDatas.size() + getHeaderViewCount() + getFooterLayoutCount();
         if (mDatas.size() == 0) {
             if (mEmptyView != null && mItemStatus == STATUS_EMPTY) count++;
             else if (mErrorView != null && mItemStatus == STATUS_ERROR) count++;
-        }
+        } else if (mLoadingView != null && isLoadMore) count++;
+        else if (mLoadMoreFailedView != null && mItemStatus == STATUS_LOAD_MORE_FAIL) count++;
+        else if (mLoadNoMoreView != null && mItemStatus == STATUS_LOAD_NO_MORE) count++;
+
         return count;
     }
 
@@ -192,7 +171,8 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     @Override
     public int getItemViewType(int position) {
         if (mHeaderView != null && position == 0) return HEADER_VIEW;
-        if (mFooterView != null && position == getItemCount() - (mIsLoading ? 1 : 0) - 1) return FOOTER_VIEW;
+        if (mFooterView != null && position == getItemCount() - (mItemStatus == STATUS_LOADING ? 1 : 0) - 1)
+            return FOOTER_VIEW;
         if (mDatas.size() == 0) {
             if (position == 0) {
                 if (mItemStatus == STATUS_EMPTY && mEmptyView != null) return EMPTY_VIEW;
@@ -271,48 +251,9 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
                 break;
             default:
                 int pos = holder.getLayoutPosition() - getHeaderViewCount();
-                intItemClickListener(holder, pos);
                 convert(holder, mDatas.get(pos));
                 break;
         }
-    }
-
-    /**
-     * 设置 Item、View 的点击事件
-     */
-    private void intItemClickListener(VH viewHolder, final int pos) {
-        final T data = mDatas.get(pos);
-        for (Integer resId : mChildClickResId) {
-            viewHolder.getView(resId).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mChildClickListener.onItemChildClickListener(v, pos, data);
-                }
-            });
-        }
-        for (Integer resId : mChildLongClickResId) {
-            viewHolder.getView(resId).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mChildLongClickListener.onItemChildLongClickListener(v, pos, data);
-                }
-            });
-        }
-        if (mItemClickListener != null) viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mItemClickListener.onItemClickListner(v, pos, data);
-            }
-        });
-        if (mItemLongClickListener != null)
-            viewHolder.getConvertView().setOnLongClickListener(new View.OnLongClickListener() {
-
-                @Override
-                public boolean onLongClick(View v) {
-                    mItemLongClickListener.onItemLongClickListner(v, pos, data);
-                    return false;
-                }
-            });
     }
 
     protected abstract void convert(VH helper, T item);
@@ -323,7 +264,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     public void openLoadMore(int pageSize) {
         mPageSize = pageSize;
-        mNextLoadEnable = true;
+        mIsOpenLoadEnable = true;
     }
 
     public void remove(int position) {
@@ -339,7 +280,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     public void setNewData(List<T> data) {
         mDatas = data == null ? new ArrayList<T>() : data;
         if (mLoadMoreListener != null) {
-            mNextLoadEnable = true;
+            mIsOpenLoadEnable = true;
         }
         if (mLoadMoreFailedView != null) {
             removeFooterView(mLoadMoreFailedView);
@@ -371,7 +312,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     public void addData(List<T> newData) {
         mDatas.addAll(newData);
-        if (mNextLoadEnable) mIsLoading = false;
+        if (mIsOpenLoadEnable) mItemStatus = STATUS_NORMAL;
         notifyItemRangeInserted(mDatas.size() - newData.size() + getHeaderViewCount(), newData.size());
     }
 
@@ -396,14 +337,13 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     }
 
     private void addLoadMore() {
-        if (isLoadMore() && !mIsLoading) {
-            mIsLoading = true;
+        if (isLoadMore() && mItemStatus == STATUS_LOADING) {
             mLoadMoreListener.onLoadMoreRequested();
         }
     }
 
     private boolean isLoadMore() {
-        return mNextLoadEnable && mLoadMoreListener != null && mDatas.size() >= mPageSize;
+        return mIsOpenLoadEnable && mLoadMoreListener != null && mDatas.size() >= mPageSize;
     }
 
     public LinearLayout getHeaderView() {
@@ -449,7 +389,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     public void addFooterView(View footer, int index) {
         if (footer == null) return;
-        mNextLoadEnable = false;
         if (mFooterView == null) {
             mFooterView = new LinearLayout(footer.getContext());
             mFooterView.setOrientation(LinearLayout.VERTICAL);
@@ -476,13 +415,6 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     public void setLoadMoreFailedView(View view) {
         mLoadMoreFailedView = view;
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeFooterView(mLoadMoreFailedView);
-                openLoadMore(mPageSize);
-            }
-        });
     }
 
     public View getEmptyView() {
@@ -501,31 +433,32 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         mErrorView = errorView;
     }
 
-    public void isUseEmpty(boolean isUseEmpty) {
+    public void notifyAllComplete(int itemStatus) {
+        mIsOpenLoadEnable = false;
+        mItemStatus = itemStatus;
+        notifyDataSetChanged();
     }
 
-    public void notifyComplete() {
-        mNextLoadEnable = false;
-        mIsLoading = false;
-        notifyDataSetChanged();
+    public void notifyLastComplete(int itemStatus) {
+        mIsOpenLoadEnable = false;
+        mItemStatus = itemStatus;
+        notifyItemChanged(getItemCount());
     }
 
     public void loadSuccess(boolean isRefresh, List<T> datas) {
         if (datas == null) datas = new ArrayList<>();
         if (datas.size() != 0) mItemStatus = STATUS_NORMAL;
         if (isRefresh) {
-            if (datas.size() == 0) mItemStatus = STATUS_EMPTY;
-            setNewData(datas);
-            if (datas.size() < mPageSize) {
+            if (datas.size() == 0) {
+                mItemStatus = STATUS_EMPTY;
+            } else if (datas.size() < mPageSize) {
+                mIsOpenLoadEnable = false;
                 mItemStatus = STATUS_LOAD_NO_MORE;
-                notifyComplete();
-                addFooterView(mLoadNoMoreView);
             }
+            setNewData(datas);
         } else {
             if (datas.size() == 0) {
-                mItemStatus = STATUS_LOAD_NO_MORE;
-                notifyComplete();
-                addFooterView(mLoadNoMoreView);
+                notifyLastComplete(STATUS_LOAD_NO_MORE);
             } else {
                 addData(datas);
             }
@@ -533,14 +466,26 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
     }
 
     public void loadOnError() {
-        mItemStatus = STATUS_ERROR;
         mDatas.clear();
-        notifyComplete();
+        notifyAllComplete(STATUS_ERROR);
     }
 
     public void showLoadMoreFailedView() {
-        mItemStatus = STATUS_LOAD_MORE_FAIL;
-        notifyComplete();
+        notifyLastComplete(STATUS_LOAD_MORE_FAIL);
+    }
+
+    public void showLoading() {
+        mItemStatus = STATUS_LOADING;
+        mIsOpenLoadEnable = true;
+        notifyItemRemoved(getItemCount());
+        notifyItemInserted(getItemCount());
+        mRecyclerView.smoothScrollToPosition(getItemCount() - 1);
+    }
+
+    public void resetItemStatus() {
+        mItemStatus = STATUS_NORMAL;
+        mIsOpenLoadEnable = true;
+        notifyItemRemoved(getItemCount());
     }
 
     protected View getItemView(int layoutResId, ViewGroup parent) {
@@ -556,27 +501,4 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         mItemAnimation = animation;
     }
 
-    public void setChildClickListener(OnItemChildClickListener<T> childClickListener) {
-        mChildClickListener = childClickListener;
-    }
-
-    public void setChildLongClickListener(OnItemChildLongClickListener<T> childLongClickListener) {
-        mChildLongClickListener = childLongClickListener;
-    }
-
-    protected void addChildClickListener(@IdRes int resId) {
-        mChildClickResId.add(resId);
-    }
-
-    protected void addChildLongClickListener(@IdRes int resId) {
-        mChildLongClickResId.add(resId);
-    }
-
-    public void setItemClickListener(SimpleOnItemClickListener<T> itemClickListener) {
-        mItemClickListener = itemClickListener;
-    }
-
-    public void setItemLongClickListener(SimpleOnItemLongClickListener<T> itemLongClickListener) {
-        mItemLongClickListener = itemLongClickListener;
-    }
 }

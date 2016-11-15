@@ -39,6 +39,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
         onFail(e.getMessage());
         if (mView != null) {
             mView.onComplete();
+            if (e.getMessage().contains("404")) return;
             mView.showError(e.getMessage());
         }
     }

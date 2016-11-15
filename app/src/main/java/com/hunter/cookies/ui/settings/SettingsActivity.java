@@ -86,6 +86,11 @@ public class SettingsActivity extends BaseActivity {
         dialog.show();
     }
 
+    @OnClick(R.id.tv_settings_to_about)
+    void toAbout() {
+        startActivity(new Intent(this, AboutActivity.class));
+    }
+
     @OnClick(R.id.tv_settings_logout)
     void logout() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);

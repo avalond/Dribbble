@@ -33,14 +33,21 @@ public class ShotsDetailPresenter extends ShotsDetailContract.Presenter {
 
     @Override
     void changeShotsStatus(int id, boolean isLike) {
-        changeShotsLike(id, isLike);
-    }
-
-    private void changeShotsLike(int id, boolean isLike) {
         subscribe(mModel.changeShotsStatus(id, isLike), new BaseSubscriber<CheckLikeEntity>(mView) {
             @Override
             protected void onSuccess(CheckLikeEntity checkLikeEntity) {
             }
         });
     }
+
+    @Override
+    void addShotsToBuckets(int bucketsId, int shotsId) {
+        subscribe(mModel.addShotsToBuckets(bucketsId, shotsId), new BaseSubscriber<String>(mView) {
+            @Override
+            protected void onSuccess(String s) {
+                mView.addShotsToBucketsOnSuccess();
+            }
+        });
+    }
+
 }

@@ -346,7 +346,12 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
         return mIsOpenLoadEnable && mLoadMoreListener != null && mDatas.size() >= mPageSize;
     }
 
-    public LinearLayout getHeaderView() {
+    public LinearLayout getHeaderView(Context context) {
+        if (mHeaderView == null) {
+            mHeaderView = new LinearLayout(context);
+            mHeaderView.setOrientation(LinearLayout.VERTICAL);
+            mHeaderView.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        }
         return mHeaderView;
     }
 
@@ -356,7 +361,7 @@ public abstract class BaseQuickAdapter<T, VH extends BaseViewHolder> extends Rec
 
     public void addHeaderView(View header, int index) {
         if (mHeaderView == null) {
-            mHeaderView = new LinearLayout(header.getContext());
+            mHeaderView = new LinearLayout(mContext);
             mHeaderView.setOrientation(LinearLayout.VERTICAL);
             mHeaderView.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         }

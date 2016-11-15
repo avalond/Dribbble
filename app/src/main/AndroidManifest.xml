@@ -59,6 +59,8 @@
 
         <activity android:name=".ui.buckets.detail.BucketsDetailActivity">
         </activity>
+        <activity android:name=".ui.settings.AboutActivity">
+        </activity>
     </application>
 
 </manifest>

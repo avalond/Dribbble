@@ -39,7 +39,9 @@ public interface ApiConstants {
 
         String USER_BUCKETS = "user/buckets";
 
-        String BUCKETS_DETAIL = "/shots/{id}/buckets";
+        String BUCKETS_DETAIL = "shots/{id}/buckets";
+
+        String ADD_SHOTS_TO_BUCKETS = "buckets/{id}/shots";
     }
 
     interface ParamKey {
@@ -69,6 +71,8 @@ public interface ApiConstants {
         String SEARCH_KEY = "q";
 
         String BODY = "body";
+
+        String SHOTS_ID = "shot_id";
     }
 
     interface ParamValue {

@@ -66,6 +66,7 @@ public class ShotsDesFragment extends BaseMVPFragment<ShotsDetailPresenter, Shot
     private int mShotsId;
 
     private boolean mIsLiked;
+    private boolean mIsAddBuckets;
 
     public static ShotsDesFragment newInstance(ShotsEntity entity) {
         Bundle args = new Bundle();
@@ -191,6 +192,19 @@ public class ShotsDesFragment extends BaseMVPFragment<ShotsDetailPresenter, Shot
         mPresenter.changeShotsStatus(mShotsId, mIsLiked);
     }
 
+    /**
+     * 收藏
+     */
+    @OnClick(R.id.ll_shots_detail_bucket)
+    void clickShotsBucket() {
+        if (App.getAppConfig().isLogin()) changeShotsBucket();
+        else shouldLogin();
+    }
+
+    private void changeShotsBucket() {
+
+    }
+
     private void shouldLogin() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
         dialog.setMessage("登录后才可以执行该操作");
@@ -213,5 +227,9 @@ public class ShotsDesFragment extends BaseMVPFragment<ShotsDetailPresenter, Shot
     public void checkShotsLikeOnSuccess(boolean isLiked) {
         mIsLiked = isLiked;
         mIvShotsLike.setImageResource(mIsLiked ? R.drawable.iv_like_pink_24dp : R.drawable.iv_unlike_grey_24dp);
+    }
+
+    @Override
+    public void addShotsToBucketsOnSuccess() {
     }
 }

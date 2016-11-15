@@ -10,9 +10,6 @@ import rx.Observable;
 
 public interface ShotsDetailContract {
 
-    int TYPE_LIKE_SHOTS = 0;
-    int TYPE_UN_LIKE_SHOTS = 1;
-
     interface Model extends BaseModel {
 
         Observable<ShotsEntity> getShotsDetail(int id);
@@ -20,6 +17,8 @@ public interface ShotsDetailContract {
         Observable<CheckLikeEntity> checkShotsLike(int id);
 
         Observable<CheckLikeEntity> changeShotsStatus(int id, boolean isLike);
+
+        Observable<String> addShotsToBuckets(int bucketsId, int shotsId);
     }
 
     interface View extends BaseView {
@@ -27,6 +26,8 @@ public interface ShotsDetailContract {
         void getShotsDetailOnSuccess(ShotsEntity data);
 
         void checkShotsLikeOnSuccess(boolean isLiked);
+
+        void addShotsToBucketsOnSuccess();
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {
@@ -36,6 +37,8 @@ public interface ShotsDetailContract {
         abstract void checkShotsLike(int id);
 
         abstract void changeShotsStatus(int id, boolean isLike);
+
+        abstract void addShotsToBuckets(int bucketsId, int shotsId);
 
     }
 }

@@ -10,5 +10,6 @@
 
     <string name="share_transition">shareTransition</string>
 
-    <string name="about_header">关于添加作品到收藏夹，有个小问题：没有办法获取到是否收藏了这个作品。由于官方没有提供这个接口，我又不想做成本地的。但绝不会发生重复添加作品到收藏夹的情况，所以（手动滑稽）</string>
+    <string name="about_header">关于添加作品到收藏夹，有个小问题：没有办法获取到是否收藏了这个作品。由于官方没有提供这个接口，我又不想做成本地的。但不会发生重复添加作品到收藏夹的情况，所以（手动滑稽）</string>
+    <string name="about_contract">hongtao_studio@163.com</string>
 </resources>

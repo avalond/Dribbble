@@ -14,14 +14,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/divider"
+            android:background="@color/text_white"
             android:paddingBottom="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="8dp"
             android:text="一些题外话"
-            android:textColor="@color/text_grey"
-            android:textSize="16sp"/>
+            android:textColor="@color/text_grey"/>
 
         <TextView
             android:background="@color/white"

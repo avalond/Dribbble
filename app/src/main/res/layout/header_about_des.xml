@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,6 +15,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_header_about_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/text_white"
@@ -19,16 +23,18 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="8dp"
-            android:text="一些题外话"
-            android:textColor="@color/text_grey"/>
+            android:textColor="@color/text_grey"
+            tools:text="联系方式"/>
 
         <TextView
-            android:background="@color/white"
+            android:id="@+id/tv_header_about_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:background="@color/white"
+            android:foreground="?android:attr/selectableItemBackground"
             android:lineSpacingExtra="4dp"
             android:padding="16dp"
-            android:text="@string/about_header"
-            android:textColor="@color/text_black"/>
+            tools:text="@string/about_contact"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

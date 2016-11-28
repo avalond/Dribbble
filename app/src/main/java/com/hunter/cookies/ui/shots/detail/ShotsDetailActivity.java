@@ -67,14 +67,12 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         setContentView(R.layout.activity_shots_detail);
         ButterKnife.bind(this);
 
-        initToolbar();
-        for (String tabTitle : TAB_TITLES)
-            mTabShots.addTab(mTabShots.newTab().setText(tabTitle));
-
         Intent intent = getIntent();
         mShotsEntity = (ShotsEntity) intent.getSerializableExtra(EXTRA_SHOTS_ENTITY);
         mIsNeedRequest = intent.getBooleanExtra(EXTRA_IS_NEED_REQUEST, false);
-        showImage();
+
+        initToolbar();
+        initImage();
         initPager();
     }
 
@@ -91,7 +89,7 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
         });
     }
 
-    private void showImage() {
+    private void initImage() {
         if (mShotsEntity.isAnimated()) {
             GlideUtils.setGif(this, mShotsEntity.getImages().getHidpi(), mPivShotsImage);
         } else {
@@ -100,6 +98,9 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
     }
 
     private void initPager() {
+        for (String tabTitle : TAB_TITLES)
+            mTabShots.addTab(mTabShots.newTab().setText(tabTitle));
+
         List<Fragment> fragments = new ArrayList<>();
 
         if (mIsNeedRequest) fragments.add(ShotsDesFragment.newInstance(mShotsEntity.getId()));
@@ -131,7 +132,10 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_share:
-                shareImage();
+                String shotsUrl = mShotsEntity.getHtmlUrl();
+                String imageUrl = ImageUrlUtils.getImageUrl(mShotsEntity.getImages());
+                ShotsShareSheet sheet = ShotsShareSheet.newInstance(shotsUrl, imageUrl);
+                sheet.show(getSupportFragmentManager(), ShotsShareSheet.class.getSimpleName());
                 break;
             case R.id.menu_open_on_browser:
                 showInBrowser();
@@ -141,14 +145,6 @@ public class ShotsDetailActivity extends BaseActivity implements Toolbar.OnMenuI
                 break;
         }
         return true;
-    }
-
-    private void shareImage() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setType("text/*");
-        intent.putExtra(Intent.EXTRA_TEXT, mShotsEntity.getHtmlUrl());
-        startActivity(Intent.createChooser(intent, "分享到"));
     }
 
     private void showInBrowser() {

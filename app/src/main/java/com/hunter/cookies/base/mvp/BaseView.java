@@ -8,5 +8,5 @@ public interface BaseView {
 
     void showToast(CharSequence msg);
 
-    void showError(CharSequence msg);
+    void showError();
 }

@@ -10,10 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hunter.adapter.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hunter.cookies.R;
 import com.hunter.cookies.api.ApiConstants;
 import com.hunter.cookies.base.BaseActivity;
+import com.hunter.cookies.widget.CustomLoadMore;
 
 import java.util.List;
 
@@ -29,8 +30,8 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     protected boolean mIsRefresh;
     protected int mPage;
 
-    private View mNoMoreView;
     private View mErrorView;
+    private View mEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,22 +52,19 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         mAdapter = adapter;
 
         /* 没有数据 */
-        View emptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
-        TextView tvEmptyViewMsg = (TextView) emptyView.findViewById(R.id.tv_empty_view_msg);
+        mEmptyView = inflater.inflate(R.layout.layout_empty_view, (ViewGroup) recyclerView.getParent(), false);
+        TextView tvEmptyViewMsg = (TextView) mEmptyView.findViewById(R.id.tv_empty_view_msg);
         tvEmptyViewMsg.setText(getEmptyViewMsg());
-        mAdapter.setEmptyView(emptyView);
-
-        /* 没有更多数据 */
-        mNoMoreView = inflater.inflate(R.layout.layout_no_more_view, (ViewGroup) recyclerView.getParent(), false);
 
         /* 加载失败 */
         mErrorView = inflater.inflate(R.layout.layout_error_view, (ViewGroup) recyclerView.getParent(), false);
         TextView tvErrorViewMsg = (TextView) mErrorView.findViewById(R.id.tv_error_view_retry);
         tvErrorViewMsg.setText(getErrorViewMsg());
-        tvEmptyViewMsg.setOnClickListener(new View.OnClickListener() {
+        mErrorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRefreshLayout.setRefreshing(true);
+                requestData(true);
             }
         });
 
@@ -81,17 +79,14 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
         });
 
         /* 加载更多 */
-        mAdapter.setLoadingView(
-                inflater.inflate(R.layout.layout_load_more, (ViewGroup) recyclerView.getParent(), false));
-        mAdapter.openItemAnimation();
-        mAdapter.openLoadMore(getPageSize());
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.LoadMoreListener() {
+        mAdapter.setLoadMoreView(new CustomLoadMore());
+        mAdapter.setAutoLoadMoreSize(18);
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 requestData(false);
             }
         });
-        mAdapter.addFooterView(mNoMoreView);
 
         /* 首次进入自动刷新 */
         mRefreshLayout.postDelayed(new Runnable() {
@@ -127,24 +122,34 @@ public class BaseMVPListActivity<P extends BasePresenter, M extends BaseModel> e
     protected <T> void setData(List<T> datas) {
         if (mIsRefresh) {
             mAdapter.setNewData(datas);
-            if (datas.size() < getPageSize()) {
-                mAdapter.notifyAllComplete(0);
-                mAdapter.addFooterView(mNoMoreView);
+            if (datas == null || datas.size() == 0) {
+                mAdapter.setEmptyView(mEmptyView);
+                mAdapter.notifyDataSetChanged();
+            } else if (datas.size() < getPageSize()) {
+                mAdapter.loadMoreEnd();
+            } else {
+                mAdapter.loadMoreComplete();
             }
         } else {
             if (datas.size() == 0) {
-                mAdapter.notifyAllComplete(0);
-                mAdapter.addFooterView(mNoMoreView);
-            } else mAdapter.addData(datas);
+                mAdapter.loadMoreEnd();
+            } else {
+                mAdapter.addData(datas);
+                mAdapter.loadMoreComplete();
+            }
         }
     }
 
     public void showLoading() {
     }
 
-    public void showError(CharSequence errorMsg) {
-        mAdapter.setEmptyView(mErrorView);
-        mAdapter.notifyItemChanged(0);
+    public void showError() {
+        if (mIsRefresh) {
+            mAdapter.setEmptyView(mErrorView);
+            mAdapter.notifyDataSetChanged();
+        } else {
+            mAdapter.loadMoreFail();
+        }
     }
 
     public void onComplete() {

@@ -27,7 +27,7 @@ public abstract class BaseMVPActivity<P extends BasePresenter, M extends BaseMod
 
     }
 
-    public void showError(CharSequence errorMsg) {
+    public void showError() {
 
     }
 

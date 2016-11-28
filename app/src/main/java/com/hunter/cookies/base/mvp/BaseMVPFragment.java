@@ -26,7 +26,7 @@ public abstract class BaseMVPFragment<P extends BasePresenter, M extends BaseMod
     public void showLoading() {
     }
 
-    public void showError(CharSequence errorMsg) {
+    public void showError() {
 
     }
 

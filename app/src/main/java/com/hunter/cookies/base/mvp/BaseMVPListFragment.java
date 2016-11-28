@@ -3,18 +3,18 @@ package com.hunter.cookies.base.mvp;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hunter.adapter.BaseQuickAdapter;
-import com.hunter.adapter.animation.AlphaInAnimation;
-import com.hunter.adapter.animation.BaseAnimation;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hunter.cookies.R;
 import com.hunter.cookies.api.ApiConstants;
 import com.hunter.cookies.base.BaseFragment;
+import com.hunter.cookies.widget.CustomLoadMore;
 
 import java.util.List;
 
@@ -32,6 +32,9 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     protected boolean mIsRefresh;
     protected boolean mIsLoadMoreFail;
     protected int mPage;
+
+    private View mErrorView;
+    private View mEmptyView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,46 +63,21 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
 
         ViewGroup container = (ViewGroup) recyclerView.getParent();
         /* 没有数据 */
-        View emptyView = inflater.inflate(R.layout.layout_empty_view, container, false);
-        TextView tvEmptyViewMsg = (TextView) emptyView.findViewById(R.id.tv_empty_view_msg);
+        mEmptyView = inflater.inflate(R.layout.layout_empty_view, container, false);
+        TextView tvEmptyViewMsg = (TextView) mEmptyView.findViewById(R.id.tv_empty_view_msg);
         tvEmptyViewMsg.setText(getEmptyViewMsg());
-        mAdapter.setEmptyView(emptyView);
-
-        /* 没有更多数据 */
-        View noMoreView = inflater.inflate(R.layout.layout_no_more_view, container, false);
-        mAdapter.setLoadNoMoreView(noMoreView);
-
 
         /* 加载失败 */
-        View errorView = inflater.inflate(R.layout.layout_error_view, container, false);
-        TextView tvErrorViewMsg = (TextView) errorView.findViewById(R.id.tv_error_view_retry);
+        mErrorView = inflater.inflate(R.layout.layout_error_view, (ViewGroup) recyclerView.getParent(), false);
+        TextView tvErrorViewMsg = (TextView) mErrorView.findViewById(R.id.tv_error_view_retry);
         tvErrorViewMsg.setText(getErrorViewMsg());
-        tvErrorViewMsg.setOnClickListener(new View.OnClickListener() {
+        mErrorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRefreshLayout.setRefreshing(true);
                 requestData(true);
             }
         });
-        mAdapter.setErrorView(errorView);
-
-        /* 加载更多失败 */
-        View loadMoreFail = inflater.inflate(R.layout.layout_load_more_fail, container, false);
-        loadMoreFail.findViewById(R.id.tv_load_more_fail_retry).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.showLoading();
-            }
-        });
-        loadMoreFail.findViewById(R.id.tv_load_more_fail_ignore).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.resetItemStatus();
-            }
-        });
-
-        mAdapter.setLoadMoreFailedView(loadMoreFail);
-
 
         /* 刷新 */
         mRefreshLayout = refreshLayout;
@@ -112,11 +90,9 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         });
 
         /* 加载更多 */
-        View loadingView = inflater.inflate(R.layout.layout_load_more, container, false);
-        mAdapter.setLoadingView(loadingView);
-        mAdapter.openItemAnimation();
-        mAdapter.openLoadMore(ApiConstants.ParamValue.PAGE_SIZE);
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.LoadMoreListener() {
+        mAdapter.setLoadMoreView(new CustomLoadMore());
+        mAdapter.setAutoLoadMoreSize(18);
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 requestData(false);
@@ -132,8 +108,7 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
             }
         }, 200);
 
-        mAdapter.openItemAnimation(getItemAnimator());
-
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -147,6 +122,10 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         }
     }
 
+    protected int getPageSize() {
+        return ApiConstants.ParamValue.PAGE_SIZE;
+    }
+
     protected String getEmptyViewMsg() {
         return "没有更多内容";
     }
@@ -156,18 +135,36 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
     }
 
     protected <T> void setData(List<T> datas) {
-        mAdapter.loadSuccess(mIsRefresh, datas);
+        mAdapter.isUseEmpty(true);
+        if (mIsRefresh) {
+            mAdapter.setNewData(datas);
+            if (datas == null || datas.size() == 0) {
+                mAdapter.setEmptyView(mEmptyView);
+                mAdapter.notifyDataSetChanged();
+            } else if (datas.size() < getPageSize()) {
+                mAdapter.loadMoreEnd();
+            } else {
+                mAdapter.loadMoreComplete();
+            }
+        } else {
+            if (datas.size() == 0) {
+                mAdapter.loadMoreEnd();
+            } else {
+                mAdapter.addData(datas);
+                mAdapter.loadMoreComplete();
+            }
+        }
     }
 
     public void showLoading() {
     }
 
-    public void showError(CharSequence errorMsg) {
+    public void showError() {
         if (mIsRefresh) {
-            mAdapter.loadOnError();
+            mAdapter.setEmptyView(mErrorView);
+            mAdapter.notifyDataSetChanged();
         } else {
-            mAdapter.showLoadMoreFailedView();
-            mIsLoadMoreFail = true;
+            mAdapter.loadMoreFail();
         }
     }
 
@@ -175,7 +172,4 @@ public abstract class BaseMVPListFragment<P extends BasePresenter, M extends Bas
         mRefreshLayout.setRefreshing(false);
     }
 
-    protected BaseAnimation getItemAnimator() {
-        return new AlphaInAnimation();
-    }
 }

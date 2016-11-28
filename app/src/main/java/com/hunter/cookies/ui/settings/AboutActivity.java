@@ -6,6 +6,9 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hunter.cookies.R;
@@ -29,8 +32,6 @@ public class AboutActivity extends BaseActivity {
     CollapsingToolbarLayout mCollapsing;
     @BindView(R.id.app_bar_about)
     AppBarLayout mAppBar;
-    @BindView(R.id.tv_about_contact)
-    TextView mTvContact;
     @BindView(R.id.rv_about_library)
     RecyclerView mRvLibrary;
 
@@ -40,11 +41,27 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
 
-        initLibrary();
+        initList();
     }
 
-    private void initLibrary() {
-        final List<LibraryEntity> datas = new ArrayList<>();
+    private void initList() {
+        AboutLibraryAdapter adapter = new AboutLibraryAdapter(getLibraryData());
+        mRvLibrary.setLayoutManager(new LinearLayoutManager(this));
+        mRvLibrary.setAdapter(adapter);
+        mRvLibrary.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.LIST_VERTICAL));
+        mRvLibrary.setNestedScrollingEnabled(false);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View headerContact = inflater.inflate(R.layout.header_about_des, (ViewGroup) mRvLibrary.getParent(), false);
+        TextView tvContactTitle = (TextView) headerContact.findViewById(R.id.tv_header_about_title);
+        tvContactTitle.setText("联系方式");
+        TextView tvContactContent = (TextView) headerContact.findViewById(R.id.tv_header_about_content);
+        tvContactContent.setText(R.string.about_contact);
+        adapter.addHeaderView(headerContact);
+    }
+
+    private List<LibraryEntity> getLibraryData() {
+        List<LibraryEntity> datas = new ArrayList<>();
         datas.add(new LibraryEntity("Retrofit", "Square", "Apache License, Version 2.0",
                                     "https://github.com/square/retrofit"));
         datas.add(new LibraryEntity("OkHttp", "Square", "Apache License, Version 2.0",
@@ -53,6 +70,8 @@ public class AboutActivity extends BaseActivity {
                                     "https://github.com/ReactiveX/RxJava"));
         datas.add(new LibraryEntity("ButterKnife", "Jake Wharton", "Apache License, Version 2.0",
                                     "https://github.com/JakeWharton/butterknife"));
+        datas.add(new LibraryEntity("BaseRecyclerViewAdapterHelper", "陈宇明", "Apache License, Version 2.0",
+                                    "https://github.com/CymChad/BaseRecyclerViewAdapterHelper"));
         datas.add(new LibraryEntity("MaterialDrawer", "Mike Penz", "Apache License, Version 2.0",
                                     "https://github.com/mikepenz/MaterialDrawer"));
         datas.add(new LibraryEntity("EventBus", "GreenRobot", "Apache License, Version 2.0",
@@ -64,9 +83,6 @@ public class AboutActivity extends BaseActivity {
         datas.add(new LibraryEntity("Jsoup", "Jonathan Hedley", "", "https://github.com/jhy/jsoup"));
         datas.add(new LibraryEntity("RxPermissions", "Thomas Bruyelle", "",
                                     "https://github.com/tbruyelle/RxPermissions"));
-        AboutLibraryAdapter adapter = new AboutLibraryAdapter(datas);
-        mRvLibrary.setLayoutManager(new LinearLayoutManager(this));
-        mRvLibrary.setAdapter(adapter);
-        mRvLibrary.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.LIST_VERTICAL));
+        return datas;
     }
 }

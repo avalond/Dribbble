@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hunter.adapter.BaseQuickAdapter;
-import com.hunter.adapter.BaseViewHolder;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.hunter.cookies.R;
 import com.hunter.cookies.entity.FollowerEntity;
 import com.hunter.cookies.entity.UserEntity;

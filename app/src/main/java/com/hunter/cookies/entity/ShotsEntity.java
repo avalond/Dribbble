@@ -1,7 +1,7 @@
 package com.hunter.cookies.entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.google.gson.annotations.SerializedName;
-import com.hunter.adapter.entity.MultiItemEntity;
 import com.hunter.cookies.App;
 
 import java.io.Serializable;
